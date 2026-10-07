@@ -20,6 +20,9 @@ function host_end_frame() {
     throw takeFromExternrefTable0(ret[0]);
   }
 }
+function host_frame_time(ms) {
+  wasm.host_frame_time(ms);
+}
 function host_info() {
   let deferred1_0;
   let deferred1_1;
@@ -39,8 +42,17 @@ function host_init(canvas, logical_w, logical_h) {
 function host_new_session() {
   wasm.host_new_session();
 }
+function host_redraw() {
+  const ret = wasm.host_redraw();
+  if (ret[1]) {
+    throw takeFromExternrefTable0(ret[0]);
+  }
+}
 function host_resize(width, height) {
   wasm.host_resize(width, height);
+}
+function host_step(dt) {
+  wasm.host_step(dt);
 }
 function __wbg_get_imports() {
   const import0 = {
@@ -160,6 +172,9 @@ function __wbg_get_imports() {
       const ret = arg0.document;
       return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
     },
+    __wbg_drawIndexed_638959aae942557c: function(arg0, arg1, arg2, arg3, arg4, arg5) {
+      arg0.drawIndexed(arg1 >>> 0, arg2 >>> 0, arg3 >>> 0, arg4, arg5 >>> 0);
+    },
     __wbg_draw_086a9578fc9898c2: function(arg0, arg1, arg2, arg3, arg4) {
       arg0.draw(arg1 >>> 0, arg2 >>> 0, arg3 >>> 0, arg4 >>> 0);
     },
@@ -189,6 +204,12 @@ function __wbg_get_imports() {
     __wbg_getCurrentTexture_9f3b84d0eaa6cd95: function() {
       return handleError(function(arg0) {
         const ret = arg0.getCurrentTexture();
+        return ret;
+      }, arguments);
+    },
+    __wbg_getMappedRange_fb54c6327b2d8d20: function() {
+      return handleError(function(arg0, arg1, arg2) {
+        const ret = arg0.getMappedRange(arg1, arg2);
         return ret;
       }, arguments);
     },
@@ -236,6 +257,10 @@ function __wbg_get_imports() {
       const len1 = WASM_VECTOR_LEN;
       getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
       getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+    },
+    __wbg_length_7f3c00c40364105e: function(arg0) {
+      const ret = arg0.length;
+      return ret;
     },
     __wbg_limits_601ad2e086ef8141: function(arg0) {
       const ret = arg0.limits;
@@ -409,9 +434,16 @@ function __wbg_get_imports() {
         state0.a = 0;
       }
     },
+    __wbg_new_with_byte_offset_and_length_2f5d7fc2a828b74d: function(arg0, arg1, arg2) {
+      const ret = new Uint8Array(arg0, arg1 >>> 0, arg2 >>> 0);
+      return ret;
+    },
     __wbg_onSubmittedWorkDone_1190213cee1ecf7e: function(arg0) {
       const ret = arg0.onSubmittedWorkDone();
       return ret;
+    },
+    __wbg_prototypesetcall_bc27214492979395: function(arg0, arg1, arg2) {
+      Uint8Array.prototype.set.call(getArrayU8FromWasm0(arg0, arg1), arg2);
     },
     __wbg_querySelectorAll_6aebfe3df1fb2014: function() {
       return handleError(function(arg0, arg1, arg2) {
@@ -450,6 +482,9 @@ function __wbg_get_imports() {
     __wbg_setBindGroup_418c3e0eb6943ce0: function(arg0, arg1, arg2) {
       arg0.setBindGroup(arg1 >>> 0, arg2);
     },
+    __wbg_setIndexBuffer_241097e303986c14: function(arg0, arg1, arg2, arg3, arg4) {
+      arg0.setIndexBuffer(arg1, __wbindgen_enum_GpuIndexFormat[arg2], arg3, arg4);
+    },
     __wbg_setPipeline_b6f981027e02cd16: function(arg0, arg1) {
       arg0.setPipeline(arg1);
     },
@@ -467,6 +502,9 @@ function __wbg_get_imports() {
         const ret = Reflect.set(arg0, arg1, arg2);
         return ret;
       }, arguments);
+    },
+    __wbg_set_34d08fd992d43d61: function(arg0, arg1, arg2) {
+      arg0.set(arg1, arg2 >>> 0);
     },
     __wbg_set_a_82818effc94f6256: function(arg0, arg1) {
       arg0.a = arg1;
@@ -1016,6 +1054,12 @@ function __wbg_get_imports() {
     __wbg_unconfigure_835307f58dc68d80: function(arg0) {
       arg0.unconfigure();
     },
+    __wbg_unmap_6a96b14c9ef5f7f5: function(arg0) {
+      arg0.unmap();
+    },
+    __wbg_warn_13abc63e0d4b3527: function(arg0) {
+      console.warn(arg0);
+    },
     __wbg_width_3d0dce3d9892e35e: function(arg0) {
       const ret = arg0.width;
       return ret;
@@ -1043,11 +1087,11 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000003: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__28);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57);
       return ret;
     },
     __wbindgen_generic_0000000000000004: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__29);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58);
       return ret;
     },
     __wbindgen_generic_0000000000000005: function(arg0) {
@@ -1055,6 +1099,10 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000006: function(arg0, arg1) {
+      const ret = getArrayU8FromWasm0(arg0, arg1);
+      return ret;
+    },
+    __wbindgen_generic_0000000000000007: function(arg0, arg1) {
       const ret = getStringFromWasm0(arg0, arg1);
       return ret;
     },
@@ -1085,14 +1133,14 @@ function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bin
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__28(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__28(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__29(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__29(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
@@ -1727,6 +1775,323 @@ var abi_default = {
       ]
     },
     {
+      name: "mb3d_mesh",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_texture",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_material",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_material_set",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_gltf",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_model_spawn",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_node",
+      params: [],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_node_parent",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_node_transform",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_node_mesh",
+      params: [
+        "i32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_node_visible",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_node_destroy",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_camera",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_project",
+      params: [
+        "f32",
+        "f32",
+        "f32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_sun",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_light_point",
+      params: [
+        "i32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_sky",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_post",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_emitter",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_emit",
+      params: [
+        "i32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_emit_moving",
+      params: [
+        "i32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "i32",
+        "f32",
+        "f32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_trail",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_trail_attach",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_trail_detach",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_shockwave",
+      params: [
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
+      name: "mb3d_render",
+      params: [],
+      requires: {
+        stdlib: "mb3d"
+      },
+      results: []
+    },
+    {
       name: "mb_sound",
       params: [
         "i32"
@@ -1933,8 +2298,28 @@ var HOST_DIRECT = [
   "mb2d_rect_gradient",
   "mb2d_circle",
   "mb2d_line",
-  "mb2d_sprite"
+  "mb2d_sprite",
+  "mb3d_model_spawn",
+  "mb3d_node",
+  "mb3d_node_parent",
+  "mb3d_node_mesh",
+  "mb3d_node_visible",
+  "mb3d_node_destroy",
+  "mb3d_light_point",
+  "mb3d_emit",
+  "mb3d_emit_moving",
+  "mb3d_trail_attach",
+  "mb3d_trail_detach",
+  "mb3d_shockwave",
+  "mb3d_render"
 ];
+var MATERIAL_SIZE = 64;
+var SUN_SIZE = 36;
+var SKY_SIZE = 64;
+var POST_SIZE = 32;
+var EMITTER_SIZE = 128;
+var TRAIL_SIZE = 64;
+var MESH_MAX_BYTES = 64 * 1024 * 1024;
 var STORE_QUOTA = 256 * 1024;
 var STORE_KEY_MAX = 64;
 function declared(req, m) {
@@ -1961,6 +2346,25 @@ function buildImports(s, host, m) {
     new Uint8Array(host.memory.buffer, at, data.length).set(data);
   };
   const boards = new Set((m.scores ?? []).map((b) => b.board));
+  let f32 = new Float32Array(0);
+  const floats = (ptr, n) => {
+    const buf = s.memory().buffer;
+    if (ptr & 3) {
+      const v = new DataView(buf);
+      return Array.from({ length: n }, (_, i) => v.getFloat32(ptr + i * 4, true));
+    }
+    if (f32.buffer !== buf) f32 = new Float32Array(buf);
+    const at = ptr >>> 2;
+    return Array.from(f32.subarray(at, at + n));
+  };
+  const assetToHost = (asset) => {
+    const st = s.assets.state(asset);
+    if (st === 0) return -6 /* NotReady */;
+    const data = s.assets.data(asset);
+    if (st < 0 || !data) return -1 /* InvalidHandle */;
+    toHost(data);
+    return data.length;
+  };
   const impl = {
     // 5.1 sys
     mb_log: ((level, ptr, len) => s.log(level, str(ptr, len))),
@@ -2022,6 +2426,56 @@ function buildImports(s, host, m) {
     }),
     // Games can't bundle fonts yet; use the host font ids 0–2 (SPEC §5.3).
     mb2d_font: (() => -7 /* Unsupported */),
+    // 5.4 mb3d, memory-passing calls
+    mb3d_mesh: ((ptr, len) => {
+      if (len < 12 || len > MESH_MAX_BYTES) return -2 /* InvalidArgument */;
+      toHost(slice(ptr, len));
+      return host.mbh_mesh(len);
+    }),
+    mb3d_texture: ((asset) => {
+      const n = assetToHost(asset);
+      return n < 0 ? n : host.mbh_texture(n);
+    }),
+    mb3d_gltf: ((asset) => {
+      const n = assetToHost(asset);
+      return n < 0 ? n : host.mbh_gltf(n);
+    }),
+    mb3d_material: ((ptr) => {
+      toHost(slice(ptr, MATERIAL_SIZE));
+      return host.mbh_material();
+    }),
+    mb3d_material_set: ((handle, ptr) => {
+      toHost(slice(ptr, MATERIAL_SIZE));
+      return host.mbh_material_set(handle);
+    }),
+    mb3d_node_transform: ((node, ptr) => host.mbh_node_transform(node, ...floats(ptr, 10))),
+    mb3d_camera: ((ptr) => host.mbh_camera(...floats(ptr, 10))),
+    mb3d_project: ((x, y, z, out) => {
+      const r = host.mbh_project(x, y, z);
+      const at = host.host_scratch(12);
+      bytes().set(new Uint8Array(host.memory.buffer, at, 12), out);
+      return r;
+    }),
+    mb3d_sun: ((ptr) => {
+      toHost(slice(ptr, SUN_SIZE));
+      host.mbh_sun();
+    }),
+    mb3d_sky: ((ptr) => {
+      toHost(slice(ptr, SKY_SIZE));
+      host.mbh_sky();
+    }),
+    mb3d_post: ((ptr) => {
+      toHost(slice(ptr, POST_SIZE));
+      host.mbh_post();
+    }),
+    mb3d_emitter: ((ptr) => {
+      toHost(slice(ptr, EMITTER_SIZE));
+      return host.mbh_emitter();
+    }),
+    mb3d_trail: ((ptr) => {
+      toHost(slice(ptr, TRAIL_SIZE));
+      return host.mbh_trail();
+    }),
     // 5.6 audio
     mb_sound: ((asset) => {
       const st = s.assets.state(asset);
@@ -2133,6 +2587,8 @@ var Audio = class {
   /** The page is active (shown and running), so it may hold a running context. */
   active = false;
   muted = false;
+  /** The player turned game sound off (app setting); independent of prerolling. */
+  userMuted = false;
   generation = 0;
   warned = false;
   silence = null;
@@ -2180,7 +2636,15 @@ var Audio = class {
   /** Silences output without stopping voices (a feed neighbour prerolling). */
   setMuted(on) {
     this.muted = on;
-    if (this.master) this.master.gain.value = on ? 0 : MASTER_GAIN;
+    this.applyGain();
+  }
+  /** The app's sound setting: silent while off, whatever else is going on. */
+  setUserMuted(on) {
+    this.userMuted = on;
+    this.applyGain();
+  }
+  applyGain() {
+    if (this.master) this.master.gain.value = this.muted || this.userMuted ? 0 : MASTER_GAIN;
   }
   /** A new game session: the old session's voices stop and sound handles
    *  restart from 1. Decoded audio is kept and reused. */
@@ -2193,7 +2657,7 @@ var Audio = class {
   createContext() {
     const ctx = new AudioContext({ latencyHint: "interactive" });
     const master = ctx.createGain();
-    master.gain.value = this.muted ? 0 : MASTER_GAIN;
+    master.gain.value = this.muted || this.userMuted ? 0 : MASTER_GAIN;
     const limiter = ctx.createDynamicsCompressor();
     limiter.threshold.value = -9;
     limiter.knee.value = 6;
@@ -2665,10 +3129,11 @@ var Recorder = class {
   constructor(header) {
     this.log = { version: 0, ...header, frames: [] };
   }
-  frame(dt, events, assets, sensors) {
+  frame(dt, events, assets, sensors, calls = []) {
     const f = { dt, ...sensors };
     if (events.length) f.events = events;
     if (assets.length) f.assets = assets;
+    if (calls.length) f.calls = calls;
     this.log.frames.push(f);
   }
 };
@@ -2805,6 +3270,7 @@ var FUEL_PER_CALLBACK = 3e8;
 var GAME = "../game/";
 var PREROLL_MIN_FRAMES = 6;
 var PREROLL_MAX_MS = 3e3;
+var MAX_FRAME_HASHES = 216e3;
 var Runtime = class _Runtime {
   constructor(guest, session, input, recorder, gamepads, sensors, source) {
     this.guest = guest;
@@ -2817,23 +3283,46 @@ var Runtime = class _Runtime {
   }
   running = false;
   suspended = false;
-  /** False while a feed neighbour waits for its first resume. */
-  started = true;
+  /** mb_suspend was called and mb_resume is owed (live sessions only). */
+  guestSuspended = false;
   last = null;
+  /** Previous displayed frame's timestamp, for mb3d's adaptive render scale. */
+  lastShown = null;
+  /** Frames this session has run: one per mb_update. */
   frames = 0;
+  /** Display ticks, for the heartbeat (a replay waiting on an asset ticks without running a frame). */
+  ticks = 0;
+  /** Draw hash after mb_init (index 0) and after each frame. */
+  hashes = [];
   stopped = false;
   raf = 0;
   /** Next frame of a replay being played back. */
   cursor = 0;
+  /** Lifecycle callbacks made since the last recorded frame. */
+  calls = [];
+  /** Serializes `stepFrames` (a replay step may wait for an asset). */
+  stepping = Promise.resolve();
   /** Sensor readings last handed to the guest (recorded only when they change). */
   seen = { tilt: "", motion: "", loud: null };
   onReplayEnd = null;
   /** Preview only (SPEC §9): multiplies live dt, for watching fast moments slowly. */
   static timeScale = 1;
+  /** Runs mb_init; the draw hash at frame 0 covers what it did. */
+  init() {
+    this.timed("mb_init", () => this.guest.mb_init(), INIT_BUDGET_MS);
+    this.hashes.push(host_draw_hash());
+  }
   start() {
     this.running = true;
     this.session.audio.resume();
     this.raf = requestAnimationFrame((t) => this.tick(t));
+  }
+  /** Preview (SPEC §9): no frames at all until `mb.step(n)` or `mb.resume()`,
+   *  so a live run and its replay can be stepped side by side from frame 0. */
+  startHeld() {
+    this.running = true;
+    this.suspended = true;
+    this.session.audio.suspend();
   }
   /** Feed neighbour: run silently until the assets it asked for have loaded
    *  (so the waiting card shows the real game, not its loading fallback),
@@ -2841,23 +3330,22 @@ var Runtime = class _Runtime {
   startPaused() {
     this.running = true;
     this.suspended = true;
-    this.started = false;
     this.prerolling = true;
     this.session.audio.setMuted(true);
     const deadline = performance.now() + PREROLL_MAX_MS;
     let n = 0;
     const frame = () => {
       if (!this.prerolling || this.stopped) return;
-      this.drawing = false;
+      this.presenting = false;
       if (this.source.kind === "replay") this.replayTick();
       else this.liveFrame(Math.fround(1 / 60));
-      this.drawing = true;
+      this.presenting = true;
       n++;
       const loaded = this.session.assets.allArrived() && n >= PREROLL_MIN_FRAMES;
       if (loaded || performance.now() > deadline) {
         this.prerolling = false;
         this.session.audio.setMuted(false);
-        this.draw();
+        if (!this.stopped) host_end_frame();
         return;
       }
       this.raf = requestAnimationFrame(frame);
@@ -2866,14 +3354,18 @@ var Runtime = class _Runtime {
   }
   /** Running silently ahead of being shown (startPaused). */
   prerolling = false;
-  /** False while prerolling: frames update without drawing. */
-  drawing = true;
+  /** False while prerolling: frames render without being presented. */
+  presenting = true;
   suspend() {
     if (this.suspended || this.stopped) return;
     this.suspended = true;
     cancelAnimationFrame(this.raf);
     this.session.audio.suspend();
-    this.timed("mb_suspend", () => this.guest.mb_suspend?.());
+    if (this.source.kind === "live") {
+      this.lifecycle("suspend");
+      this.calls.push("suspend");
+      this.guestSuspended = true;
+    }
     post({ op: "suspended" });
   }
   resume() {
@@ -2885,15 +3377,25 @@ var Runtime = class _Runtime {
     }
     this.suspended = false;
     this.last = null;
+    this.lastShown = null;
     this.input.take();
     this.session.audio.resume();
-    if (this.started) this.timed("mb_resume", () => this.guest.mb_resume?.());
-    this.started = true;
+    if (this.guestSuspended) {
+      this.guestSuspended = false;
+      this.lifecycle("resume");
+      this.calls.push("resume");
+    }
     post({ op: "resumed" });
     this.raf = requestAnimationFrame((t) => this.tick(t));
   }
+  lifecycle(c) {
+    if (c === "suspend") this.timed("mb_suspend", () => this.guest.mb_suspend?.());
+    else this.timed("mb_resume", () => this.guest.mb_resume?.());
+  }
   tick(now) {
     if (!this.running || this.suspended || this.stopped) return;
+    if (this.lastShown !== null) host_frame_time(now - this.lastShown);
+    this.lastShown = now;
     if (this.source.kind === "replay") {
       this.replayTick();
     } else {
@@ -2901,8 +3403,8 @@ var Runtime = class _Runtime {
       this.last = now;
       this.liveFrame(Math.fround(Math.min(raw * _Runtime.timeScale, 0.1)));
     }
-    if (++this.frames % HEARTBEAT_EVERY === 0) {
-      post({ op: "heartbeat", frame: this.frames, time: this.session.gameTime });
+    if (++this.ticks % HEARTBEAT_EVERY === 0) {
+      post({ op: "heartbeat", frame: this.ticks, time: this.session.gameTime });
     }
     if (!this.stopped) this.raf = requestAnimationFrame((t) => this.tick(t));
   }
@@ -2911,13 +3413,32 @@ var Runtime = class _Runtime {
     const events = this.input.take();
     const assets = this.session.assets.publishArrived();
     const sensors = this.sampleSensors();
-    this.recorder.frame(dt, events, assets, sensors);
+    this.recorder.frame(dt, events, assets, sensors, this.calls.splice(0));
     this.step(dt, events, sensors);
   }
-  /** Preview only: advance a suspended live session by `n` frames of 1/60 s. */
+  /** Preview: advance a suspended session by `n` frames — a live one by
+   *  1/60 s each (recorded like any frame), a replay by its next `n`
+   *  recorded frames (waiting for assets as needed; it stops at the end
+   *  rather than looping). Resolves once they have run. */
   stepFrames(n) {
-    if (!this.suspended || this.stopped || this.source.kind !== "live") return;
-    for (let i = 0; i < n && !this.stopped; i++) this.liveFrame(Math.fround(1 / 60));
+    const run = async () => {
+      for (let i = 0; i < n && this.suspended && !this.stopped; i++) {
+        if (this.source.kind === "live") {
+          this.liveFrame(Math.fround(1 / 60));
+        } else {
+          const f = this.source.log.frames[this.cursor];
+          if (!f) break;
+          await this.session.assets.publishRecorded(f.assets ?? []);
+          this.cursor++;
+          this.step(f.dt, f.events ?? [], f, f.calls);
+        }
+      }
+      return this.brief();
+    };
+    const p = this.stepping.then(run);
+    this.stepping = p.catch(() => {
+    });
+    return p;
   }
   /** The sensor readings that differ from what the guest saw last frame. */
   sampleSensors() {
@@ -2949,20 +3470,22 @@ var Runtime = class _Runtime {
     }
     if (!this.session.assets.tryPublishRecorded(f.assets ?? [])) return;
     this.cursor++;
-    this.step(f.dt, f.events ?? [], f);
+    this.step(f.dt, f.events ?? [], f, f.calls);
   }
-  /** One frame: deliver input, update, render, present. */
-  step(dt, events, sensors) {
+  /** One frame: replay recorded lifecycle calls, deliver input, update, render, present. */
+  step(dt, events, sensors, calls) {
+    for (const c of calls ?? []) this.lifecycle(c);
+    if (this.stopped) return;
     this.session.beginFrame(dt, events, sensors);
+    host_step(dt);
     this.timed("mb_update", () => this.guest.mb_update(dt));
-    if (this.stopped || !this.drawing) return;
-    this.draw();
-  }
-  draw() {
+    if (this.stopped) return;
+    this.frames++;
     host_begin_frame();
     this.timed("mb_render", () => this.guest.mb_render());
     if (this.stopped) return;
-    host_end_frame();
+    if (this.presenting) host_end_frame();
+    if (this.hashes.length < MAX_FRAME_HASHES) this.hashes.push(host_draw_hash());
   }
   timed(name, f, budget = CALLBACK_BUDGET_MS) {
     this.guest.__mb_fuel.value = FUEL_PER_CALLBACK;
@@ -2988,8 +3511,16 @@ var Runtime = class _Runtime {
     this.stopped = true;
     cancelAnimationFrame(this.raf);
   }
+  brief() {
+    return { frames: this.frames, time: this.session.gameTime, hash: host_draw_hash(), replay: this.source.kind === "replay" };
+  }
+  /** The draw hash after mb_init (0) and after each frame since, as far as kept. */
+  frameHashes() {
+    return this.hashes;
+  }
   snapshot() {
-    return { frames: this.frames, time: this.session.gameTime, hash: host_draw_hash(), log: structuredClone(this.recorder.log) };
+    const log = this.source.kind === "replay" ? { ...this.source.log, frames: this.source.log.frames.slice(0, this.cursor) } : this.recorder.log;
+    return { ...this.brief(), log: structuredClone(log) };
   }
 };
 function hexBytes(hex) {
@@ -3066,7 +3597,7 @@ async function createSession(page, source, seedOverride) {
     screen: Array.from(screen)
   });
   const rt = new Runtime(guest, session, page.input, recorder, page.gamepads, page.sensors, source);
-  rt.timed("mb_init", () => guest.mb_init(), INIT_BUDGET_MS);
+  rt.init();
   return rt;
 }
 async function main() {
@@ -3098,10 +3629,13 @@ async function main() {
     store: { ...boot.store ?? {} },
     assets: /* @__PURE__ */ new Map()
   };
+  let drawOverlayLayer = null;
   const refit = () => {
     const f = fit(canvas, boot);
     layout = f.layout;
     host_resize(f.size[0], f.size[1]);
+    host_redraw();
+    drawOverlayLayer?.();
   };
   window.addEventListener("resize", refit);
   let rt;
@@ -3116,13 +3650,16 @@ async function main() {
       };
     }
     rt = next;
-    if (opts.paused) next.startPaused();
+    if (opts.hold) next.startHeld();
+    else if (opts.paused) next.startPaused();
     else next.start();
     post({ op: "restarted", replay: source.kind === "replay" });
   };
   page.audio.setPlayback(boot.soundOn === true);
+  page.audio.setUserMuted(boot.muted === true);
   window.mb = {
     sound: (on) => page.audio.setPlayback(on),
+    mute: (on) => page.audio.setUserMuted(on),
     suspend: () => rt.suspend(),
     resume: () => rt.resume(),
     snapshot: () => rt.snapshot(),
@@ -3132,6 +3669,20 @@ async function main() {
     sensors: (gx, gy, gz, ax, ay, az) => page.sensors?.set(gx, gy, gz, ax, ay, az),
     loudness: (v) => page.sensors?.external(v),
     step: (n = 1) => rt.stepFrames(n),
+    verify: async () => {
+      rt.suspend();
+      const live = rt.snapshot();
+      const expected = [...rt.frameHashes()];
+      await restart({ replay: live.log, hold: true });
+      let firstMismatch = rt.frameHashes()[0] === expected[0] ? null : 0;
+      for (let i = 1; i <= live.frames; i++) {
+        const b = await rt.stepFrames(1);
+        if (b.frames !== i) break;
+        if (firstMismatch === null && i < expected.length && b.hash !== expected[i]) firstMismatch = i;
+      }
+      const end = rt.brief();
+      return { frames: live.frames, live: live.hash, replay: end.hash, match: end.frames === live.frames && end.hash === live.hash, firstMismatch };
+    },
     speed: (k) => {
       Runtime.timeScale = Math.max(0.01, Math.min(4, k));
     }
@@ -3139,17 +3690,14 @@ async function main() {
   if (!hasNative) {
     const q2 = new URLSearchParams(location.search);
     if (q2.has("speed")) window.mb.speed(Number(q2.get("speed")) || 1);
-    if (q2.has("overlays")) {
-      const draw = drawOverlays(() => layout, screen, m.sensors.includes("loudness"));
-      window.addEventListener("resize", () => requestAnimationFrame(draw));
-    }
+    if (q2.has("overlays")) drawOverlayLayer = drawOverlays(() => layout, screen, m.sensors.includes("loudness"));
   }
   if (boot.replay) {
     rt = await createSession(page, { kind: "replay", log: boot.replay, loop: false });
     post({ op: "ready", info: JSON.parse(host_info()), bootMs: performance.now() - t0, paused: false });
     for (const f of boot.replay.frames) {
       await rt.session.assets.publishRecorded(f.assets ?? []);
-      rt.step(f.dt, f.events ?? [], f);
+      rt.step(f.dt, f.events ?? [], f, f.calls);
     }
     post({ op: "replay-done", frames: boot.replay.frames.length, hash: host_draw_hash() });
     return;

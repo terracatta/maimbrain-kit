@@ -19,7 +19,9 @@ pub const MAX_FILES: usize = 512;
 pub const MAX_UNCOMPRESSED: u64 = 64 * MIB;
 const MIB: u64 = 1024 * 1024;
 
-pub const ASSET_EXTENSIONS: &[&str] = &["png", "ktx2", "glb", "ogg", "opus", "ttf", "wgsl", "bin", "json", "txt"];
+pub const ASSET_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "ktx2", "glb", "ogg", "opus", "ttf", "wgsl", "bin", "json", "txt"];
+/// Largest .glb asset (SPEC §1).
+pub const MAX_GLB: usize = 8 * MIB as usize;
 pub const SOURCE_EXTENSIONS: &[&str] = &["rs", "toml", "lock", "md", "txt", "wgsl"];
 
 /// A validated, fully inflated bundle.
@@ -180,6 +182,15 @@ fn inspect(bytes: &[u8]) -> (Report, Option<BTreeMap<String, Vec<u8>>>) {
         }
     }
 
+    for (path, data) in &files {
+        if path.starts_with("assets/")
+            && path.to_ascii_lowercase().ends_with(".glb")
+            && let Err(e) = check_glb(data)
+        {
+            r.errors.push(format!("{path}: {e}"));
+        }
+    }
+
     if let Some(m) = r.manifest.clone() {
         m.check(&mut r.errors);
         for asset in &m.startup_assets {
@@ -226,6 +237,37 @@ fn check_path(p: &str) -> Result<(), String> {
         Some(("src", _)) => Err(format!("source file type .{ext} is not allowed (allowed: {})", SOURCE_EXTENSIONS.join(", "))),
         Some((dir, _)) => Err(format!("unexpected top-level directory {dir}/ (allowed: src/, assets/)")),
     }
+}
+
+/// Structural checks on a binary glTF (SPEC §1): header, declared length,
+/// and chunk bounds. The host parses the rest at load time.
+fn check_glb(b: &[u8]) -> Result<(), String> {
+    if b.len() > MAX_GLB {
+        return Err(format!("{} bytes; a .glb may be at most {MAX_GLB}", b.len()));
+    }
+    let u = |o: usize| b.get(o..o + 4).map(|x| u32::from_le_bytes(x.try_into().unwrap()) as usize);
+    if b.len() < 20 || &b[..4] != b"glTF" {
+        return Err("not a binary glTF (.glb)".into());
+    }
+    if u(4) != Some(2) {
+        return Err("only glTF 2.0 is supported".into());
+    }
+    if u(8) != Some(b.len()) {
+        return Err("declared length doesn't match the file size".into());
+    }
+    let json = u(12).unwrap_or(0);
+    if u(16) != Some(0x4E4F_534A) || 20 + json > b.len() {
+        return Err("the first chunk must be JSON and fit in the file".into());
+    }
+    let mut at = 20 + json;
+    while at + 8 <= b.len() {
+        let n = u(at).unwrap_or(0);
+        if at + 8 + n > b.len() {
+            return Err("a chunk runs past the end of the file".into());
+        }
+        at += 8 + n;
+    }
+    Ok(())
 }
 
 /// Width and height from a PNG's IHDR chunk.

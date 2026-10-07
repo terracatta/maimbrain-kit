@@ -37,6 +37,7 @@ const fn f(name: &'static str, params: &'static [Ty], results: &'static [Ty], re
 
 const A: Requires = Requires::Always;
 const MB2D: Requires = Requires::Stdlib("mb2d");
+const MB3D: Requires = Requires::Stdlib("mb3d");
 
 pub const IMPORTS: &[Import] = &[
     // 5.1 sys
@@ -71,6 +72,36 @@ pub const IMPORTS: &[Import] = &[
     f("mb2d_sprite", &[I32, F32, F32, F32, F32, F32, F32, F32, F32, I32], &[], MB2D),
     f("mb2d_text", &[I32, F32, F32, F32, I32, I32, I32], &[], MB2D),
     f("mb2d_measure", &[I32, F32, I32, I32], &[F32], MB2D),
+    // 5.4 mb3d: resources
+    f("mb3d_mesh", &[I32, I32], &[I32], MB3D),
+    f("mb3d_texture", &[I32], &[I32], MB3D),
+    f("mb3d_material", &[I32], &[I32], MB3D),
+    f("mb3d_material_set", &[I32, I32], &[I32], MB3D),
+    f("mb3d_gltf", &[I32], &[I32], MB3D),
+    f("mb3d_model_spawn", &[I32, I32], &[I32], MB3D),
+    // 5.4 mb3d: scene graph
+    f("mb3d_node", &[], &[I32], MB3D),
+    f("mb3d_node_parent", &[I32, I32], &[], MB3D),
+    f("mb3d_node_transform", &[I32, I32], &[], MB3D),
+    f("mb3d_node_mesh", &[I32, I32, I32], &[], MB3D),
+    f("mb3d_node_visible", &[I32, I32], &[], MB3D),
+    f("mb3d_node_destroy", &[I32], &[], MB3D),
+    f("mb3d_camera", &[I32], &[], MB3D),
+    f("mb3d_project", &[F32, F32, F32, I32], &[I32], MB3D),
+    // 5.4 mb3d: lighting and sky
+    f("mb3d_sun", &[I32], &[], MB3D),
+    f("mb3d_light_point", &[I32, F32, F32, F32, F32, F32], &[I32], MB3D),
+    f("mb3d_sky", &[I32], &[], MB3D),
+    f("mb3d_post", &[I32], &[], MB3D),
+    // 5.4 mb3d: effects
+    f("mb3d_emitter", &[I32], &[I32], MB3D),
+    f("mb3d_emit", &[I32, F32, F32, F32, F32, F32, F32, I32], &[], MB3D),
+    f("mb3d_emit_moving", &[I32, F32, F32, F32, F32, F32, F32, I32, F32, F32, F32], &[], MB3D),
+    f("mb3d_trail", &[I32], &[I32], MB3D),
+    f("mb3d_trail_attach", &[I32, I32], &[], MB3D),
+    f("mb3d_trail_detach", &[I32], &[], MB3D),
+    f("mb3d_shockwave", &[F32, F32, F32, F32, F32, F32], &[], MB3D),
+    f("mb3d_render", &[], &[], MB3D),
     // 5.6 audio (output only, so it never affects determinism)
     f("mb_sound", &[I32], &[I32], A),
     f("mb_play", &[I32, F32, F32, F32, I32], &[I32], A),
@@ -126,5 +157,36 @@ impl Requires {
             Requires::Capability(c) if m.capabilities.contains(&c) => Ok(()),
             Requires::Capability(c) => Err(format!("capabilities = [\"{}\"]", c.as_str())),
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The SDK's raw imports (sdk/maimbrain/src/ffi.rs) agree with this table,
+    /// name for name and type for type.
+    #[test]
+    fn sdk_imports_match_the_table() {
+        let src = include_str!("../../../sdk/maimbrain/src/ffi.rs");
+        let ty = |t: &str| match t.trim() {
+            "f32" => F32,
+            "f64" => F64,
+            "u64" | "i64" => I64,
+            _ => I32, // u32, i32, pointers
+        };
+        let mut seen = 0;
+        for line in src.lines().map(str::trim).filter(|l| l.starts_with("pub fn mb")) {
+            let open = line.find('(').unwrap();
+            let name = &line[7..open];
+            let args = &line[open + 1..line.find(')').unwrap()];
+            let params: Vec<Ty> = args.split(',').filter(|a| !a.trim().is_empty()).map(|a| ty(a.split(':').nth(1).unwrap())).collect();
+            let results: Vec<Ty> = line.split("->").nth(1).map(|r| ty(r.split(['=', ';']).next().unwrap())).into_iter().collect();
+            let i = lookup(name).unwrap_or_else(|| panic!("{name} is in the SDK but not the ABI table"));
+            assert_eq!(i.params, &params[..], "{name} params");
+            assert_eq!(i.results, &results[..], "{name} results");
+            seen += 1;
+        }
+        assert!(seen > 60, "parsed only {seen} SDK imports");
     }
 }

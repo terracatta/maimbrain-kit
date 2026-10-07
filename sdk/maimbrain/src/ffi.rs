@@ -4,7 +4,8 @@
 //!
 //! Off wasm32 (e.g. `cargo test` on the host), every import is a no-op stub
 //! that returns zero (or "absent" / "not ready" where zero would mean
-//! success), so game logic can be tested natively (SPEC §9).
+//! success, and handle 1 for mb3d's constructors), so game logic can be
+//! tested natively (SPEC §9).
 
 macro_rules! imports {
     ($( pub fn $name:ident($($arg:ident: $ty:ty),* $(,)?) $(-> $ret:ty $(= $stub:expr)?)?; )*) => {
@@ -60,6 +61,34 @@ imports! {
     pub fn mb2d_sprite(img: u32, sx: f32, sy: f32, sw: f32, sh: f32, dx: f32, dy: f32, dw: f32, dh: f32, tint: u32);
     pub fn mb2d_text(font: u32, size: f32, x: f32, y: f32, rgba: u32, ptr: *const u8, len: u32);
     pub fn mb2d_measure(font: u32, size: f32, ptr: *const u8, len: u32) -> f32;
+
+    // 5.4 mb3d
+    pub fn mb3d_mesh(ptr: *const u8, len: u32) -> i32 = 1;
+    pub fn mb3d_texture(asset: u32) -> i32 = 1;
+    pub fn mb3d_material(ptr: *const u8) -> i32 = 1;
+    pub fn mb3d_material_set(handle: u32, ptr: *const u8) -> i32;
+    pub fn mb3d_gltf(asset: u32) -> i32 = 1;
+    pub fn mb3d_model_spawn(model: u32, parent: u32) -> i32 = 1;
+    pub fn mb3d_node() -> i32 = 1;
+    pub fn mb3d_node_parent(node: u32, parent: u32);
+    pub fn mb3d_node_transform(node: u32, ptr: *const u8);
+    pub fn mb3d_node_mesh(node: u32, mesh: u32, material: u32);
+    pub fn mb3d_node_visible(node: u32, visible: u32);
+    pub fn mb3d_node_destroy(node: u32);
+    pub fn mb3d_camera(ptr: *const u8);
+    pub fn mb3d_project(x: f32, y: f32, z: f32, out: *mut u8) -> i32;
+    pub fn mb3d_sun(ptr: *const u8);
+    pub fn mb3d_light_point(node: u32, r: f32, g: f32, b: f32, intensity: f32, range: f32) -> i32;
+    pub fn mb3d_sky(ptr: *const u8);
+    pub fn mb3d_post(ptr: *const u8);
+    pub fn mb3d_emitter(ptr: *const u8) -> i32 = 1;
+    pub fn mb3d_emit(emitter: u32, x: f32, y: f32, z: f32, dx: f32, dy: f32, dz: f32, count: u32);
+    pub fn mb3d_emit_moving(emitter: u32, x: f32, y: f32, z: f32, dx: f32, dy: f32, dz: f32, count: u32, vx: f32, vy: f32, vz: f32);
+    pub fn mb3d_trail(ptr: *const u8) -> i32 = 1;
+    pub fn mb3d_trail_attach(trail: u32, node: u32);
+    pub fn mb3d_trail_detach(trail: u32);
+    pub fn mb3d_shockwave(x: f32, y: f32, z: f32, radius: f32, strength: f32, seconds: f32);
+    pub fn mb3d_render();
 
     // 5.6 audio
     pub fn mb_sound(asset: u32) -> i32;

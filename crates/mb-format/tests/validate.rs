@@ -185,3 +185,39 @@ fn daily_seed_is_stable_and_per_game() {
     assert_ne!(a, mb_format::daily_seed("dev.maimbrain.hello", "2026-10-06"));
     assert_eq!(a, 0x5e362aeb5507a232);
 }
+
+#[test]
+fn gates_mb3d_on_its_stdlib() {
+    let wasm = || module(&format!(r#"(import "mb" "mb3d_node" (func (result i32))) (import "mb" "mb3d_render" (func)) {EXPORTS}"#));
+    assert_error(&errors(MANIFEST, wasm()), "without declaring stdlib { mb3d = 1 }");
+    let both = MANIFEST.replace("stdlib = { mb2d = 1 }", "stdlib = { mb2d = 1, mb3d = 1 }");
+    assert!(errors(&both, wasm()).is_empty(), "{:#?}", errors(&both, wasm()));
+    let wrong = module(&format!(r#"(import "mb" "mb3d_node_transform" (func (param i32))) {EXPORTS}"#));
+    assert_error(&errors(&both, wrong), "mb.mb3d_node_transform has signature (i32) -> ()");
+}
+
+fn glb(json: &str, declared_extra: i64) -> Vec<u8> {
+    let mut j = json.as_bytes().to_vec();
+    while j.len() % 4 != 0 {
+        j.push(b' ');
+    }
+    let total = 20 + j.len();
+    let mut b = b"glTF".to_vec();
+    b.extend(2u32.to_le_bytes());
+    b.extend(((total as i64 + declared_extra) as u32).to_le_bytes());
+    b.extend((j.len() as u32).to_le_bytes());
+    b.extend(0x4E4F534Au32.to_le_bytes());
+    b.extend(j);
+    b
+}
+
+#[test]
+fn checks_glb_assets() {
+    let wasm = || module(EXPORTS);
+    let ok = glb(r#"{"asset":{"version":"2.0"}}"#, 0);
+    let r = validate(&bundle(MANIFEST, wasm(), &[("assets/ship.glb", &ok), ("assets/hull.jpg", &[0xff, 0xd8])]));
+    assert!(r.ok(), "{:#?}", r.errors);
+    let short = glb(r#"{"asset":{"version":"2.0"}}"#, 8);
+    assert_error(&validate(&bundle(MANIFEST, wasm(), &[("assets/ship.glb", &short)])).errors, "declared length");
+    assert_error(&validate(&bundle(MANIFEST, wasm(), &[("assets/ship.glb", b"not a gltf file at all")])).errors, "not a binary glTF");
+}

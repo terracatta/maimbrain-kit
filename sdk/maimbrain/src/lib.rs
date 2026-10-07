@@ -26,6 +26,7 @@
 
 pub mod audio;
 pub mod gfx2d;
+pub mod gfx3d;
 pub mod input;
 pub mod sensors;
 pub mod store;

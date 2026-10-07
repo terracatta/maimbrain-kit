@@ -21,7 +21,7 @@ assets/              # optional
 | Startup set (wasm + assets listed in `startup_assets`) | ≤ 3 MB |
 | Files | ≤ 512 |
 
-Allowed asset types: `.png`, `.ktx2` (Basis/UASTC), `.glb` (meshopt allowed), `.ogg`/`.opus`, `.ttf`, `.wgsl`, `.bin`, `.json`, `.txt`.
+Allowed asset types: `.png`, `.jpg`/`.jpeg` (mb3d textures), `.ktx2` (Basis/UASTC), `.glb` (≤ 8 MB; meshopt allowed, see §5.4), `.ogg`/`.opus`, `.ttf`, `.wgsl`, `.bin`, `.json`, `.txt`.
 
 ## 2. Manifest
 
@@ -102,11 +102,13 @@ The host owns the loop. It MAY stop calling `mb_update`/`mb_render` at any time 
 
 A run MUST be exactly reproducible from its seed and recorded host inputs, so that the platform can replay it ("watch my run", ghosts, preview clips, bug reports).
 
-- Every source of nondeterminism reaches the guest through a host call, and the host records it: per-frame `dt`, input events, sensor values, asset readiness, the session seed, and the session constants (`mb_player_id`, `mb_locale`, `mb_screen`, initial `mb_store` contents).
+- Every source of nondeterminism reaches the guest through a host call, and the host records it: per-frame `dt`, input events, sensor values, asset readiness, the `mb_suspend`/`mb_resume` calls made between frames, the session seed, and the session constants (`mb_player_id`, `mb_locale`, `mb_screen`, initial `mb_store` contents). A replay makes the same lifecycle calls at the same points and no others (pausing a replay doesn't call the guest).
 - `mb_time()` is **game time**: the sum of all `dt` values passed to `mb_update`, not wall-clock time.
 - The host samples sensors once per frame and returns the same snapshot for every read during that frame.
 - Input events, asset state changes and other host-side changes become visible only at frame boundaries, before `mb_update`.
+- Host-side simulation (mb3d's particles, trails and shockwaves, §5.4) advances only by the recorded `dt` and the guest's calls.
 - Guests MUST NOT depend on NaN bit patterns (the only nondeterminism in Wasm floating point). There are no threads and no other entropy sources.
+- The **draw hash** checks this: a running FNV-1a hash of every mb2d draw command and mb3d call the guest makes, plus a digest of mb3d's simulated state at each `mb3d_render`, starting over with each session. Two runs that drew the same thing frame for frame have the same hash at the same frame count; §9 shows how to compare a run with its replay.
 - The replay log format is reserved; it is not part of v0.
 
 ## 4. ABI conventions
@@ -163,29 +165,80 @@ mb2d_sprite(img, sx,sy,sw,sh, dx,dy,dw,dh, rgba_tint)   # src in image pixels, d
 mb2d_text(font, size, x, y, rgba, ptr, len)             # UTF-8; (x, y) = top-left of the first line
 mb2d_measure(font, size, ptr, len) -> f32               # width of the widest line
 ```
-Colors are `0xRRGGBBAA`. Transforms (applied to every draw, sprites and text included) and blend mode reset at the start of every `mb_render`. `mb2d_rotate` takes radians; positive turns clockwise on screen (+y is down). A sprite's `rgba_tint` multiplies the texel color and alpha, so `0xffffffff` draws it unchanged. Images are sampled with linear filtering. The canvas is drawn at up to 2 device pixels per logical unit (e.g. 720×1280 for a 360×640 game on an iPhone), so for crisp pixel art make texels per art pixel = 2 × the logical units you draw each art pixel at (e.g. store at 4×4 texels per art pixel and draw art pixels 2 units wide), and keep sprite positions on whole units. `size` is the em height in logical units; `\n` starts a new line. Host fonts: `0` Inter Regular, `1` Inter Bold (signed-distance-field, crisp at any size), `2` pixel font (5×7, crisp at multiples of 8). Glyphs cover ASCII and Latin-1; missing characters draw as `?`. About 32 000 quads per frame; further draws are dropped.
+Colors are `0xRRGGBBAA`. Transforms (applied to every draw, sprites and text included) and blend mode reset at the start of every `mb_render`. `mb2d_rotate` takes radians; positive turns clockwise on screen (+y is down). A sprite's `rgba_tint` multiplies the texel color and alpha, so `0xffffffff` draws it unchanged. Images are sampled with linear filtering. The canvas is drawn at up to 2 device pixels per logical unit (e.g. 720×1280 for a 360×640 game on an iPhone), so for crisp pixel art make texels per art pixel = 2 × the logical units you draw each art pixel at (e.g. store at 4×4 texels per art pixel and draw art pixels 2 units wide), and keep sprite positions on whole units. `size` is the em height in logical units; `\n` starts a new line. Host fonts: `0` Inter Regular, `1` Inter Bold (signed-distance-field, crisp at any size), `2` pixel font (5×7, crisp at multiples of 8). Inter covers printable ASCII, Latin-1 (U+00A0–U+00FF except the soft hyphen) and `‘ ’ “ ” • … – — ← ↑ → ↓ ★ ♥ € ™`. The pixel font covers printable ASCII (U+0020–U+007E) plus `× ÷ · ° • … ← ↑ → ↓ ♥ ★`: no accented letters, so use Inter for names and other text that may need them. Missing characters draw as `?`. About 32 000 quads per frame; further draws are dropped.
 
 ### 5.4 `mb3d` (stdlib `mb3d = 1`)
-Retained scene graph, host-rendered. Nodes are handles.
+A retained 3D scene that the host renders: the game creates meshes, materials and nodes once, moves nodes and the camera each frame, and calls `mb3d_render()` from `mb_render`. Declare `perf_tier = "full"` for anything substantial; add `mb2d = 1` to draw a HUD on top. Units are meters; right-handed, +y up; a camera looks down its local −z. Colors are **linear** RGB (convert picked sRGB colors; the SDK's `srgb()` does) and may exceed 1, which is how things glow and bloom.
+
+Handles are `u32`, sequential per session from 1 (`0` is invalid). Calls that create something return the handle or a §7 code. Packed structs are little-endian `f32`/`u32`, 4-byte aligned, passed by pointer.
+
 ```
-mb3d_scene_load(glb_asset) -> node        # instantiate glTF scene
-mb3d_node_new() -> node
-mb3d_node_parent(node, parent)
-mb3d_node_transform(node, ptr)            # pos[3], rot quat[4], scale[3]
-mb3d_node_visible(node, bool)
-mb3d_mesh_box/sphere/plane(...) -> mesh
-mb3d_material_pbr(ptr) -> material        # base color, metallic, roughness, emissive, textures
-mb3d_node_mesh(node, mesh, material)
-mb3d_camera(node, fov, near, far)         # sets active camera
-mb3d_light_dir(node, rgb, intensity, shadows: bool)
-mb3d_light_point(node, rgb, intensity, range)
-mb3d_environment(ktx2_asset, intensity)   # IBL + skybox
-mb3d_post(ptr)                            # tonemap, exposure, bloom, vignette
-mb3d_raycast(origin, dir, out_ptr) -> i32
-mb3d_particles(...) -> node               # v1 GPU particle emitter
-mb3d_render()                             # draw scene this frame; may combine with mb2d overlay
+# resources
+mb3d_mesh(ptr, len) -> i32                 # packed mesh (below)
+mb3d_texture(asset) -> i32                 # a ready PNG or JPEG asset, ≤ 2048²
+mb3d_material(ptr) -> i32                  # Material
+mb3d_material_set(material, ptr) -> i32    # replace a Material (e.g. pulse its emissive); 0 or -1
+mb3d_gltf(asset) -> i32                    # a ready .glb → a model
+mb3d_model_spawn(model, parent) -> i32     # instantiates a model under parent (0 = root); returns its root node
+# scene graph
+mb3d_node() -> i32                         # at the root, identity transform, visible, no mesh
+mb3d_node_parent(node, parent)             # 0 = root; a parent can't be the node or its descendant
+mb3d_node_transform(node, ptr)             # Transform, relative to the parent
+mb3d_node_mesh(node, mesh, material)       # a node draws at most one mesh; mesh 0 clears it
+mb3d_node_visible(node, visible)           # hides the node and everything under it
+mb3d_node_destroy(node)                    # and its children; their lights go out, attached trails fade
+mb3d_camera(ptr)                           # Camera
+mb3d_project(x, y, z, out_ptr) -> i32      # writes f32 × 3: logical screen x, y, depth; 1 if on screen (formula below)
+# lighting, sky, post
+mb3d_sun(ptr)                              # Sun
+mb3d_light_point(node, r, g, b, intensity, range) -> i32   # attach or update a node's point light; ≤ 8 (Limits)
+mb3d_sky(ptr)                              # Sky
+mb3d_post(ptr)                             # Post
+# effects
+mb3d_emitter(ptr) -> i32                   # Emitter
+mb3d_emit(emitter, x, y, z, dx, dy, dz, count)   # a burst at a point, in a cone around (dx,dy,dz); zero = all around
+mb3d_emit_moving(emitter, x, y, z, dx, dy, dz, count, vx, vy, vz)   # the same, in a frame moving at (vx,vy,vz) m/s
+mb3d_trail(ptr) -> i32                     # Trail
+mb3d_trail_attach(trail, node)             # follow the node's world position; a new node (or any re-attach) starts a new ribbon
+mb3d_trail_detach(trail)                   # stop following; what's there fades out
+mb3d_shockwave(x, y, z, radius, strength, seconds)   # screen-space ring expanding from a world point
+mb3d_render()                              # draw the scene this frame
 ```
-No physics in v1: games use their own (e.g. a small allowlisted crate) or the SDK's simple helpers.
+
+**Packed mesh**: header `vertex_count, index_count, flags` (u32), then `vertex_count` vertices `pos f32×3, normal f32×3, uv f32×2` followed by `tangent f32×4` (xyz, w = ±1 handedness) if `flags & 1` and `color rgba8` (bytes r, g, b, a; sRGB; multiplies the base color) if `flags & 2`, then `index_count` u32 indices: counter-clockwise triangles are front faces. `index_count` is a multiple of 3; every index < `vertex_count`; values finite. Without tangents the host generates them from the UVs. A mesh outside these rules returns −2. UV (0, 0) is a texture's top-left.
+
+| Struct | Size | Fields |
+|---|---|---|
+| `Transform` | 40 | `pos f32×3, rotation f32×4` (quaternion x, y, z, w; normalized by the host), `scale f32×3` |
+| `Camera` | 40 | `pos f32×3, rotation f32×4, fov_y` (radians, vertical), `near, far` |
+| `Material` | 64 | `base_color f32×4` (linear rgb, alpha), `emissive f32×3, emissive_strength, metallic, roughness, base_tex, normal_tex, metal_rough_tex, emissive_tex` (texture handles, 0 = none), `flags` (1 unlit, 2 double-sided, 4 alpha blend, 8 additive), `reserved` |
+| `Sun` | 36 | `direction f32×3` (the way the light travels), `color f32×3, intensity, shadows` (u32 0/1), `shadow_distance` (meters from the camera) |
+| `Sky` | 64 | `seed` (u32), `colors f32×9` (background, nebula 1, nebula 2), `nebula_density` (0–4), `star_density` (0–4), `star_brightness, sun_disc` (angular radius, radians; 0 = none), `reserved u32×2` |
+| `Post` | 32 | `exposure, bloom_strength, bloom_threshold, vignette` (0–1), `chromatic_aberration` (0–1), `saturation, contrast, reserved` |
+| `Emitter` | 128 | `colors f32×16` (rgba at life 0, ⅓, ⅔, 1), `sizes f32×4` (diameter, same stops), `lifetime f32×2` (min, max s), `speed f32×2` (m/s), `spread` (cone half-angle; π = all around), `drag` (per second), `blend` (u32: 0 additive, 1 alpha), `texture` (0 = soft dot), `gravity f32×3, stretch` (length += stretch × speed: sparks) |
+| `Trail` | 64 | `color_start f32×4, color_end f32×4, width_start, width_end, lifetime` (s), `blend` (u32: 0 additive, 1 alpha), `min_segment` (meters between points; 0 = 5 cm), `reserved u32×3` |
+
+**Projection** (`mb3d_project`, using the camera from the latest `mb3d_camera` call, after the clamps that call applies: rotation normalized, `fov_y` to 0.01–3, `near` ≥ 10⁻⁴, `far` > `near`): with the camera's axes `r = rot·(1,0,0)`, `u = rot·(0,1,0)`, `b = rot·(0,0,1)` and `d = p − pos`, the depth is `depth = −d·b` (meters in front of the camera). If `depth ≤ 10⁻⁶` it writes `(0, 0, depth)` and returns 0. Otherwise, with `f = 1 / tan(fov_y / 2)` and the logical size `W × H`, `nx = f·(H/W)·(d·r)/depth` and `ny = f·(d·u)/depth`; it writes `x = (nx + 1)/2 · W`, `y = (1 − ny)/2 · H`, `depth`, and returns 1 when `|nx| ≤ 1`, `|ny| ≤ 1` and `near ≤ depth ≤ far`, else 0. (0, 0) is the top-left of the logical screen, the same space as mb2d and input. The host computes this through a combined view-projection matrix, so a game's own implementation agrees to within float rounding; the SDK's `Camera::project` is one, usable in tests.
+
+Defaults before any call: camera at (0, 0, 5) looking down −z, `fov_y` 1, near 0.1, far 500; a white sun shining down and away (intensity 3, no shadows); a dark blue sky; exposure 1, bloom 0.5 above 1, vignette 0.25.
+
+Textures: `base_tex` and `emissive_tex` are sampled as sRGB; `normal_tex` (tangent space, OpenGL/glTF convention) and `metal_rough_tex` (glTF layout: roughness in green, metallic in blue, multiplying the factors) as linear. Textures are mipmapped and sampled with repeat and trilinear, anisotropic filtering. A texture whose bytes fail to decode draws as white.
+
+**glTF**: `.glb` only (one file, embedded buffer and images). Supported: triangle primitives; float or quantized attributes (`KHR_mesh_quantization`); `EXT_meshopt_compression` / `KHR_meshopt_compression` buffer views; PNG and JPEG images; metallic-roughness materials with base color, normal, metal-rough and emissive textures, `KHR_texture_transform` (on base-color UVs), `KHR_materials_emissive_strength`, `KHR_materials_unlit`, alpha mode `BLEND` (`MASK` draws opaque); node hierarchies (TRS or matrix) of the default scene. Skins, morph targets, animations, cameras, lights and other UV sets are ignored. A file that *requires* another extension (Draco, KTX2/Basis, WebP) returns −7; a malformed one −2. A model's meshes, materials and textures count toward the limits below. A node with several primitives spawns one child node per extra primitive.
+
+**Lighting**: metallic/roughness PBR (GGX, Smith-correlated visibility, Schlick fresnel, Lambert diffuse) from the sun, up to 8 point lights (inverse-square falloff reaching 0 at `range`), and image-based lighting from the sky. Unlit materials draw `base_color × texture + emissive`. With `shadows = 1` the sun casts a 2048² soft shadow map over `shadow_distance` in front of the camera; opaque, lit meshes cast. The sky (a seeded procedural nebula and starfield, plus the sun disc) is also the source of image-based lighting, re-baked over the next few frames whenever `mb3d_sky` changes it — set it once, not every frame.
+
+**Drawing order**: opaque meshes front to back, the sky, alpha and additive meshes back to front, then particles (alpha ones sorted back to front, then additive) and trails, all into an HDR target with 4× MSAA; then bloom, shockwave and chromatic distortion, exposure, saturation, ACES-fitted tonemapping, contrast and vignette. In a frame that calls `mb3d_render`, the scene fills the logical canvas and replaces `mb2d_clear`; every mb2d draw in that frame (before or after the call) composites on top, in display space. A game may use mb3d alone. The 3D image renders at up to 2 device pixels per logical unit, scaled down to as little as 0.6× when frames run long; that changes only resolution.
+
+**Effects** are simulated by the host, deterministically: a burst's random numbers come from the emitter handle and how many bursts it has made (`mb3d_emit` and `mb3d_emit_moving` share the count); particles, trails and shockwaves advance by each frame's `dt` (the value `mb_update` gets) before `mb_update`, whether or not the frame renders; trails record their node's world position at each `mb3d_render`. Particles move ballistically in world space (`gravity`, `drag`), don't collide and aren't lit; a particle has no velocity but the one its burst gives it. With `mb3d_emit_moving`, each particle also carries the burst's frame velocity `v` unchanged for its whole life: position advances by `(vel + v)·dt`, while gravity and drag act on `vel` only, so the cloud keeps pace with whatever exploded (an enemy flying alongside the camera) and spreads as it would at rest. Sparks stretch along `vel`. A trail is one list of points: attaching it to a node other than the one it follows, including re-attaching after `mb3d_trail_detach` or after its node was destroyed, keeps the old points (they fade out over their lifetime as usual) and starts a separate ribbon at the node's next sampled position; nothing is drawn between the two. Attaching it to the node it already follows changes nothing. Every mb3d call and a digest of the simulated state are part of the replay hash (§3).
+
+**Limits** (going over returns −4): 4096 live nodes, 512 meshes with 1 M vertices in total, 1024 materials, 64 textures (≤ 2048² each, sharing 96 MB with their mipmaps: a 2048² texture takes 22 MB, a 1024² one 5.6 MB), 64 models, 8 point lights, 256 emitters and 16 384 live particles (a burst adds ≤ 4096; extra particles are dropped), 64 trails (256 points each), 16 shockwaves (the oldest gives way), 2000 drawn meshes per frame (nearest first). With these, mb3d's GPU memory stays under 256 MB.
+
+Only nodes can be freed: `mb3d_node_destroy` releases the node and its descendants (their slots are reused with new handles; old handles go stale and calls with them do nothing), the point lights attached to them, and detaches their trails. Meshes, textures, materials, models, emitters and trails last until the session ends, and count against the limits for the whole session. So build them once (in `mb_init`, or as assets arrive) and pool: one emitter per particle look, fired wherever needed; one material per look, changed with `mb3d_material_set`; a fixed set of trails moved between nodes with attach/detach; nodes hidden with `mb3d_node_visible` and reused rather than created per event. A point light holds one of the 8 slots from `mb3d_light_point` until its node (or an ancestor) is destroyed: at intensity 0 or under a hidden node it still holds the slot, and a hidden node's light still shines. Darken a light with intensity 0; to move a flash around, keep one light node and move it.
+
+**Budgets**: everything a call does happens in the guest's callback except texture decoding, GPU uploads and drawing, which the host does after `mb_render`. Parsing a large `.glb` in `mb3d_gltf` takes time in the caller's callback (§3 watchdogs): load models in `mb_update`, one per frame, while showing something. Aim for ≤ 200 drawn meshes and ≤ 150 k triangles per frame, and a few thousand particles, for 60 fps on an iPhone 13 class device.
+
+No physics in v1: games use their own (a small allowlisted crate) or the SDK's simple helpers.
 
 ### 5.5 `gpu` (escape hatch)
 A handle-based subset of `webgpu.h`: `mb_gpu_buffer_create`, `mb_gpu_buffer_write`, `mb_gpu_texture_create`, `mb_gpu_texture_write`, `mb_gpu_sampler_create`, `mb_gpu_shader_create(wgsl_ptr,len)`, `mb_gpu_bind_group_layout_create`, `mb_gpu_pipeline_layout_create`, `mb_gpu_render_pipeline_create`, `mb_gpu_compute_pipeline_create`, `mb_gpu_bind_group_create`, `mb_gpu_pass_begin`, `set_pipeline`, `set_bind_group`, `set_vertex_buffer`, `set_index_buffer`, `draw`, `draw_indexed`, `dispatch`, `mb_gpu_pass_end`, `mb_gpu_surface_texture() -> handle`. Descriptors are passed as packed structs (layouts defined in SDK).
@@ -286,18 +339,30 @@ The client downloads, verifies `sha256` and size, re-validates the manifest loca
 
 ## 9. Building, previewing and testing
 
-- `mb build games/<name>` compiles the crate for `wasm32-unknown-unknown`, optimizes it, packs `feed/<id>-<version>.mbx` and validates it. `mb validate` checks an existing bundle; `mb <command> --help` documents each command.
-- `mb serve <game dir>` builds the game and serves it with the runtime at http://127.0.0.1:8765/runtime/index.html for a desktop browser with WebGPU (Safari or Chrome); reloading the page rebuilds it if any file changed. (In this repo, `just serve <name>` does the same.) There is no feed around it: touch arrives as mouse clicks, tilt is emulated by the mouse pointer (§5.7), haptics and leaderboards are logged to the console, and the insets are zero except a small bottom one. Leave it running and reload to iterate.
+- `mb new <dir>` creates a game crate from the template (`--3d` for the mb3d one). Signed in (`mb login`), the id and creator come from your account; signed out, from `--id` and `--creator`, or else placeholders that build, validate and preview but must be replaced before `mb publish`. `mb build games/<name>` compiles the crate for `wasm32-unknown-unknown`, optimizes it, packs `feed/<id>-<version>.mbx` and validates it. `mb validate` checks an existing bundle; `mb <command> --help` documents each command.
+- `mb serve <game dir>` builds the game and serves it with the runtime at http://127.0.0.1:8765/runtime/index.html for a desktop browser with WebGPU (Safari or Chrome); reloading the page rebuilds it if any file changed. (In this repo, `just serve <name>` does the same.) There is no feed around it: touch arrives as mouse clicks, tilt is emulated by the mouse pointer (§5.7), haptics and leaderboards are logged to the console, and the insets are zero except a small bottom one. Leave it running and reload to iterate. A release build of `mb` has the web runtime built in. Built from the Maimbrain repo, `mb` embeds `runtime/dist`, which `just runtime` builds: run that once (and again after runtime changes), then run `mb` through cargo (`cargo run -p mb-cli -- serve …`), which picks up the new runtime automatically.
 - Preview aids:
   - `?overlays` in the URL shades where the feed draws over a card, plus the pause pill (and mic badge).
   - `?speed=0.25` runs live time at a quarter speed.
   - Console calls:
-    - `mb.suspend()` pauses, `mb.step(n)` advances a paused game n frames, `mb.resume()` continues, and `mb.speed(k)` changes the speed.
-    - `mb.tap(x, y)` taps at page (CSS) pixels.
+    - `mb.suspend()` pauses, `mb.step(n)` advances a paused session n frames (a live one by 1/60 s each, a replay by its next n recorded frames) and resolves to `{ frames, time, hash, replay }`, `mb.resume()` continues, and `mb.speed(k)` changes the speed.
+    - `mb.tap(x, y)` taps at page (CSS) pixels; the game gets it in the next frame.
     - `mb.sensors(gx, gy, gz, ax, ay, az)` sets tilt and motion until the pointer next moves. Synthetic input works too, e.g. `window.dispatchEvent(new PointerEvent("pointermove", { clientX, clientY }))` in a timed loop to script a shake.
     - `mb.loudness(v)` pins the mic level; `mb.loudness(-1)` simulates a denied mic, and `mb.loudness()` unpins.
-    - `mb.snapshot()` returns `{ frames, time, hash, log }` (the replay log so far).
-    - `mb.restart(JSON.stringify({ replay: mb.snapshot().log }))` plays that run back the way a replay card does; `mb.restart("{}")` starts a fresh session.
-  - Pausing, then pinning sensors and stepping, makes any moment reproducible for a screenshot. For hard-to-reach states (level 7, a near-fail), add debug constants to your game (e.g. `const DEBUG_START_LEVEL: u32 = 0;`) and set them back before shipping.
-- The SDK compiles on the host too: there, every host call is a no-op stub returning zero (`sensors::tilt()` is `None`), so `cargo test -p <game>` can test game logic natively. Keep the simulation separate from drawing and input so tests can drive it directly.
+    - `mb.snapshot()` returns `{ frames, time, hash, replay, log }`: the frames this session has run (`mb_update` calls; 0 right after `mb_init`), game time, the session's draw hash (§3), whether it's a replay, and the replay log of those frames.
+    - `mb.restart(json)` replaces the session: `"{}"` starts a fresh one, `JSON.stringify({ replay: log })` plays a log back the way a replay card does (in real time, looping). Add `hold: true` to either to run `mb_init` and then no frames at all until `mb.step` or `mb.resume`.
+    - `mb.verify()` pauses, replays the current session's log in a fresh held session and compares the draw hash after `mb_init` and after every frame. It resolves to `{ frames, live, replay, match, firstMismatch }` (the first frame that differs, or null) and leaves the replay loaded.
+  - Pausing, then pinning sensors and stepping, makes any moment reproducible for a screenshot. Before taking a screenshot of a stepped frame, give the page a moment to show it (`await new Promise(r => setTimeout(r, 100))`). For hard-to-reach states (level 7, a near-fail), add debug constants to your game (e.g. `const DEBUG_START_LEVEL: u32 = 0;`) and set them back before shipping.
+  - A hidden or background tab (and some headless browsers) runs no animation frames, so a live session doesn't advance there on its own: use `hold: true` and `mb.step`.
+- **Checking determinism.** A run and its replay must have equal draw hashes at equal frame counts. Play or script a run, then `await mb.verify()`; `match: false` means the game depends on something that isn't recorded (its own entropy or clock, hash-map iteration order, state changed in `mb_render`). To compare by hand, frame by frame:
+  ```js
+  await mb.restart('{"hold": true}');            // a live session at frame 0
+  mb.tap(180, 500); await mb.step(1);             // script input, a frame at a time
+  const live = await mb.step(299);                // { frames: 300, hash, … }
+  const log = mb.snapshot().log;
+  await mb.restart(JSON.stringify({ replay: log, hold: true }));
+  const again = await mb.step(300);               // again.hash === live.hash
+  ```
+  Two held live sessions (same seed) also match after the same steps with the same input, and so do two replays of one log. Compare `snapshot()`s at the same `frames`, never at the same wall-clock moment.
+- The SDK compiles on the host too, so `cargo test -p <game>` can test game logic natively. There every host import is a stub: calls without a result do nothing, and calls with one return zero, except where zero would mean something real: sensors report "not ready" (`sensors::tilt()` and `loudness()` are `None`), `store` reads find nothing, and mb3d's constructors (`mb3d_mesh`, `_texture`, `_material`, `_gltf`, `_model_spawn`, `_node`, `_emitter`, `_trail`) return handle 1, so building a scene succeeds (with every handle equal to 1). `gfx3d::project` returns zeros and "off screen" there; logic that needs projection should use `Camera::project`, which runs anywhere. Keep the simulation separate from drawing and input so tests can drive it directly.
 - Assets are yours to make: PNG for images, Ogg Vorbis for sound. Generating them with scripts kept in the crate (e.g. `tools/`) keeps the game remixable.

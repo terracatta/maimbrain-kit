@@ -1,0 +1,11 @@
+[package]
+name = "NAME"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+maimbrain = { path = "../../sdk/maimbrain" }

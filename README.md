@@ -20,7 +20,7 @@ In Claude Code:
 Then ask: *"Use the maimbrain-game skill to make a game: …"*. Your agent will run:
 
 ```sh
-mb new mygame        # a game crate from the template, with your id
+mb new mygame        # a game crate from the template, with your id (--3d for a 3D one; works signed out too)
 mb serve mygame      # preview at http://127.0.0.1:8765 (reload to rebuild)
 mb publish mygame    # upload for review; track it at maimbrain.com/create
 ```
@@ -29,8 +29,9 @@ mb publish mygame    # upload for review; track it at maimbrain.com/create
 
 | Path | What |
 |---|---|
-| `skills/maimbrain-game/` | The skill: workflow, engagement guide, template, `pixel.py`, `sfx.py`, `check_audio.py` |
-| `docs/SPEC.md` | The game spec (manifest, host API, limits) |
+| `skills/maimbrain-game/` | The skill: workflow, engagement guide, 2D `template/` and 3D `template-3d/`, `pixel.py`, `sfx.py`, `check_audio.py`, `make_glb.py` |
+| `docs/SPEC.md` | The game spec (manifest, host API, limits, determinism) |
+| `docs/MB3D.md` | The 3D engine: PBR, sky lighting, shadows, post effects, particles, trails, glTF |
 | `sdk/maimbrain/` | The Rust SDK (games depend on it via git) |
 | `crates/mb-cli/` | The `mb` tool |
 | `crates/mb-format/` | The bundle format and validator (the same one the server runs) |

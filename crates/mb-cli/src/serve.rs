@@ -26,7 +26,12 @@ pub fn serve(
     stage: impl Fn(&Path, &Path, &Path) -> Result<(), String>,
 ) -> Result<(), String> {
     if env!("MB_RUNTIME_EMBEDDED").is_empty() {
-        return Err("this mb was built without the web runtime; install a release build (see maimbrain.com/create)".into());
+        return Err(format!(
+            "this mb was built without the web runtime ({} was missing). In the Maimbrain repo, run `just runtime`, \
+             then run mb again through cargo (`cargo run -p mb-cli -- serve …`), which embeds it automatically. \
+             Otherwise install a release build: curl -fsSL https://maimbrain.com/install.sh | sh",
+            env!("MB_RUNTIME_DIST")
+        ));
     }
     let work = std::env::temp_dir().join(format!("mb-serve-{}", std::process::id()));
     let runtime_dir = work.join("runtime-src");
@@ -88,6 +93,8 @@ fn content_type(p: &Path) -> &'static str {
         "wasm" => "application/wasm",
         "json" => "application/json",
         "png" => "image/png",
+        "jpg" | "jpeg" => "image/jpeg",
+        "glb" => "model/gltf-binary",
         "ogg" => "audio/ogg",
         "wav" => "audio/wav",
         _ => "application/octet-stream",

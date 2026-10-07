@@ -38,7 +38,14 @@ pad, arp, bell, kick, snare, hat, clap, tom, noise_burst, zap.
 
 Levels: save_ogg normalizes by loudness, not peak: kind="sfx" (default)
 targets about -14 dBFS RMS, kind="music" about -20, so music sits under the
-effects at equal `vol`. Mix in the game with vol around 0.6–1.0.
+effects at equal `vol`. Mix in the game with vol around 0.6–1.0. Peaks are
+held below -3 dBFS by a look-ahead limiter, and the encoded file is decoded
+and re-encoded quieter if Vorbis pushed a peak past -1 dBFS, so anything
+saved passes check_audio's clip check. Very peaky sounds (a sharp hit with a
+long reverb tail) therefore come out below the loudness target; `drive()`
+before saving makes them denser and louder if they need it.
+
+Self-test (needs oggenc and oggdec): python3 sfx.py --self-test
 """
 
 from __future__ import annotations
@@ -49,6 +56,7 @@ import random
 import shutil
 import struct
 import subprocess
+import sys
 import tempfile
 import wave
 
@@ -402,25 +410,55 @@ def _gain(x: list[float], kind: str) -> float:
     return 10 ** (target / 20) / (rms or 1e-9)
 
 
+# Sample peaks are limited to CEILING_DB before encoding; after encoding the
+# file is decoded and, if Vorbis pushed a peak above DECODED_MAX_DB, scaled
+# down and encoded again. check_audio.py flags anything above -0.5 dBFS.
+CEILING_DB = -3.0
+DECODED_MAX_DB = -1.0
+
+
 def _limit(x: list[float], g: float) -> list[float]:
-    """Applies gain g with peaks soft-limited below -2 dBFS (Vorbis encoding
-    can overshoot the source peak by ~1 dB, so this keeps decoded files
-    under -1 dBFS)."""
-    ceiling = 10 ** (-2 / 20)
-    knee = 0.7 * ceiling
-    out = []
-    for v in x:
-        v *= g
-        if abs(v) > knee:  # soft knee into the ceiling
-            e = abs(v) - knee
-            v = math.copysign(knee + (ceiling - knee) * math.tanh(e / (ceiling - knee)), v)
-        out.append(v)
+    """Applies gain g, then a look-ahead peak limiter: a smooth gain envelope
+    that is already down when a peak arrives and recovers over ~80 ms, so no
+    sample exceeds CEILING_DB. Unlike clipping or waveshaping it adds no
+    harmonics, which is what made peaky sounds (explosions with long tails,
+    where loudness normalization asks for a lot of gain) overshoot after
+    Vorbis encoding."""
+    from collections import deque
+    ceiling = 10 ** (CEILING_DB / 20)
+    y = [v * g for v in x]
+    n = len(y)
+    need = [ceiling / abs(v) if abs(v) > ceiling else 1.0 for v in y]
+    la = max(1, int(0.0015 * RATE))
+    # m[i] = min(need[i-la .. i+la]) (sliding-window minimum)
+    m, q = [1.0] * n, deque()
+    for j in range(n + la):
+        if j < n:
+            while q and need[q[-1]] >= need[j]:
+                q.pop()
+            q.append(j)
+        i = j - la
+        if i >= 0:
+            while q[0] < i - la:
+                q.popleft()
+            m[i] = need[q[0]]
+    # a[i] = mean(m[i-la .. i+la]): every m in that window is <= need[i], so a[i] <= need[i].
+    acc = [0.0]
+    for v in m:
+        acc.append(acc[-1] + v)
+    k = 1 - math.exp(-1 / (0.08 * RATE))
+    out, env = [], 1.0
+    for i in range(n):
+        lo, hi = max(0, i - la), min(n, i + la + 1)
+        a = (acc[hi] - acc[lo]) / (hi - lo)
+        env = min(a, env + (1 - env) * k)
+        out.append(y[i] * env)
     return out
 
 
 def normalize(x: list[float], kind="sfx") -> list[float]:
     """Loudness-normalize: RMS of the loud part to ~-14 dBFS (sfx) or ~-20
-    dBFS (music), with peaks soft-limited below -2 dBFS."""
+    dBFS (music), with peaks limited below CEILING_DB (-3 dBFS)."""
     return _limit(x, _gain(x, kind)) if x else x
 
 
@@ -464,7 +502,60 @@ def _encode(path: str, s: list[float], loop: bool, quality: int) -> None:
         if loop:
             s[i] *= i / f
         s[-1 - i] *= i / f
+    limit = 10 ** (DECODED_MAX_DB / 20)
     with tempfile.TemporaryDirectory() as d:
         w = os.path.join(d, "s.wav")
-        save_wav(w, s)
-        subprocess.run(["oggenc", "-Q", "-q", str(quality), "-o", path, w], check=True)
+        for _ in range(4):
+            save_wav(w, s)
+            subprocess.run(["oggenc", "-Q", "-q", str(quality), "-o", path, w], check=True)
+            # Vorbis can overshoot the source's peaks: check what a player will decode.
+            peak = _decoded_peak(path, d)
+            if peak is None or peak <= limit:
+                return
+            s = [v * limit / peak * 0.97 for v in s]
+        raise RuntimeError(f"{path}: decoded peak still above {DECODED_MAX_DB} dBFS")
+
+
+def _decoded_peak(path: str, tmp: str) -> float | None:
+    """Peak of the decoded file (None, with a warning, without oggdec)."""
+    if not shutil.which("oggdec"):
+        print("warning: oggdec not found (brew install vorbis-tools); can't verify the encoded peak")
+        return None
+    out = os.path.join(tmp, "check.wav")
+    subprocess.run(["oggdec", "-Q", "-o", out, path], check=True)
+    with wave.open(out) as r:
+        n, ch = r.getnframes(), r.getnchannels()
+        data = struct.unpack(f"<{n * ch}h", r.readframes(n))
+    return max((abs(v) for v in data), default=0) / 32768
+
+
+def _self_test() -> int:
+    """Encodes hard cases (peaky explosions with long reverb tails, a full
+    square wave, a music loop) and runs check_audio on them."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import check_audio
+    big = mix(Sfx("kick", 42, dur=0.6).render(), Sfx("noise_burst", 600, dur=1.0, cutoff=1600, filter_decay=0.4).render(),
+              Sfx("tom", 70, dur=0.5).render(), gains=[1.0, 0.9, 0.5])
+    song = Song(bpm=128)
+    song.track("kick", "x . . . x . . . x . . . x . x .")
+    song.track("bass", "A2 . A2 . G2 . F2 . A2 . A2 . G2 . E2 .")
+    cases = {
+        "boom.ogg": (reverb(mix(Sfx("kick", 58, dur=0.35).render(), Sfx("noise_burst", 900, dur=0.45, cutoff=2200).render()), room=0.6, wet=0.2), {}),
+        "boom_tail.ogg": (reverb(big, room=0.9, wet=0.35), {}),
+        "die.ogg": (reverb(mix(big, Sfx("saw", 420, freq_end=40, dur=1.3, cutoff=1400).render(), gains=[1.0, 0.45]), room=0.8, wet=0.3), {}),
+        "square.ogg": ([0.99 if (i // 100) % 2 else -0.99 for i in range(RATE // 2)], {}),
+        "music_loop.ogg": (reverb(song.render(bars=2, loop=True), 0.4, 0.2, loop=True), {"loop": True, "kind": "music"}),
+    }
+    with tempfile.TemporaryDirectory() as d:
+        paths = []
+        for name, (x, kw) in cases.items():
+            p = os.path.join(d, name)
+            save_ogg(p, x, **kw)
+            paths.append(p)
+        return check_audio.main(paths)
+
+
+if __name__ == "__main__":
+    if sys.argv[1:] == ["--self-test"]:
+        sys.exit(_self_test())
+    print(__doc__)

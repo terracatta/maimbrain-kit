@@ -1,6 +1,6 @@
 //! `mb`: make, build, validate and publish Maimbrain games.
 //!
-//!     mb new frogger                  # a new game crate from the skill's template
+//!     mb new frogger                  # a new game crate from the skill's template (--3d for mb3d)
 //!     mb build frogger                # cargo build → wasm-opt → pack → validate
 //!     mb login                        # sign in to maimbrain.com (device code)
 //!     mb publish frogger              # build, upload, wait for validation
@@ -30,10 +30,20 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Cmd {
-    /// Create a new game crate from the maimbrain-game template (id com.maimbrain.<you>.<name>).
+    /// Create a new game crate from the maimbrain-game skill's template (id com.maimbrain.<you>.<name>).
+    /// Works signed out: without --id the id and creator are placeholders until you sign in.
     New {
         /// Directory to create; its name becomes the crate name.
         dir: PathBuf,
+        /// Start from the 3D template (mb3d scene with an mb2d HUD) instead of the 2D one.
+        #[arg(long = "3d")]
+        three_d: bool,
+        /// Bundle id to use (reverse-DNS, e.g. dev.example.frogger) instead of your account's namespace.
+        #[arg(long)]
+        id: Option<String>,
+        /// Creator handle to use (e.g. @ada) instead of your account's.
+        #[arg(long)]
+        creator: Option<String>,
     },
     /// Sign in to the Maimbrain server (opens a browser to confirm a code).
     Login {
@@ -122,10 +132,11 @@ enum Cmd {
 
 fn main() -> ExitCode {
     let result = match Cli::parse().cmd {
-        Cmd::New { dir } => {
-            let who = remote::whoami().ok();
+        Cmd::New { dir, three_d, id, creator } => {
+            // Signed out (no saved credentials) this makes no network request.
+            let who = if id.is_some() && creator.is_some() { None } else { remote::whoami().ok() };
             let pair = who.as_ref().and_then(|w| Some((w["username"].as_str()?, w["namespace"].as_str()?)));
-            scaffold::new_game(&dir, pair)
+            scaffold::new_game(&dir, &scaffold::Options { three_d, id: id.as_deref(), creator: creator.as_deref(), who: pair })
         }
         Cmd::Login { server } => remote::login(server.as_deref()),
         Cmd::Whoami => remote::whoami().map(|w| println!("@{} ({})", w["username"].as_str().unwrap_or("?"), remote::server(None))),
