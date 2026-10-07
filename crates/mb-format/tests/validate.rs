@@ -83,6 +83,20 @@ fn rejects_unknown_host_functions() {
 }
 
 #[test]
+fn audio_scheduling_and_time_lost_need_no_declaration() {
+    let no_stdlib = MANIFEST.replace("stdlib = { mb2d = 1 }", "");
+    let wasm = module(&format!(
+        r#"(import "mb" "mb_play_at" (func (param i32 f32 f32 f32 i32 f64) (result i32)))
+           (import "mb" "mb_time_lost" (func (result f32))) {EXPORTS}"#
+    ));
+    let r = validate(&bundle(&no_stdlib, wasm, &[]));
+    assert!(r.ok(), "{:#?}", r.errors);
+    // `at` is game time, an f64 like mb_time.
+    let wasm = module(&format!(r#"(import "mb" "mb_play_at" (func (param i32 f32 f32 f32 i32 f32) (result i32))) {EXPORTS}"#));
+    assert_error(&errors(MANIFEST, wasm), "mb.mb_play_at has signature");
+}
+
+#[test]
 fn rejects_wrong_signatures() {
     let wasm = module(&format!(r#"(import "mb" "mb2d_clear" (func (param f32))) {EXPORTS}"#));
     assert_error(&errors(MANIFEST, wasm), "mb.mb2d_clear has signature (f32) -> ()");

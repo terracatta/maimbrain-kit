@@ -30,6 +30,7 @@ imports! {
     // 5.1 sys
     pub fn mb_log(level: u32, ptr: *const u8, len: u32);
     pub fn mb_time() -> f64;
+    pub fn mb_time_lost() -> f32;
     pub fn mb_rand_seed() -> u64;
     pub fn mb_daily_seed() -> u64;
     pub fn mb_round(state: u32);
@@ -93,6 +94,7 @@ imports! {
     // 5.6 audio
     pub fn mb_sound(asset: u32) -> i32;
     pub fn mb_play(sound: u32, vol: f32, pan: f32, pitch: f32, looped: u32) -> u32;
+    pub fn mb_play_at(sound: u32, vol: f32, pan: f32, pitch: f32, looped: u32, at: f64) -> u32;
     pub fn mb_voice_set(voice: u32, vol: f32, pan: f32, pitch: f32);
     pub fn mb_voice_stop(voice: u32);
 

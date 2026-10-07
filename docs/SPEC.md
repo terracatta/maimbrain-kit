@@ -78,7 +78,7 @@ Unknown manifest keys are rejected, so a typo fails validation rather than being
 |---|---|---|---|
 | `memory` | memory | yes | |
 | `mb_init` | `() -> ()` | yes | Called once. MUST return within 500 ms. First frame MUST follow. |
-| `mb_update` | `(dt: f32) -> ()` | yes | Seconds since last update, clamped to ≤ 0.1. |
+| `mb_update` | `(dt: f32) -> ()` | yes | Seconds since last update, clamped to ≤ 0.1 (`mb_time_lost` reports the rest, §5.1). |
 | `mb_render` | `() -> ()` | yes | Issue draw commands only. |
 | `mb_suspend` | `() -> ()` | no | Game is going off screen. Persist anything important. |
 | `mb_resume` | `() -> ()` | no | Game is back. Do not assume time continuity. |
@@ -102,14 +102,14 @@ The host owns the loop. It MAY stop calling `mb_update`/`mb_render` at any time 
 
 A run MUST be exactly reproducible from its seed and recorded host inputs, so that the platform can replay it ("watch my run", ghosts, preview clips, bug reports).
 
-- Every source of nondeterminism reaches the guest through a host call, and the host records it: per-frame `dt`, input events, sensor values, asset readiness, the `mb_suspend`/`mb_resume` calls made between frames, the session seed, and the session constants (`mb_player_id`, `mb_locale`, `mb_screen`, initial `mb_store` contents). A replay makes the same lifecycle calls at the same points and no others (pausing a replay doesn't call the guest).
+- Every source of nondeterminism reaches the guest through a host call, and the host records it: per-frame `dt` and lost time (`mb_time_lost`), input events with their own times, sensor values, asset readiness, the `mb_suspend`/`mb_resume` calls made between frames, the session seed, and the session constants (`mb_player_id`, `mb_locale`, `mb_screen`, initial `mb_store` contents). A replay makes the same lifecycle calls at the same points and no others (pausing a replay doesn't call the guest).
 - `mb_time()` is **game time**: the sum of all `dt` values passed to `mb_update`, not wall-clock time.
 - The host samples sensors once per frame and returns the same snapshot for every read during that frame.
 - Input events, asset state changes and other host-side changes become visible only at frame boundaries, before `mb_update`.
 - Host-side simulation (mb3d's particles, trails and shockwaves, §5.4) advances only by the recorded `dt` and the guest's calls.
 - Guests MUST NOT depend on NaN bit patterns (the only nondeterminism in Wasm floating point). There are no threads and no other entropy sources.
 - The **draw hash** checks this: a running FNV-1a hash of every mb2d draw command and mb3d call the guest makes, plus a digest of mb3d's simulated state at each `mb3d_render`, starting over with each session. Two runs that drew the same thing frame for frame have the same hash at the same frame count; §9 shows how to compare a run with its replay.
-- The replay log format is reserved; it is not part of v0.
+- The replay log format is reserved; it is not part of v0. It is versioned, and a log keeps replaying exactly on later runtimes (fields added since version 0, such as per-event times and lost time, default to what version 0 meant).
 
 ## 4. ABI conventions
 
@@ -127,6 +127,7 @@ Signatures are abbreviated; the Rust SDK (`sdk/maimbrain`) is the reference bind
 ```
 mb_log(level: u32, ptr, len)           # level: 0 debug, 1 info, 2 warn, 3 error
 mb_time() -> f64                      # game time: sum of dt passed to mb_update (§3 Determinism)
+mb_time_lost() -> f32                 # wall-clock seconds this frame that game time didn't get (below); usually 0
 mb_rand_seed() -> u64                 # per-session seed; game owns its PRNG
 mb_daily_seed() -> u64                # same for every player of this game on a UTC day (daily challenges)
 mb_round(state: u32)                  # 0 idle (title/menu), 1 playing, 2 over; see Feed navigation below
@@ -138,13 +139,15 @@ mb_asset_state(h) -> i32              # 0 pending, 1 ready, <0 error
 mb_asset_read(h, ptr, cap) -> i32     # raw bytes for .json/.bin/.txt; writes ≤ cap bytes, returns the full length
 ```
 
+`mb_time_lost` is the time this frame dropped: when a frame comes more than 0.1 s after the last (a hitch, a stall, the page briefly not drawing), `dt` is clamped to 0.1 and the rest is reported here, for that frame only. It is recorded and replayed like `dt`. Game time is then behind the wall clock for good, and so is everything scheduled on it: music started with `mb_play_at` keeps playing and is now `mb_time_lost` ahead of the game's grid (§5.6), so a game that keeps time with music re-anchors when it's > 0. A suspend is not lost time: across `mb_suspend`/`mb_resume` game time simply pauses, the first frame after `mb_resume` has a nominal `dt` and `mb_time_lost` 0, and the platform keeps scheduled audio on game time across the gap (§5.6); the game learns of the gap from `mb_resume` itself. In the preview, `mb.speed(k)` scales lost time like `dt`.
+
 ### 5.2 `input` (always available; events only for declared inputs)
 ```
 mb_input_poll(buf_ptr, cap) -> i32    # writes packed InputEvent[]; returns count
 ```
 `Screen` (32 bytes, written by `mb_screen`): `width:f32`, `height:f32`, `inset_top:f32`, `inset_right:f32`, `inset_bottom:f32`, `inset_left:f32`, `dpr:f32` (device pixels per logical unit), `reserved:f32`. Constant for the session.
 
-`InputEvent` (32 bytes): `kind:u8` (1 touch_down, 2 touch_move, 3 touch_up, 4 touch_cancel, 5 key_down, 6 key_up, 7 mouse_down, 8 mouse_move, 9 mouse_up, 10 mouse_wheel, 11 pad_button, 12 pad_axis, 13 text), `id:u8`, `pad:u16`, `x:f32`, `y:f32`, `a:f32`, `b:f32`, `code:u32`, `time:f64`. Touch and mouse coordinates are in logical units; `time` is game time.
+`InputEvent` (32 bytes): `kind:u8` (1 touch_down, 2 touch_move, 3 touch_up, 4 touch_cancel, 5 key_down, 6 key_up, 7 mouse_down, 8 mouse_move, 9 mouse_up, 10 mouse_wheel, 11 pad_button, 12 pad_axis, 13 text), `id:u8`, `pad:u16`, `x:f32`, `y:f32`, `a:f32`, `b:f32`, `code:u32`, `time:f64`. Touch and mouse coordinates are in logical units. `time` is the game time the event itself happened, finer than a frame: the host maps the event's own timestamp onto the span of game time the frame advances, so a touch midway between two frames gets a time midway between their game times. It is never earlier than the previous update's `mb_time()`, never later than the current one's, and never earlier than the event before it (so a frame's events are in order, and a game that applies them before judging misses in each update stays causal). Touch, mouse and key events carry their own times; gamepad events (polled once a frame) and text get the frame's game time. The times are recorded with the events, so replays see exactly the same values. `time` doesn't include output latency: a player who taps exactly on a beat they see and hear registers about a frame of presentation plus the touch screen's own latency late, which is what a rhythm game's self-calibration absorbs (§5.6).
 
 Key events carry the USB HID usage ID (keyboard page 0x07) in `code`, e.g. 4–29 = A–Z, 44 = Space, 40 = Enter, 79–82 = Right/Left/Down/Up; auto-repeat is not delivered. Gamepad events carry the pad index in `pad`, the W3C "standard" mapping button or axis index in `code`, and the value in `a` (buttons 0–1; axes −1…1 with a 0.1 dead zone). A game that declares only `touch` receives mouse input as touch.
 
@@ -251,13 +254,34 @@ Rules:
 ### 5.6 `audio` (always available)
 ```
 mb_sound(asset) -> handle                  # asset must be ready (.ogg); decodes in the background
-mb_play(sound, vol, pan, pitch, loop: bool) -> voice   # vol 0–4, pan −1…1, pitch = playback rate
+mb_play(sound, vol, pan, pitch, loop: bool) -> voice   # vol 0–4, pan −1…1, pitch = playback rate; starts now
+mb_play_at(sound, vol, pan, pitch, loop: bool, at: f64) -> voice   # heard from game time `at`
 mb_voice_set(voice, vol, pan, pitch) / mb_voice_stop(voice)
 mb_voice_pos(voice, x,y,z)                 # 3D positional (with mb3d camera as listener)
 mb_bus_fx(bus, kind, ptr)                  # lowpass, highpass, reverb, delay
 mb_synth(ptr) -> sound                     # sfxr-style params → generated sound
 ```
-Use mono Ogg Vorbis, 22–48 kHz (`oggenc` from vorbis-tools makes it from WAV). `vol` 1 plays the file at its own level; normalize sounds to roughly the same loudness and mix with `vol`. A looping voice repeats the decoded file sample-accurately, but Vorbis encoders can pad the end, so check music loops for a gap. ≤ 32 simultaneous voices (beyond that the oldest one-shot is stopped, then the oldest loop). Volume, pan and pitch changes glide over ~10 ms, so updating them every frame doesn't click. Audio plays on feed cards too (the live title and game-over screens, and replays) when the player has sound on, so keep a title screen's sound sparse. Audio is output-only: handles are sequential; a one-shot played before its sound has finished decoding is skipped, and a loop starts as soon as decoding finishes; and nothing about playback is visible to the game, so audio never affects determinism. Implemented in v0: `mb_sound`, `mb_play`, `mb_voice_set`, `mb_voice_stop`.
+Use mono Ogg Vorbis, 22–48 kHz (`oggenc` from vorbis-tools makes it from WAV). `vol` 1 plays the file at its own level; normalize sounds to roughly the same loudness and mix with `vol`. A looping voice repeats the decoded file sample-accurately, but Vorbis encoders can pad the end, so check music loops for a gap. ≤ 32 simultaneous voices, counting voices scheduled but not yet playing (beyond that the oldest one-shot is stopped, then the oldest loop). Volume, pan and pitch changes glide over ~10 ms, so updating them every frame doesn't click. Audio plays on feed cards too (the live title and game-over screens, and replays) when the player has sound on, so keep a title screen's sound sparse. Implemented in v0: `mb_sound`, `mb_play`, `mb_play_at`, `mb_voice_set`, `mb_voice_stop`.
+
+**Audio is output-only.** Handles are sequential and returned at once, and nothing about playback (decode state, position, latency) is visible to the game, so audio never affects determinism: the game decides *when* a sound should be heard, in game time, and the platform makes it so.
+
+**`mb_play` starts a voice now**, for sounds that answer something that just happened (hits, UI). A one-shot whose sound hasn't finished decoding is skipped; a loop starts as soon as decoding finishes, whenever that is.
+
+**`mb_play_at` makes a voice heard when game time reaches `at`.** Each frame the host maps game time to the wall clock (the frame being produced is seen when it reaches the screen, and game time `g` is heard when the frame showing `g` is seen), and the wall clock to the audio output (including the output's latency: speaker, wired or Bluetooth), so music lines up with the picture. `at` may be in the future (schedule ~0.1 s ahead or more and the voice starts from its first sample) or in the past. If the voice can only start after `at` (its sound finished decoding late, the audio output was still starting, `at` had already passed or was closer than the output latency), it starts *offset into the sound* by its lateness, so it is still exactly where it would have been: a loop joins at `lateness mod length`, and a one-shot more than half its length late is skipped. So:
+- **Decode timing doesn't matter.** Scheduling a loop before its sound has decoded is fine: it joins on time when it's ready. The asset itself must be ready to get a sound handle, so a game whose asset arrives late calls `mb_play_at` then with the original `at`, and that voice joins on the grid too.
+- **Loops started with the same `at` stay sample-aligned** with each other (stems), even when they start in different frames or one of them starts late.
+- A voice keeps the timeline it was scheduled on. If game time later loses time (`mb_time_lost` > 0, §5.1), voices already playing keep playing, now ahead of the game's grid; voices not yet started are rescheduled to the new mapping.
+
+**Suspend and resume.** While the game is suspended (`mb_suspend` … `mb_resume`, or a paused preview) every voice pauses; nothing plays off screen. On resume, voices started with `mb_play_at` (playing or still waiting to start) are rescheduled from game time, which also paused: each comes back exactly where game time says it should be, or is dropped if it's a one-shot that would be more than half over. Voices started with `mb_play` continue from where they paused. The same happens when the audio output is interrupted while the game runs (a call, another app): `mb_play_at` voices come back on game time when it returns. If the platform has to rebuild its audio output, `mb_play` loops restart from the beginning and `mb_play` one-shots are dropped. A game MAY still stop its voices in `mb_suspend` and start fresh on `mb_resume`.
+
+**Rhythm games.** A recipe that keeps music, picture and judging on one clock:
+1. **Derive the beat grid from game time.** Pick beat 0 a little in the future, e.g. `origin = mb_time() + 0.12`, so the music can start from its first sample; notes are at `origin + step × seconds_per_step`. Draw markers from the same grid.
+2. **Schedule the music with `mb_play_at(…, at = origin)`**, every stem with the same `at`. Make each music loop a whole number of phrases long, so the loop's wrap lands on the grid; later phrases need no rescheduling.
+3. **Judge input with the event's own `time`** (§5.2), not `mb_time()`: `offset = event.time − note_time − calibration`.
+4. **Re-anchor when the clock breaks:** when `mb_time_lost()` > 0 the music is ahead of the grid, and after `mb_resume` the player needs a run-up. At the next phrase boundary (or at once, if you prefer), stop the music and schedule it again at a fresh `origin = mb_time() + 0.12`, and move the grid there. Both are recorded, so this replays.
+5. **Keep a small self-calibration** for what the platform can't know: the touch screen's latency, about a frame of presentation, and the player's habit (people tend to tap slightly early on a beat they can hear). Take the median offset of the first few judged presses, ignore wild ones (±0.2 s), clamp the result to tens of milliseconds (e.g. −60…+100 ms), save it for the next run (stored data is recorded) and keep the windows generous until it settles. Output latency is already compensated, so a large learned offset means something else is wrong.
+
+Measured latencies (what the host compensates, logged at startup as `runtime: audio clock …`, §9): desktop Chrome on a Mac, built-in output: `baseLatency` 5 ms, `outputLatency` 32 ms, via `getOutputTimestamp`. iPhone 16 Pro (iOS WebKit), built-in speaker: `baseLatency` 2.7 ms, `outputLatency` 8.5–15.4 ms, `getOutputTimestamp` available; music on the grid and Perfects landing where expected by ear. Its `getOutputTimestamp` can read a few ms ahead of `currentTime` once settled ("heard −2.7 ms after currentTime"): harmless at that size. Wired and Bluetooth figures are still to be measured; if WebKit doesn't report Bluetooth latency, players on AirPods will hear music ~150–250 ms late.
 
 ### 5.7 `sensors` (only declared)
 ```
@@ -350,6 +374,7 @@ The client downloads, verifies `sha256` and size, re-validates the manifest loca
     - `mb.sensors(gx, gy, gz, ax, ay, az)` sets tilt and motion until the pointer next moves. Synthetic input works too, e.g. `window.dispatchEvent(new PointerEvent("pointermove", { clientX, clientY }))` in a timed loop to script a shake.
     - `mb.loudness(v)` pins the mic level; `mb.loudness(-1)` simulates a denied mic, and `mb.loudness()` unpins.
     - `mb.snapshot()` returns `{ frames, time, hash, replay, log }`: the frames this session has run (`mb_update` calls; 0 right after `mb_init`), game time, the session's draw hash (§3), whether it's a replay, and the replay log of those frames.
+    - `mb.audio()` returns the audio clock (`baseLatency`, `outputLatency`, whether `getOutputTimestamp` is used, the frame period and presentation delay) and every voice with its `at`, the AudioContext time it's heard from (`when`), when its node starts and how far into the sound (`start`, `offset`). Stems scheduled with the same `at` have the same `when`; a late voice has `start` > `when` and an `offset` to match. This is the way to check music alignment in the preview, since audio isn't part of the draw hash. The console also logs `runtime: audio clock (first|settled): …` when the output starts, and `runtime: voice N started X ms late` / `skipped` for late `mb_play_at` voices.
     - `mb.restart(json)` replaces the session: `"{}"` starts a fresh one, `JSON.stringify({ replay: log })` plays a log back the way a replay card does (in real time, looping). Add `hold: true` to either to run `mb_init` and then no frames at all until `mb.step` or `mb.resume`.
     - `mb.verify()` pauses, replays the current session's log in a fresh held session and compares the draw hash after `mb_init` and after every frame. It resolves to `{ frames, live, replay, match, firstMismatch }` (the first frame that differs, or null) and leaves the replay loaded.
   - Pausing, then pinning sensors and stepping, makes any moment reproducible for a screenshot. Before taking a screenshot of a stepped frame, give the page a moment to show it (`await new Promise(r => setTimeout(r, 100))`). For hard-to-reach states (level 7, a near-fail), add debug constants to your game (e.g. `const DEBUG_START_LEVEL: u32 = 0;`) and set them back before shipping.

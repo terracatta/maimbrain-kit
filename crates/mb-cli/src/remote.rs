@@ -1,6 +1,7 @@
 //! Talking to the Maimbrain server: `mb login`, `mb publish`, `mb whoami`.
 //!
-//! Credentials live in `~/.config/maimbrain/credentials.json` (mode 0600).
+//! Credentials live in `~/.config/maimbrain/credentials.json` (mode 0600), or
+//! `%APPDATA%\maimbrain\credentials.json` on Windows.
 //! The server is https://maimbrain.com unless `MB_SERVER` or `--server` says
 //! otherwise (e.g. http://localhost:3000 for local development).
 
@@ -20,10 +21,16 @@ pub struct Credentials {
 }
 
 fn config_path() -> Result<PathBuf, String> {
-    let base = std::env::var_os("XDG_CONFIG_HOME")
-        .map(PathBuf::from)
-        .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))
-        .ok_or("can't find a home directory for credentials")?;
+    let base = if cfg!(windows) {
+        std::env::var_os("APPDATA")
+            .map(PathBuf::from)
+            .or_else(|| std::env::var_os("USERPROFILE").map(|h| PathBuf::from(h).join("AppData").join("Roaming")))
+    } else {
+        std::env::var_os("XDG_CONFIG_HOME")
+            .map(PathBuf::from)
+            .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))
+    }
+    .ok_or("can't find a home directory for credentials")?;
     Ok(base.join("maimbrain").join("credentials.json"))
 }
 
@@ -119,8 +126,15 @@ pub fn login(server_flag: Option<&str>) -> Result<(), String> {
 }
 
 fn open_browser(url: &str) -> std::io::Result<()> {
-    let cmd = if cfg!(target_os = "macos") { "open" } else { "xdg-open" };
-    std::process::Command::new(cmd).arg(url).stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null()).spawn().map(|_| ())
+    let mut cmd = if cfg!(windows) {
+        // `start` is a cmd built-in; its first quoted argument is a window title.
+        let mut c = std::process::Command::new("cmd");
+        c.args(["/C", "start", ""]);
+        c
+    } else {
+        std::process::Command::new(if cfg!(target_os = "macos") { "open" } else { "xdg-open" })
+    };
+    cmd.arg(url).stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null()).spawn().map(|_| ())
 }
 
 fn credentials() -> Result<Credentials, String> {

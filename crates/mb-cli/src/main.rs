@@ -289,9 +289,19 @@ fn doctor() -> Result<(), String> {
     check("cargo / rustc", run("cargo", &["--version"]).is_some(), true, "install Rust: https://rustup.rs");
     let targets = run("rustup", &["target", "list", "--installed"]).map(|o| String::from_utf8_lossy(&o.stdout).to_string()).unwrap_or_default();
     check("wasm32-unknown-unknown target", targets.contains("wasm32-unknown-unknown"), true, "rustup target add wasm32-unknown-unknown");
-    check("wasm-opt (smaller, faster games)", run("wasm-opt", &["--version"]).is_some(), false, "brew install binaryen (optional)");
-    check("python3 (the skill's art and sound scripts)", run("python3", &["--version"]).is_some(), false, "install Python 3");
-    check("oggenc (the skill's sound script)", run("oggenc", &["--version"]).is_some(), false, "brew install vorbis-tools");
+    // Install hints for this OS.
+    let (binaryen, python, vorbis) = if cfg!(target_os = "macos") {
+        ("brew install binaryen", "brew install python", "brew install vorbis-tools")
+    } else if cfg!(windows) {
+        ("winget install WebAssembly.Binaryen  (or scoop install binaryen)", "winget install Python.Python.3.12", "get oggenc and oggdec for Windows (e.g. rarewares.org) and put them on PATH")
+    } else {
+        ("sudo apt install binaryen  (or your distro's package)", "sudo apt install python3", "sudo apt install vorbis-tools")
+    };
+    check("wasm-opt (smaller, faster games)", run("wasm-opt", &["--version"]).is_some(), false, &format!("{binaryen} (optional)"));
+    // Windows usually has `python` or the `py` launcher rather than `python3`.
+    let has_python = run("python3", &["--version"]).is_some() || run("python", &["--version"]).is_some() || run("py", &["-3", "--version"]).is_some();
+    check("Python 3 (the skill's art and sound scripts)", has_python, false, python);
+    check("oggenc and oggdec (the skill's sound scripts)", run("oggenc", &["--version"]).is_some() && run("oggdec", &["--version"]).is_some(), false, vorbis);
     match remote::whoami() {
         Ok(w) => check(&format!("signed in as @{}", w["username"].as_str().unwrap_or("?")), true, false, ""),
         Err(_) => check("signed in", false, false, "mb login"),

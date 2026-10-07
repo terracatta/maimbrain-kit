@@ -21,6 +21,15 @@ pub fn time() -> f64 {
     unsafe { ffi::mb_time() }
 }
 
+/// Wall-clock seconds this frame that game time did *not* get: what the
+/// `dt ≤ 0.1` clamp dropped after a hitch or stall (SPEC §5.1). Usually 0.
+/// Music scheduled earlier is now that far ahead of game time, so a rhythm
+/// game re-anchors when this is > 0. Recorded, so replays see the same
+/// values. 0 across a suspend/resume (the platform pauses audio with it).
+pub fn time_lost() -> f32 {
+    unsafe { ffi::mb_time_lost() }
+}
+
 /// Per-session seed. Seed your own PRNG from it, e.g. [`crate::Rng`].
 pub fn rand_seed() -> u64 {
     unsafe { ffi::mb_rand_seed() }

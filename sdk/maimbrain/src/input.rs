@@ -1,5 +1,7 @@
 //! Raw input events (SPEC §5.2). Events arrive at frame boundaries; poll them
-//! in `update`. Coordinates are logical units and `time` is game time.
+//! in `update`. Coordinates are logical units. `time` is the game time the
+//! event itself happened: within the span since the previous update
+//! (`sys::time() - dt ..= sys::time()`), in order, never ahead of `sys::time()`.
 
 use crate::ffi;
 
@@ -39,6 +41,8 @@ pub struct Event {
     pub b: f32,
     /// Key code, gamepad button/axis, or a Unicode scalar for `Text`.
     pub code: u32,
+    /// Game time of the event itself (finer than a frame for touches,
+    /// mouse and keys; recorded, so replays match). Judge timing with this.
     pub time: f64,
 }
 

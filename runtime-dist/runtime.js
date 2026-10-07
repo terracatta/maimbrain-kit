@@ -1467,6 +1467,14 @@ var abi_default = {
       ]
     },
     {
+      name: "mb_time_lost",
+      params: [],
+      requires: null,
+      results: [
+        "f32"
+      ]
+    },
+    {
       name: "mb_rand_seed",
       params: [],
       requires: null,
@@ -2116,6 +2124,21 @@ var abi_default = {
       ]
     },
     {
+      name: "mb_play_at",
+      params: [
+        "i32",
+        "f32",
+        "f32",
+        "f32",
+        "i32",
+        "f64"
+      ],
+      requires: null,
+      results: [
+        "i32"
+      ]
+    },
+    {
       name: "mb_voice_set",
       params: [
         "i32",
@@ -2369,6 +2392,7 @@ function buildImports(s, host, m) {
     // 5.1 sys
     mb_log: ((level, ptr, len) => s.log(level, str(ptr, len))),
     mb_time: (() => s.gameTime),
+    mb_time_lost: (() => s.timeLost),
     mb_rand_seed: (() => BigInt.asIntN(64, s.seed)),
     mb_daily_seed: (() => BigInt.asIntN(64, s.dailySeed)),
     mb_round: ((state) => {
@@ -2485,6 +2509,7 @@ function buildImports(s, host, m) {
       return s.audio.load(data);
     }),
     mb_play: ((sound, vol, pan, pitch, loop) => s.audio.play(sound, vol, pan, pitch, loop !== 0)),
+    mb_play_at: ((sound, vol, pan, pitch, loop, at) => s.audio.play(sound, vol, pan, pitch, loop !== 0, Number.isFinite(at) ? at : s.gameTime)),
     mb_voice_set: ((voice, vol, pan, pitch) => s.audio.update(voice, vol, pan, pitch)),
     mb_voice_stop: ((voice) => s.audio.stop(voice)),
     // 5.7 sensors
@@ -2573,6 +2598,15 @@ var MAX_VOICES = 32;
 var MASTER_GAIN = 0.8;
 var GLIDE = 0.012;
 var RESUME_GRACE_MS = 400;
+var PRESENT_FRAMES = 1;
+var FALLBACK_OUTPUT_LATENCY = 0.02;
+var LATE_START_LEAD = 0.01;
+var CLOCK_SMOOTHING = 0.05;
+var CLOCK_SNAP = 0.02;
+var CLOCK_HYSTERESIS = 1e-3;
+var RESCHEDULE_AT = 1e-3;
+var CLOCK_SETTLE_FRAMES = 120;
+var MAX_TIMING_LOGS = 12;
 var Audio = class {
   ctx = null;
   master = null;
@@ -2580,8 +2614,6 @@ var Audio = class {
   sounds = [];
   /** Decoded audio by source bytes (shared across sessions via the asset cache). */
   decoded = /* @__PURE__ */ new WeakMap();
-  /** Looping voices asked for before their sound finished decoding: they start when it does. */
-  waiting = /* @__PURE__ */ new Map();
   voices = /* @__PURE__ */ new Map();
   nextVoice = 1;
   /** The page is active (shown and running), so it may hold a running context. */
@@ -2592,6 +2624,29 @@ var Audio = class {
   generation = 0;
   warned = false;
   silence = null;
+  // --- the clock: game time → wall time → context time ----------------------
+  /** The current frame: its rAF timestamp (ms; NaN = no frame since the clock
+   *  was invalidated), its game time and game seconds per wall second. */
+  frameNow = NaN;
+  frameGame = 0;
+  frameScale = 1;
+  lastFrameNow = NaN;
+  /** Smoothed display frame period (ms), and the presentation delay in use. */
+  period = 1e3 / 60;
+  presentMs = 1e3 / 60 * PRESENT_FRAMES;
+  /** Context seconds − performance.now seconds for the sample being heard:
+   *  smoothed, and the value in use (hysteresis). */
+  offsetEst = null;
+  offset = null;
+  farReadings = 0;
+  via = "latency";
+  /** This context has given a sane getOutputTimestamp; stop falling back. */
+  otsSeen = false;
+  /** Frames since this context's first clock reading (for the settled log). */
+  clockFrames = -1;
+  /** The previous frame's mapping, to notice when it moves. */
+  prevMap = null;
+  timingLogs = 0;
   constructor() {
     const unlock = () => this.unlock();
     for (const ev of ["pointerdown", "pointerup", "touchend", "click", "keydown"]) {
@@ -2627,11 +2682,13 @@ var Audio = class {
       if (this.active && this.ctx === ctx && ctx.state !== "running") this.rebuild(`resume left it ${ctx.state}`);
     }, RESUME_GRACE_MS);
   }
-  /** The page is going off screen (or is a neighbour): stop holding audio. */
+  /** The page is going off screen (or is a neighbour): stop holding audio.
+   *  Every voice pauses; play_at voices are rescheduled from game time on resume. */
   suspend() {
     this.active = false;
     void this.ctx?.suspend().catch(() => {
     });
+    this.invalidateClock(true);
   }
   /** Silences output without stopping voices (a feed neighbour prerolling). */
   setMuted(on) {
@@ -2650,9 +2707,11 @@ var Audio = class {
    *  restart from 1. Decoded audio is kept and reused. */
   newSession() {
     for (const id of [...this.voices.keys()]) this.stop(id);
-    this.waiting.clear();
     this.sounds = [];
     this.generation++;
+    this.timingLogs = 0;
+    this.frameNow = NaN;
+    this.prevMap = null;
   }
   createContext() {
     const ctx = new AudioContext({ latencyHint: "interactive" });
@@ -2667,6 +2726,7 @@ var Audio = class {
     master.connect(limiter).connect(ctx.destination);
     ctx.onstatechange = () => {
       post({ op: "log", level: 0, msg: `runtime: audio ${ctx.state}` });
+      if (ctx.state !== "running" && this.ctx === ctx) this.invalidateClock(false);
       if (ctx.state === "interrupted" && this.active && this.ctx === ctx) {
         setTimeout(() => {
           if (this.active && this.ctx === ctx && ctx.state !== "running") {
@@ -2679,14 +2739,18 @@ var Audio = class {
     };
     this.ctx = ctx;
     this.master = master;
+    this.otsSeen = false;
+    this.clockFrames = -1;
+    this.invalidateClock(false);
     post({ op: "log", level: 0, msg: `runtime: audio context created (${ctx.state})` });
     void ctx.resume().catch(() => {
     });
     for (const [id, v] of this.voices) {
-      if (v.loop) this.startNodes(id, v);
+      if (v.at !== null || v.nodes) continue;
+      if (v.loop) this.tryStart(id, v);
       else this.voices.delete(id);
     }
-    this.flushWaiting();
+    this.flush();
   }
   /** Replaces a context that won't run with a fresh one. */
   rebuild(why) {
@@ -2710,6 +2774,130 @@ var Audio = class {
     src.start();
     ctx.resume().catch((e) => post({ op: "log", level: 2, msg: `runtime: audio resume failed: ${e}` }));
   }
+  // --- the clock -----------------------------------------------------------------
+  /** Called once per frame, after game time has advanced and before
+   *  mb_update: `now` is the frame's requestAnimationFrame timestamp,
+   *  `game` its game time, `scale` game seconds per wall second. */
+  frame(now, game, scale) {
+    if (Number.isFinite(this.lastFrameNow)) {
+      const p = now - this.lastFrameNow;
+      if (p >= 4 && p <= 50) this.period += (p - this.period) * 0.05;
+    }
+    this.lastFrameNow = now;
+    const present = this.period * PRESENT_FRAMES;
+    if (Math.abs(present - this.presentMs) > 1) this.presentMs = present;
+    this.frameNow = now;
+    this.frameGame = game;
+    this.frameScale = scale > 0 ? scale : 1;
+    this.measure();
+    if (this.offset === null || !this.ctx) {
+      this.prevMap = null;
+      return;
+    }
+    const map = { now, game, scale: this.frameScale, present: this.presentMs, offset: this.offset };
+    const prev = this.prevMap;
+    this.prevMap = map;
+    if (prev) {
+      const before = (prev.now + prev.present + (game - prev.game) * 1e3 / prev.scale) / 1e3 + prev.offset;
+      const after = (now + map.present) / 1e3 + map.offset;
+      if (Math.abs(after - before) > RESCHEDULE_AT) this.reschedule();
+    }
+    this.flush();
+    if (this.clockFrames >= 0 && ++this.clockFrames === CLOCK_SETTLE_FRAMES) this.logClock("settled");
+  }
+  /** Context time at which game time `at` is heard, with the current frame's mapping. */
+  ctxTimeOf(at) {
+    return (this.frameNow + this.presentMs + (at - this.frameGame) * 1e3 / this.frameScale) / 1e3 + (this.offset ?? 0);
+  }
+  clockReady() {
+    return Number.isFinite(this.frameNow) && this.offset !== null && this.ctx?.state === "running";
+  }
+  /** Output latency the context reports (s), with a fallback for what it doesn't. */
+  reportedLatency() {
+    const ctx = this.ctx;
+    const out = ctx.outputLatency;
+    return (ctx.baseLatency || 0) + (typeof out === "number" && out > 0 ? out : FALLBACK_OUTPUT_LATENCY);
+  }
+  /** Reads the context's clock against performance.now and updates the offset. */
+  measure() {
+    const ctx = this.ctx;
+    if (!ctx || ctx.state !== "running") return;
+    const nowOffset = ctx.currentTime - performance.now() / 1e3;
+    let raw = null;
+    let via = "latency";
+    if (typeof ctx.getOutputTimestamp === "function") {
+      const ts = ctx.getOutputTimestamp();
+      const c = ts.contextTime ?? 0;
+      const p = ts.performanceTime ?? 0;
+      if (c > 0 && p > 0) {
+        const o = c - p / 1e3;
+        const behind = nowOffset - o;
+        if (behind > -5e-3 && behind < 1) {
+          raw = o;
+          via = "getOutputTimestamp";
+          this.otsSeen = true;
+        }
+      }
+    }
+    if (raw === null) {
+      if (this.otsSeen) return;
+      raw = nowOffset - this.reportedLatency();
+    }
+    const switched = via !== this.via;
+    this.via = via;
+    if (this.offsetEst === null || switched) {
+      this.offsetEst = raw;
+      this.farReadings = 0;
+    } else if (Math.abs(raw - this.offsetEst) > CLOCK_SNAP) {
+      if (++this.farReadings < 3) return;
+      post({ op: "log", level: 1, msg: `runtime: audio clock moved ${((raw - this.offsetEst) * 1e3).toFixed(1)} ms (output route change?)` });
+      this.offsetEst = raw;
+      this.farReadings = 0;
+      this.clockFrames = 0;
+    } else {
+      this.farReadings = 0;
+      this.offsetEst += (raw - this.offsetEst) * CLOCK_SMOOTHING;
+    }
+    const first = this.offset === null;
+    if (first || Math.abs(this.offsetEst - this.offset) > CLOCK_HYSTERESIS) this.offset = this.offsetEst;
+    if (first && this.clockFrames < 0) {
+      this.clockFrames = 0;
+      this.logClock("first");
+    }
+  }
+  /** Measurement aid (shows in the iOS app's console as `runtime: audio clock …`). */
+  logClock(when) {
+    const ctx = this.ctx;
+    if (!ctx || this.offset === null) return;
+    const ms = (s) => typeof s === "number" ? `${(s * 1e3).toFixed(1)} ms` : "n/a";
+    const trails = ctx.currentTime - performance.now() / 1e3 - this.offset;
+    post({
+      op: "log",
+      level: 1,
+      msg: `runtime: audio clock (${when}): baseLatency ${ms(ctx.baseLatency)}, outputLatency ${ms(ctx.outputLatency)}, getOutputTimestamp ${typeof ctx.getOutputTimestamp === "function" ? "yes" : "no"}, via ${this.via}, heard ${ms(trails)} after currentTime, frame ${this.period.toFixed(1)} ms, present +${this.presentMs.toFixed(1)} ms, ctx\u2212perf ${this.offset.toFixed(4)} s, ${ctx.sampleRate} Hz`
+    });
+  }
+  /** The clock can't be trusted (suspended, a new context, a stopped timeline):
+   *  play_at voices stop and are rescheduled once it's known again. */
+  invalidateClock(frameToo) {
+    if (frameToo) {
+      this.frameNow = NaN;
+      this.lastFrameNow = NaN;
+    }
+    this.offsetEst = null;
+    this.offset = null;
+    this.farReadings = 0;
+    this.prevMap = null;
+    for (const v of this.voices.values()) if (v.at !== null) this.stopNodes(v);
+  }
+  /** The mapping moved: play_at voices that haven't started yet are rescheduled. */
+  reschedule() {
+    const ctx = this.ctx;
+    if (!ctx) return;
+    for (const v of this.voices.values()) {
+      if (v.at !== null && v.nodes && v.start > ctx.currentTime + LATE_START_LEAD) this.stopNodes(v);
+    }
+  }
   // --- sounds and voices -------------------------------------------------------
   /** Returns a sound handle (≥ 1) and decodes in the background. */
   load(bytes) {
@@ -2729,35 +2917,15 @@ var Audio = class {
     decoding.then((buf) => {
       if (gen !== this.generation) return;
       this.sounds[handle - 1] = buf;
-      this.flushWaiting();
+      this.flush();
     }).catch((e) => post({ op: "log", level: 2, msg: `runtime: sound ${handle} failed to decode: ${e}` }));
     return handle;
   }
-  play(sound, vol, pan, pitch, loop) {
+  /** mb_play (`at` undefined: as soon as it can) and mb_play_at (heard at game time `at`). */
+  play(sound, vol, pan, pitch, loop, at) {
     const id = this.nextVoice++;
     if (sound < 1 || sound > this.sounds.length) return id;
-    const buf = this.sounds[sound - 1];
-    if (!buf || !this.ctx) {
-      if (loop) this.waiting.set(id, { sound, vol, pan, pitch });
-      return id;
-    }
-    this.addVoice(id, { buf, vol, pan, pitch, loop, nodes: null });
-    return id;
-  }
-  flushWaiting() {
-    if (!this.ctx) return;
-    for (const [id, w] of this.waiting) {
-      const buf = this.sounds[w.sound - 1];
-      if (!buf) continue;
-      this.waiting.delete(id);
-      this.addVoice(id, { buf, vol: w.vol, pan: w.pan, pitch: w.pitch, loop: true, nodes: null });
-    }
-  }
-  addVoice(id, v) {
-    if (this.ctx && this.ctx.state !== "running" && !this.warned) {
-      this.warned = true;
-      post({ op: "log", level: 2, msg: `runtime: playing while audio is ${this.ctx.state}` });
-    }
+    if (at === void 0 && !loop && (!this.sounds[sound - 1] || !this.ctx)) return id;
     if (this.voices.size >= MAX_VOICES) {
       let victim;
       for (const [k, other] of this.voices) {
@@ -2768,23 +2936,80 @@ var Audio = class {
       }
       this.stop(victim ?? this.voices.keys().next().value);
     }
+    const v = { sound, vol, pan, pitch, loop, at: at ?? null, when: NaN, start: NaN, offset: 0, nodes: null };
     this.voices.set(id, v);
-    this.startNodes(id, v);
+    this.tryStart(id, v);
+    return id;
   }
-  startNodes(id, v) {
-    if (!this.ctx || !this.master) return;
-    const src = this.ctx.createBufferSource();
-    src.buffer = v.buf;
+  /** Starts every voice that's waiting and now can. */
+  flush() {
+    for (const [id, v] of this.voices) if (!v.nodes) this.tryStart(id, v);
+  }
+  /** Starts a voice if it can: decoded, a context, and for play_at a known clock. */
+  tryStart(id, v) {
+    const ctx = this.ctx;
+    const buf = this.sounds[v.sound - 1];
+    if (v.nodes || !ctx || !this.master || !buf) return;
+    if (v.at === null) {
+      if (ctx.state !== "running" && !this.warned) {
+        this.warned = true;
+        post({ op: "log", level: 2, msg: `runtime: playing while audio is ${ctx.state}` });
+      }
+      this.startNodes(id, v, buf, 0, 0);
+      return;
+    }
+    if (!this.clockReady()) return;
+    const when = this.ctxTimeOf(v.at);
+    const earliest = ctx.currentTime + LATE_START_LEAD;
+    let start = when;
+    let offset = 0;
+    if (when < earliest) {
+      const late = earliest - when;
+      offset = late * pitchOf(v);
+      if (v.loop) {
+        offset %= buf.duration;
+      } else if (offset > buf.duration / 2) {
+        this.voices.delete(id);
+        this.timingLog(`runtime: voice ${id} skipped, ${(late * 1e3).toFixed(1)} ms late (sound ${buf.duration.toFixed(2)} s)`);
+        return;
+      }
+      start = earliest;
+      if (late > 2e-3) this.timingLog(`runtime: voice ${id}${v.loop ? " (loop)" : ""} started ${(late * 1e3).toFixed(1)} ms late, offset into its sound`);
+    }
+    v.when = when;
+    this.startNodes(id, v, buf, start, offset);
+  }
+  timingLog(msg) {
+    if (this.timingLogs++ < MAX_TIMING_LOGS) post({ op: "log", level: 0, msg });
+  }
+  startNodes(id, v, buf, start, offset) {
+    const ctx = this.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
     src.loop = v.loop;
-    const pan = this.ctx.createStereoPanner();
-    const gain = this.ctx.createGain();
+    const pan = ctx.createStereoPanner();
+    const gain = ctx.createGain();
     src.connect(pan).connect(gain).connect(this.master);
     v.nodes = { src, pan, gain };
+    v.start = start;
+    v.offset = offset;
     this.apply(v, true);
     src.onended = () => {
       if (this.voices.get(id) === v && v.nodes?.src === src) this.voices.delete(id);
     };
-    src.start();
+    src.start(start, offset);
+  }
+  /** Stops a voice's nodes but keeps the voice (to be started again). */
+  stopNodes(v) {
+    const n = v.nodes;
+    if (!n) return;
+    v.nodes = null;
+    n.src.onended = null;
+    try {
+      n.src.stop();
+    } catch {
+    }
+    n.gain.disconnect();
   }
   update(voice, vol, pan, pitch) {
     const v = this.voices.get(voice);
@@ -2792,8 +3017,6 @@ var Audio = class {
       Object.assign(v, { vol, pan, pitch });
       this.apply(v, false);
     }
-    const w = this.waiting.get(voice);
-    if (w) Object.assign(w, { vol, pan, pitch });
   }
   apply(v, now) {
     if (!v.nodes || !this.ctx) return;
@@ -2804,10 +3027,9 @@ var Audio = class {
     };
     go(v.nodes.gain.gain, Math.min(Math.max(v.vol, 0), 4));
     go(v.nodes.pan.pan, Math.min(Math.max(v.pan, -1), 1));
-    go(v.nodes.src.playbackRate, Math.min(Math.max(v.pitch, 0.125), 8));
+    go(v.nodes.src.playbackRate, pitchOf(v));
   }
   stop(voice) {
-    this.waiting.delete(voice);
     const v = this.voices.get(voice);
     if (!v) return;
     this.voices.delete(voice);
@@ -2816,7 +3038,38 @@ var Audio = class {
     } catch {
     }
   }
+  /** Preview aid (`mb.audio()`): the clock and every voice, for checking alignment. */
+  debug() {
+    const ctx = this.ctx;
+    return {
+      state: ctx?.state ?? "none",
+      sampleRate: ctx?.sampleRate ?? 0,
+      baseLatency: ctx?.baseLatency ?? null,
+      outputLatency: ctx?.outputLatency ?? null,
+      getOutputTimestamp: typeof ctx?.getOutputTimestamp === "function",
+      via: this.via,
+      currentTime: ctx?.currentTime ?? 0,
+      /** Context seconds − performance.now seconds for the sample being heard. */
+      offset: this.offset,
+      framePeriodMs: this.period,
+      presentMs: this.presentMs,
+      gameTime: this.frameGame,
+      voices: [...this.voices].map(([id, v]) => ({
+        id,
+        sound: v.sound,
+        loop: v.loop,
+        at: v.at,
+        when: v.when,
+        start: v.start,
+        offset: v.offset,
+        playing: v.nodes !== null
+      }))
+    };
+  }
 };
+function pitchOf(v) {
+  return Math.min(Math.max(v.pitch, 0.125), 8);
+}
 
 // src/boot.ts
 async function loadBoot() {
@@ -2840,6 +3093,8 @@ var Input = class {
     el.addEventListener("contextmenu", (e) => e.preventDefault());
   }
   pending = [];
+  /** When each pending event happened (ms, performance.now clock); NaN = at the frame. */
+  stamps = [];
   /** pointerId → small id, for pointers the game owns. */
   owned = /* @__PURE__ */ new Map();
   nextId = 0;
@@ -2850,17 +3105,39 @@ var Input = class {
     const ly = Math.fround((y - l.offsetY) / l.scale);
     const [down, up] = this.touchDeclared || !this.mouseDeclared ? [1 /* TouchDown */, 3 /* TouchUp */] : [7 /* MouseDown */, 9 /* MouseUp */];
     const id = this.nextId++ & 255;
+    const now = performance.now();
     this.pending.push([down, id, 0, lx, ly, 1, 0, 0], [up, id, 0, lx, ly, 0, 0, 0]);
+    this.stamps.push(now, now);
   }
-  /** Queues an event from another source (keyboard, gamepad). */
-  push(e) {
+  /** Queues an event from another source (keyboard, gamepad), with its
+   *  timestamp if it has one (otherwise it counts as happening at the frame). */
+  push(e, stamp = NaN) {
     this.pending.push(e);
+    this.stamps.push(stamp);
   }
-  /** Moves queued events to the guest's frame. Call once per frame boundary. */
-  take() {
-    const out = this.pending;
+  /** Moves queued events to the guest's frame. Call once per frame boundary.
+   *  With `frame`, each event gets its lag behind the frame's game time:
+   *  whole microseconds, within the frame's dt, never growing along the
+   *  queue (so times stay monotonic). Without it (input being dropped) no
+   *  lags are computed. */
+  take(frame) {
+    const events = this.pending;
+    const stamps = this.stamps;
     this.pending = [];
-    return out;
+    this.stamps = [];
+    if (!frame) return events;
+    const max = Math.max(0, Math.floor(frame.dt * 1e6));
+    let prev = max;
+    return events.map((ev, i) => {
+      const stamp = stamps[i] ?? NaN;
+      let lag = Number.isFinite(stamp) ? Math.round((frame.now - stamp) * 1e3 * frame.scale) : 0;
+      lag = Math.min(Math.max(lag, 0), max, prev);
+      prev = lag;
+      if (lag === 0) return ev;
+      const out = ev.slice(0, 8);
+      out.push(lag);
+      return out;
+    });
   }
   asTouch(e) {
     return e.pointerType !== "mouse" || !this.mouseDeclared;
@@ -2869,7 +3146,7 @@ var Input = class {
     const l = this.layout();
     const x = Math.fround((e.clientX - l.offsetX) / l.scale);
     const y = Math.fround((e.clientY - l.offsetY) / l.scale);
-    this.pending.push([kind, id, 0, x, y, Math.fround(e.pressure), 0, 0]);
+    this.push([kind, id, 0, x, y, Math.fround(e.pressure), 0, 0], e.timeStamp);
   }
   down(e) {
     const l = this.layout();
@@ -2897,7 +3174,7 @@ var Input = class {
     this.pointer(kind, id, e);
   }
 };
-function writeEvents(view, ptr, events, time) {
+function writeEvents(view, ptr, events, times) {
   events.forEach((ev, i) => {
     const o = ptr + i * 32;
     view.setUint8(o, ev[0]);
@@ -2908,7 +3185,7 @@ function writeEvents(view, ptr, events, time) {
     view.setFloat32(o + 12, ev[5], true);
     view.setFloat32(o + 16, ev[6], true);
     view.setUint32(o + 20, ev[7], true);
-    view.setFloat64(o + 24, time, true);
+    view.setFloat64(o + 24, times[i] ?? 0, true);
   });
 }
 
@@ -3067,7 +3344,7 @@ var Keyboard = class {
       const code = HID[e.code];
       if (code === void 0 || e.repeat) return;
       e.preventDefault();
-      push([kind, 0, 0, 0, 0, 0, 0, code]);
+      push([kind, 0, 0, 0, 0, 0, 0, code], e.timeStamp);
     };
     window.addEventListener("keydown", on(KEY_DOWN));
     window.addEventListener("keyup", on(KEY_UP));
@@ -3127,10 +3404,11 @@ async function probe() {
 var Recorder = class {
   log;
   constructor(header) {
-    this.log = { version: 0, ...header, frames: [] };
+    this.log = { version: 1, ...header, frames: [] };
   }
-  frame(dt, events, assets, sensors, calls = []) {
+  frame(dt, events, assets, sensors, calls = [], lost = 0) {
     const f = { dt, ...sensors };
+    if (lost > 0) f.lost = lost;
     if (events.length) f.events = events;
     if (assets.length) f.assets = assets;
     if (calls.length) f.calls = calls;
@@ -3151,7 +3429,11 @@ var Session = class {
     for (const [k, v] of Object.entries(store)) this.store.set(k, Uint8Array.from(atob(v), (c) => c.charCodeAt(0)));
   }
   gameTime = 0;
+  /** Wall-clock seconds the current frame dropped (SPEC §5.1 mb_time_lost). */
+  timeLost = 0;
   frameEvents = [];
+  /** Game time of each of this frame's events. */
+  frameTimes = [];
   cursor = 0;
   memory;
   assets;
@@ -3173,18 +3455,32 @@ var Session = class {
     for (const [k, v] of this.store) n += k.length + v.length;
     return n;
   }
-  /** Starts a frame: delivers its events and sensor snapshot, advances game time by dt. */
-  beginFrame(dt, events, sensors = {}) {
+  /** Starts a frame: delivers its events and sensor snapshot, advances game
+   *  time by dt. An event's time is the frame's game time less its recorded
+   *  lag, never before the previous frame's time and never before the event
+   *  ahead of it (SPEC §5.2); computed from recorded values only, so a replay
+   *  sees exactly the same times. */
+  beginFrame(dt, events, sensors = {}, lost = 0) {
+    const prev = this.gameTime;
     this.gameTime += dt;
+    this.timeLost = lost;
     if (sensors.tilt) this.tilt = sensors.tilt;
     if (sensors.motion) this.motion = sensors.motion;
     if (sensors.loud !== void 0) this.loudness = sensors.loud;
     this.frameEvents = events;
+    let last = prev;
+    this.frameTimes = events.map((ev) => {
+      const lag = ev[8];
+      const t = lag ? Math.min(this.gameTime, Math.max(last, this.gameTime - lag / 1e6)) : this.gameTime;
+      last = t;
+      return t;
+    });
     this.cursor = 0;
   }
   pollInput(view, ptr, cap) {
     const n = Math.max(0, Math.min(cap, this.frameEvents.length - this.cursor));
-    writeEvents(view, ptr, this.frameEvents.slice(this.cursor, this.cursor + n), this.gameTime);
+    const end = this.cursor + n;
+    writeEvents(view, ptr, this.frameEvents.slice(this.cursor, end), this.frameTimes.slice(this.cursor, end));
     this.cursor += n;
     return n;
   }
@@ -3270,6 +3566,7 @@ var FUEL_PER_CALLBACK = 3e8;
 var GAME = "../game/";
 var PREROLL_MIN_FRAMES = 6;
 var PREROLL_MAX_MS = 3e3;
+var MAX_DT = 0.1;
 var MAX_FRAME_HASHES = 216e3;
 var Runtime = class _Runtime {
   constructor(guest, session, input, recorder, gamepads, sensors, source) {
@@ -3302,6 +3599,8 @@ var Runtime = class _Runtime {
   calls = [];
   /** Serializes `stepFrames` (a replay step may wait for an asset). */
   stepping = Promise.resolve();
+  /** The rAF timestamp of the frame being run (null outside a display frame). */
+  frameNow = null;
   /** Sensor readings last handed to the guest (recorded only when they change). */
   seen = { tilt: "", motion: "", loud: null };
   onReplayEnd = null;
@@ -3396,25 +3695,32 @@ var Runtime = class _Runtime {
     if (!this.running || this.suspended || this.stopped) return;
     if (this.lastShown !== null) host_frame_time(now - this.lastShown);
     this.lastShown = now;
+    this.frameNow = now;
     if (this.source.kind === "replay") {
       this.replayTick();
     } else {
       const raw = this.last === null ? 1 / 60 : Math.max((now - this.last) / 1e3, 0);
       this.last = now;
-      this.liveFrame(Math.fround(Math.min(raw * _Runtime.timeScale, 0.1)));
+      const scaled = raw * _Runtime.timeScale;
+      const dt = Math.fround(Math.min(scaled, MAX_DT));
+      const lost = scaled > MAX_DT ? Math.fround(scaled - dt) : 0;
+      this.liveFrame(dt, { now, dt, scale: _Runtime.timeScale }, lost);
     }
+    this.frameNow = null;
     if (++this.ticks % HEARTBEAT_EVERY === 0) {
       post({ op: "heartbeat", frame: this.ticks, time: this.session.gameTime });
     }
     if (!this.stopped) this.raf = requestAnimationFrame((t) => this.tick(t));
   }
-  liveFrame(dt) {
+  /** A live frame. With `clock` (a real display frame), events get their own
+   *  times within it; without (prerolling, stepping), the frame's time. */
+  liveFrame(dt, clock, lost = 0) {
     this.gamepads?.poll((e) => this.input.push(e));
-    const events = this.input.take();
+    const events = this.input.take(clock);
     const assets = this.session.assets.publishArrived();
     const sensors = this.sampleSensors();
-    this.recorder.frame(dt, events, assets, sensors, this.calls.splice(0));
-    this.step(dt, events, sensors);
+    this.recorder.frame(dt, events, assets, sensors, this.calls.splice(0), lost);
+    this.step(dt, events, sensors, [], lost);
   }
   /** Preview: advance a suspended session by `n` frames — a live one by
    *  1/60 s each (recorded like any frame), a replay by its next `n`
@@ -3430,7 +3736,7 @@ var Runtime = class _Runtime {
           if (!f) break;
           await this.session.assets.publishRecorded(f.assets ?? []);
           this.cursor++;
-          this.step(f.dt, f.events ?? [], f, f.calls);
+          this.step(f.dt, f.events ?? [], f, f.calls, f.lost);
         }
       }
       return this.brief();
@@ -3470,14 +3776,15 @@ var Runtime = class _Runtime {
     }
     if (!this.session.assets.tryPublishRecorded(f.assets ?? [])) return;
     this.cursor++;
-    this.step(f.dt, f.events ?? [], f, f.calls);
+    this.step(f.dt, f.events ?? [], f, f.calls, f.lost);
   }
   /** One frame: replay recorded lifecycle calls, deliver input, update, render, present. */
-  step(dt, events, sensors, calls) {
+  step(dt, events, sensors, calls, lost = 0) {
     for (const c of calls ?? []) this.lifecycle(c);
     if (this.stopped) return;
-    this.session.beginFrame(dt, events, sensors);
+    this.session.beginFrame(dt, events, sensors, lost);
     host_step(dt);
+    this.session.audio.frame(this.frameNow ?? performance.now(), this.session.gameTime, this.source.kind === "live" ? _Runtime.timeScale : 1);
     this.timed("mb_update", () => this.guest.mb_update(dt));
     if (this.stopped) return;
     this.frames++;
@@ -3612,7 +3919,7 @@ async function main() {
   await host_init(canvas, m.logical_size[0], m.logical_size[1]);
   const module = await WebAssembly.compile(await (await fetch(`${GAME}game.wasm`)).arrayBuffer());
   const input = new Input(canvas, () => layout, m.inputs.includes("touch"), m.inputs.includes("mouse"));
-  if (m.inputs.includes("keyboard")) new Keyboard((e) => input.push(e));
+  if (m.inputs.includes("keyboard")) new Keyboard((e, stamp) => input.push(e, stamp));
   const page = {
     boot,
     manifest: m,
@@ -3669,6 +3976,7 @@ async function main() {
     sensors: (gx, gy, gz, ax, ay, az) => page.sensors?.set(gx, gy, gz, ax, ay, az),
     loudness: (v) => page.sensors?.external(v),
     step: (n = 1) => rt.stepFrames(n),
+    audio: () => page.audio.debug(),
     verify: async () => {
       rt.suspend();
       const live = rt.snapshot();
@@ -3697,7 +4005,7 @@ async function main() {
     post({ op: "ready", info: JSON.parse(host_info()), bootMs: performance.now() - t0, paused: false });
     for (const f of boot.replay.frames) {
       await rt.session.assets.publishRecorded(f.assets ?? []);
-      rt.step(f.dt, f.events ?? [], f, f.calls);
+      rt.step(f.dt, f.events ?? [], f, f.calls, f.lost);
     }
     post({ op: "replay-done", frames: boot.replay.frames.length, hash: host_draw_hash() });
     return;

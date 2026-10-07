@@ -43,6 +43,7 @@ pub const IMPORTS: &[Import] = &[
     // 5.1 sys
     f("mb_log", &[I32, I32, I32], &[], A),
     f("mb_time", &[], &[F64], A),
+    f("mb_time_lost", &[], &[F32], A),
     f("mb_rand_seed", &[], &[I64], A),
     f("mb_daily_seed", &[], &[I64], A),
     f("mb_round", &[I32], &[], A),
@@ -105,6 +106,7 @@ pub const IMPORTS: &[Import] = &[
     // 5.6 audio (output only, so it never affects determinism)
     f("mb_sound", &[I32], &[I32], A),
     f("mb_play", &[I32, F32, F32, F32, I32], &[I32], A),
+    f("mb_play_at", &[I32, F32, F32, F32, I32, F64], &[I32], A),
     f("mb_voice_set", &[I32, F32, F32, F32], &[], A),
     f("mb_voice_stop", &[I32], &[], A),
     // 5.7 sensors
