@@ -1,4 +1,4 @@
-//! Talking to the Maimbrain server: `mb login`, `mb publish`, `mb whoami`.
+//! Talking to the Maimbrain server: `mb login`, `mb publish`, `mb submit`, `mb whoami`.
 //!
 //! Credentials live in `~/.config/maimbrain/credentials.json` (mode 0600), or
 //! `%APPDATA%\maimbrain\credentials.json` on Windows.
@@ -147,14 +147,16 @@ pub fn whoami() -> Result<Value, String> {
     if status == 200 { Ok(body) } else { Err(format!("{} (try mb login)", error_text(status, &body))) }
 }
 
-/// Uploads a bundle and waits for validation; prints where it ended up.
-pub fn publish(bundle: &Path) -> Result<(), String> {
+/// Uploads a bundle and waits for validation; prints where it ended up. It
+/// becomes a private draft to play in the app, unless `submit` sends it
+/// straight to review. `source` is what to pass to `mb submit` afterwards.
+pub fn publish(bundle: &Path, submit: bool, source: &str) -> Result<(), String> {
     let c = credentials()?;
     let bytes = std::fs::read(bundle).map_err(|e| format!("{}: {e}", bundle.display()))?;
     eprintln!("Uploading {} ({} KB) to {}…", bundle.display(), bytes.len() / 1024, c.server);
     let (status, body) = json_of(
         agent()
-            .post(format!("{}/api/v1/games/versions", c.server))
+            .post(format!("{}/api/v1/games/versions{}", c.server, if submit { "?submit=true" } else { "" }))
             .header("Authorization", format!("Bearer {}", c.token))
             .header("Content-Type", "application/octet-stream")
             .header("X-Filename", bundle.file_name().and_then(|n| n.to_str()).unwrap_or("game.mbx"))
@@ -176,6 +178,14 @@ pub fn publish(bundle: &Path) -> Result<(), String> {
     }
     let name = format!("{} {}", v["game_id"].as_str().unwrap_or("?"), v["version"].as_str().unwrap_or(""));
     match v["state"].as_str().unwrap_or("") {
+        "draft" => {
+            eprintln!("✓ {name} passed validation. It's a private draft: only you can see it.");
+            eprintln!("  Test it on your phone: open Maimbrain → Account → My games (it's also first in your feed).");
+            eprintln!("  Fix something? Run mb publish again; the new upload replaces the draft.");
+            eprintln!("  When it's ready, submit it for review:  mb submit {source}");
+            eprintln!("  (or tap Submit for review in the app, or at {}/create)", c.server);
+            Ok(())
+        }
         "pending" => {
             eprintln!("✓ {name} passed validation and is waiting for review.");
             eprintln!("  Track it at {}/create", c.server);
@@ -194,4 +204,73 @@ pub fn publish(bundle: &Path) -> Result<(), String> {
             Ok(())
         }
     }
+}
+
+/// The game `mb submit` was given, and what it expects the draft to be.
+pub struct SubmitTarget {
+    /// A game id, or the last part of one (`frogger`).
+    pub query: String,
+    /// From a game directory or bundle: the draft must be this version…
+    pub version: Option<String>,
+    /// …and, from a bundle, exactly these bytes.
+    pub sha256: Option<String>,
+    /// What the user typed, for messages.
+    pub source: String,
+}
+
+/// Sends the game's draft to review (`POST /games/versions/:id/submit`).
+pub fn submit(t: &SubmitTarget) -> Result<(), String> {
+    let c = credentials()?;
+    let auth = format!("Bearer {}", c.token);
+    let (status, body) = json_of(agent().get(format!("{}/api/v1/me/games", c.server)).header("Authorization", &auth).call())?;
+    if status != 200 {
+        return Err(format!("listing your games: {} (try mb login)", error_text(status, &body)));
+    }
+    let mine = body.as_array().cloned().unwrap_or_default();
+    let game_id = |v: &Value| v["game_id"].as_str().unwrap_or("").to_string();
+    let suffix = format!(".{}", t.query);
+    let mut ids: Vec<String> = mine.iter().map(game_id).filter(|id| *id == t.query || id.ends_with(&suffix)).collect();
+    ids.sort();
+    ids.dedup();
+    let id = match ids.as_slice() {
+        [] => return Err(format!("you haven't uploaded {}; run mb publish first", t.query)),
+        [one] => one.clone(),
+        many => return Err(format!("{} matches several games: {}", t.query, many.join(", "))),
+    };
+    // Newest first (GET /me/games); a game has at most one draft.
+    let versions: Vec<&Value> = mine.iter().filter(|v| game_id(v) == id).collect();
+    let Some(draft) = versions.iter().find(|v| v["state"] == "draft") else {
+        let newest = versions.iter().find(|v| v["state"] != "invalid");
+        return Err(match newest.map(|v| (v["state"].as_str().unwrap_or(""), v["version"].as_str().unwrap_or(""))) {
+            Some(("pending", ver)) => format!("{id} {ver} is already waiting for review"),
+            Some(("validating", _)) => format!("{id}'s latest upload is still being validated; try again in a moment"),
+            _ => format!("{id} has no draft to submit; upload one with mb publish"),
+        });
+    };
+    let version = draft["version"].as_str().unwrap_or("");
+    if let Some(want) = &t.version
+        && want != version
+    {
+        return Err(format!(
+            "your draft of {id} is {version}, but {} is {want}; run mb publish {} to upload {want} first (or mb submit {id} to submit {version})",
+            t.source, t.source
+        ));
+    }
+    if let Some(sha) = &t.sha256
+        && draft["sha256"].as_str() != Some(sha.as_str())
+    {
+        return Err(format!("{} isn't your draft of {id} {version}; run mb publish {} to upload it first", t.source, t.source));
+    }
+    let (status, body) = json_of(
+        agent()
+            .post(format!("{}/api/v1/games/versions/{}/submit", c.server, draft["id"]))
+            .header("Authorization", &auth)
+            .send_empty(),
+    )?;
+    if status != 200 {
+        return Err(format!("couldn't submit {id} {version}: {}", error_text(status, &body)));
+    }
+    eprintln!("✓ Submitted {id} {version} for review. A moderator will play it before it goes into the feed.");
+    eprintln!("  Track it at {}/create (or in the app under My games).", c.server);
+    Ok(())
 }

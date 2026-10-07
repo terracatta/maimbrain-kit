@@ -61,7 +61,12 @@ Put your own generator script in `games/<name>/tools/` and commit it (the art st
 - **Look at screenshots** of the title, the first seconds, mid-round, danger, failure and game-over. Check them against the [engagement checklist](engagement.md#checklist). Then fix what you see and look again.
 
 ### 5. Publish (when the user asks)
-`mb publish <game dir>` builds the game, uploads it to maimbrain.com and waits for the server's validation. It then waits for a moderator's review; `maimbrain.com/create` shows the status and any reviewer notes. Ids must be in your namespace (`mb whoami` shows it: `com.maimbrain.<username>`, with `_` as `-`) and `creator` must be `@<username>` (`mb new` sets both). Each upload needs a higher `version` than the last.
+Publishing has two steps, so the user plays the game on their own phone before anyone else sees it:
+
+1. **`mb publish <game dir>`** builds the game, uploads it to maimbrain.com and waits for the server's validation (the same validator as `mb build`). It lands as a **private draft**: only the user can see it. Tell them to open Maimbrain on their iPhone, where it's first in their feed tagged *DRAFT · ONLY YOU* and under Account → My games. If they find something to fix, fix it and `mb publish` again; the new upload replaces the draft, and it can keep the same `version`.
+2. **`mb submit <game dir>`** sends the draft to review, once the user says it's ready. They can also tap *Submit for review* in the app or at `maimbrain.com/create`. Don't submit on your own initiative unless the user has asked for that. A moderator plays it; once approved it's in everyone's feed. If an older version is live, it stays live until then.
+
+`mb publish --submit` does both at once, for when the user wants to skip testing on the phone. `maimbrain.com/create` shows each upload's status and any reviewer notes. Ids must be in your namespace (`mb whoami` shows it: `com.maimbrain.<username>`, with `_` as `-`) and `creator` must be `@<username>` (`mb new` sets both). Each submitted version needs a higher `version` than the last one submitted; drafts don't count.
 
 ### 6. Hand off honestly
 Write down what you couldn't verify without a phone (feel of tilt, haptics, audio balance, safe areas), with the exact numbers to tune (gain, dead zone, timings) collected as named constants at the top of one file.

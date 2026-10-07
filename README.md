@@ -34,8 +34,11 @@ Then ask: *"Use the maimbrain-game skill to make a game: …"*. Your agent will 
 ```sh
 mb new mygame        # a game crate from the template, with your id (--3d for a 3D one; works signed out too)
 mb serve mygame      # preview at http://127.0.0.1:8765 (reload to rebuild)
-mb publish mygame    # upload for review; track it at maimbrain.com/create
+mb publish mygame    # upload a private draft: play it in the Maimbrain app (Account → My games)
+mb submit mygame     # when it's right, send it for review; track it at maimbrain.com/create
 ```
+
+`mb publish` uploads a draft only you can see; publish again to replace it while you test. Once a moderator approves what you submit, it's in everyone's feed. `mb publish --submit` skips the draft and goes straight to review.
 
 ## What's here
 

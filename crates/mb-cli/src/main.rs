@@ -3,7 +3,8 @@
 //!     mb new frogger                  # a new game crate from the skill's template (--3d for mb3d)
 //!     mb build frogger                # cargo build → wasm-opt → pack → validate
 //!     mb login                        # sign in to maimbrain.com (device code)
-//!     mb publish frogger              # build, upload, wait for validation
+//!     mb publish frogger              # build, upload a private draft, wait for validation
+//!     mb submit frogger               # send the draft to review (after testing it on your phone)
 //!     mb validate feed/dev.maimbrain.stack-0.1.0.mbx
 //!     mb serve frogger                # preview in a browser; reload to rebuild
 //!     mb doctor                       # check the toolchain
@@ -53,13 +54,22 @@ enum Cmd {
     },
     /// Show who you're signed in as.
     Whoami,
-    /// Build a game (or take a .mbx) and upload it for review.
+    /// Build a game (or take a .mbx) and upload it as a private draft: play it in the
+    /// Maimbrain app (Account → My games), then `mb submit` it for review.
     Publish {
         /// Game directory or .mbx bundle.
         path: PathBuf,
         /// Where `mb build` writes the bundle.
         #[arg(long, default_value = "feed")]
         out: PathBuf,
+        /// Send it straight to review instead of leaving a draft to test first.
+        #[arg(long)]
+        submit: bool,
+    },
+    /// Submit your draft of a game for review (moderators play it before it's in the feed).
+    Submit {
+        /// Game directory, .mbx bundle, game id (com.maimbrain.you.frogger) or just its name (frogger).
+        game: String,
     },
     /// Check that the toolchain for building games is installed.
     Doctor,
@@ -140,13 +150,15 @@ fn main() -> ExitCode {
         }
         Cmd::Login { server } => remote::login(server.as_deref()),
         Cmd::Whoami => remote::whoami().map(|w| println!("@{} ({})", w["username"].as_str().unwrap_or("?"), remote::server(None))),
-        Cmd::Publish { path, out } => {
+        Cmd::Publish { path, out, submit } => {
+            let hint = path.display().to_string();
             if path.extension().is_some_and(|e| e == "mbx") {
-                remote::publish(&path)
+                remote::publish(&path, submit, &hint)
             } else {
-                build(&path).and_then(|wasm| pack(&path, &wasm, &out)).and_then(|bundle| remote::publish(&bundle))
+                build(&path).and_then(|wasm| pack(&path, &wasm, &out)).and_then(|bundle| remote::publish(&bundle, submit, &hint))
             }
         }
+        Cmd::Submit { game } => submit_target(&game).and_then(|t| remote::submit(&t)),
         Cmd::Doctor => doctor(),
         Cmd::Serve { path, port, out } => serve::serve(
             &path,
@@ -175,6 +187,22 @@ fn main() -> ExitCode {
             ExitCode::FAILURE
         }
     }
+}
+
+/// What `mb submit <game>` names: a game directory, a .mbx, or an id or name to look up.
+fn submit_target(game: &str) -> Result<remote::SubmitTarget, String> {
+    let path = Path::new(game);
+    if path.is_dir() {
+        let m = read_manifest(path)?;
+        return Ok(remote::SubmitTarget { query: m.id, version: Some(m.version), sha256: None, source: game.into() });
+    }
+    if path.is_file() {
+        let bytes = std::fs::read(path).map_err(|e| format!("{game}: {e}"))?;
+        let report = mb_format::validate(&bytes);
+        let m = report.manifest.ok_or_else(|| format!("{game}: not a valid bundle (mb validate {game})"))?;
+        return Ok(remote::SubmitTarget { query: m.id, version: Some(m.version), sha256: Some(report.sha256), source: game.into() });
+    }
+    Ok(remote::SubmitTarget { query: game.into(), version: None, sha256: None, source: game.into() })
 }
 
 fn read_manifest(dir: &Path) -> Result<Manifest, String> {
