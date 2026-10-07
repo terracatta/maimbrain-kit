@@ -4,11 +4,23 @@ Make games for [Maimbrain](https://maimbrain.com): tiny games people swipe throu
 
 ## Get started
 
+macOS or Linux:
+
 ```sh
 curl -fsSL https://maimbrain.com/install.sh | sh   # the mb tool
-mb doctor                                          # checks Rust + the wasm32 target
+mb doctor                                          # checks Rust, the wasm32 target, Python and the sound tools
 mb login                                           # sign in to maimbrain.com
 ```
+
+Windows (PowerShell):
+
+```powershell
+irm https://maimbrain.com/install.ps1 | iex        # installs mb.exe and adds it to your PATH
+mb doctor
+mb login
+```
+
+On Windows, install Rust with [rustup](https://rustup.rs) (it sets up the Visual Studio C++ build tools), then `rustup target add wasm32-unknown-unknown`. The skill's art and sound scripts need Python 3 (`winget install Python.Python.3.12`) and `oggenc` and `oggdec` (Windows builds are at [RareWares](https://www.rarewares.org/ogg-oggenc.php); put them on your PATH); use `python` or `py` where the skill says `python3`. WSL works too: follow the Linux steps inside it.
 
 In Claude Code:
 

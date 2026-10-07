@@ -1,13 +1,44 @@
-# Builds mb for each platform when a v* tag is pushed and attaches the
-# archives to the GitHub release (maimbrain.com/install.sh downloads them).
+# Tests the kit on Linux, macOS and Windows, then builds mb for each platform
+# when a v* tag is pushed and attaches the archives to the GitHub release
+# (maimbrain.com/install.sh and install.ps1 download them).
 name: release
 on:
   push:
     tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - run: cargo test --workspace
+      # A fresh game from each template must build and validate (needs the wasm
+      # target), created outside this workspace and pointed at this checkout's SDK.
+      - name: New games from both templates build and validate
+        shell: bash
+        run: |
+          set -eux
+          kit="$(pwd -W 2>/dev/null || pwd)"  # Windows Git Bash: D:/a/..., which Cargo understands
+          cargo run -q -p mb-cli -- new "$RUNNER_TEMP/ci2d" --id com.example.ci2d --creator @ci
+          cargo run -q -p mb-cli -- new "$RUNNER_TEMP/ci3d" --3d --id com.example.ci3d --creator @ci
+          for g in ci2d ci3d; do
+            printf '\n[patch."https://github.com/terracatta/maimbrain-kit"]\nmaimbrain = { path = "%s/sdk/maimbrain" }\n' "$kit" >> "$RUNNER_TEMP/$g/Cargo.toml"
+            cargo run -q -p mb-cli -- build "$RUNNER_TEMP/$g"
+          done
+
   build:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
     strategy:
       matrix:
         include:
@@ -15,14 +46,27 @@ jobs:
           - { os: macos-14, target: x86_64-apple-darwin }  # cross-compiled; GitHub is retiring Intel runners
           - { os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
           - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
+          - { os: windows-2025, target: x86_64-pc-windows-msvc }
+          - { os: windows-11-arm, target: aarch64-pc-windows-msvc }
     runs-on: ${{ matrix.os }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
       - run: cargo build -p mb-cli --release --target ${{ matrix.target }}
-      - run: tar -czf mb-${{ matrix.target }}.tar.gz -C target/${{ matrix.target }}/release mb
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: mb-${{ matrix.target }}.tar.gz
+      - name: Package (tar.gz)
+        if: runner.os != 'Windows'
+        run: tar -czf mb-${{ matrix.target }}.tar.gz -C target/${{ matrix.target }}/release mb
+      - name: Package (zip)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path target/${{ matrix.target }}/release/mb.exe -DestinationPath mb-${{ matrix.target }}.zip
+      - name: Upload to the release
+        shell: bash
+        run: |
+          gh release create "$TAG" --title "$TAG" --generate-notes 2>/dev/null || true
+          gh release upload "$TAG" mb-${{ matrix.target }}.* --clobber
