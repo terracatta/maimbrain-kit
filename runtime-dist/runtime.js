@@ -16,12 +16,32 @@ function host_draw_hash() {
 }
 function host_end_frame() {
   const ret = wasm.host_end_frame();
-  if (ret[1]) {
-    throw takeFromExternrefTable0(ret[0]);
-  }
+  return ret !== 0;
 }
 function host_frame_time(ms) {
   wasm.host_frame_time(ms);
+}
+function host_gpu_connect() {
+  const ret = wasm.host_gpu_connect();
+  return ret;
+}
+function host_gpu_debug_lose() {
+  wasm.host_gpu_debug_lose();
+}
+function host_gpu_fault(message2) {
+  const ptr0 = passStringToWasm0(message2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+  const len0 = WASM_VECTOR_LEN;
+  wasm.host_gpu_fault(ptr0, len0);
+}
+function host_gpu_install() {
+  const ret = wasm.host_gpu_install();
+  return ret !== 0;
+}
+function host_gpu_log() {
+  const ret = wasm.host_gpu_log();
+  var v1 = getArrayJsValueFromWasm0(ret[0], ret[1]);
+  wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+  return v1;
 }
 function host_info() {
   let deferred1_0;
@@ -44,9 +64,7 @@ function host_new_session() {
 }
 function host_redraw() {
   const ret = wasm.host_redraw();
-  if (ret[1]) {
-    throw takeFromExternrefTable0(ret[0]);
-  }
+  return ret !== 0;
 }
 function host_resize(width, height) {
   wasm.host_resize(width, height);
@@ -168,6 +186,9 @@ function __wbg_get_imports() {
       getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
       getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
     },
+    __wbg_destroy_275564a0a8b8d071: function(arg0) {
+      arg0.destroy();
+    },
     __wbg_document_9854e03c05fc8834: function(arg0) {
       const ret = arg0.document;
       return isLikeNone(ret) ? 0 : addToExternrefTable0(ret);
@@ -180,6 +201,10 @@ function __wbg_get_imports() {
     },
     __wbg_end_b57473834b877409: function(arg0) {
       arg0.end();
+    },
+    __wbg_error_8c8dff942c7c4f11: function(arg0) {
+      const ret = arg0.error;
+      return ret;
     },
     __wbg_finish_09ec094c10f41e7b: function(arg0) {
       const ret = arg0.finish();
@@ -237,6 +262,26 @@ function __wbg_get_imports() {
       const ret = arg0.info;
       return ret;
     },
+    __wbg_instanceof_GpuOutOfMemoryError_5c3b8a2499f59adb: function(arg0) {
+      let result;
+      try {
+        result = arg0 instanceof GPUOutOfMemoryError;
+      } catch (_) {
+        result = false;
+      }
+      const ret = result;
+      return ret;
+    },
+    __wbg_instanceof_GpuValidationError_7659e07b12d4e184: function(arg0) {
+      let result;
+      try {
+        result = arg0 instanceof GPUValidationError;
+      } catch (_) {
+        result = false;
+      }
+      const ret = result;
+      return ret;
+    },
     __wbg_instanceof_Window_82d71df4eddf88bc: function(arg0) {
       let result;
       try {
@@ -264,6 +309,10 @@ function __wbg_get_imports() {
     },
     __wbg_limits_601ad2e086ef8141: function(arg0) {
       const ret = arg0.limits;
+      return ret;
+    },
+    __wbg_lost_bb454eb62101af1a: function(arg0) {
+      const ret = arg0.lost;
       return ret;
     },
     __wbg_mapAsync_b0597127f5037286: function(arg0, arg1, arg2, arg3) {
@@ -386,6 +435,20 @@ function __wbg_get_imports() {
       const ret = arg0.maxVertexBuffers;
       return ret;
     },
+    __wbg_message_2aad50368e15e8f1: function(arg0, arg1) {
+      const ret = arg1.message;
+      const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+      const len1 = WASM_VECTOR_LEN;
+      getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
+      getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+    },
+    __wbg_message_ab4cad9eeb386607: function(arg0, arg1) {
+      const ret = arg1.message;
+      const ptr1 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+      const len1 = WASM_VECTOR_LEN;
+      getDataViewMemory0().setInt32(arg0 + 4 * 1, len1, true);
+      getDataViewMemory0().setInt32(arg0 + 4 * 0, ptr1, true);
+    },
     __wbg_minStorageBufferOffsetAlignment_5ba9b77792bdadb3: function(arg0) {
       const ret = arg0.minStorageBufferOffsetAlignment;
       return ret;
@@ -461,6 +524,10 @@ function __wbg_get_imports() {
     __wbg_queue_7b62c28143d44293: function(arg0) {
       const ret = arg0.queue;
       return ret;
+    },
+    __wbg_reason_b4fa3af867fc4430: function(arg0) {
+      const ret = arg0.reason;
+      return (__wbindgen_enum_GpuDeviceLostReason.indexOf(ret) + 1 || 3) - 1;
     },
     __wbg_requestAdapter_a539af006419f2e9: function(arg0, arg1) {
       const ret = arg0.requestAdapter(arg1);
@@ -830,6 +897,9 @@ function __wbg_get_imports() {
     __wbg_set_offset_f64_a903425d5a8e5815: function(arg0, arg1) {
       arg0.offset = arg1;
     },
+    __wbg_set_onuncapturederror_bb813f1102da2296: function(arg0, arg1) {
+      arg0.onuncapturederror = arg1;
+    },
     __wbg_set_operation_00a77386523b88f9: function(arg0, arg1) {
       arg0.operation = __wbindgen_enum_GpuBlendOperation[arg1];
     },
@@ -1043,6 +1113,10 @@ function __wbg_get_imports() {
     __wbg_submit_077c85cc28e36892: function(arg0, arg1, arg2) {
       arg0.submit(getArrayJsValueViewFromWasm0(arg1, arg2));
     },
+    __wbg_then_c8a35d4ad59c6b8e: function(arg0, arg1) {
+      const ret = arg0.then(arg1);
+      return ret;
+    },
     __wbg_then_c949d5a25a4e78f8: function(arg0, arg1, arg2) {
       const ret = arg0.then(arg1, arg2);
       return ret;
@@ -1056,6 +1130,10 @@ function __wbg_get_imports() {
     },
     __wbg_unmap_6a96b14c9ef5f7f5: function(arg0) {
       arg0.unmap();
+    },
+    __wbg_valueOf_02fd4d101b7553c7: function(arg0) {
+      const ret = arg0.valueOf();
+      return ret;
     },
     __wbg_warn_13abc63e0d4b3527: function(arg0) {
       console.warn(arg0);
@@ -1087,22 +1165,30 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000003: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_);
       return ret;
     },
     __wbindgen_generic_0000000000000004: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64);
       return ret;
     },
-    __wbindgen_generic_0000000000000005: function(arg0) {
-      const ret = arg0;
+    __wbindgen_generic_0000000000000005: function(arg0, arg1) {
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65);
       return ret;
     },
     __wbindgen_generic_0000000000000006: function(arg0, arg1) {
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66);
+      return ret;
+    },
+    __wbindgen_generic_0000000000000007: function(arg0) {
+      const ret = arg0;
+      return ret;
+    },
+    __wbindgen_generic_0000000000000008: function(arg0, arg1) {
       const ret = getArrayU8FromWasm0(arg0, arg1);
       return ret;
     },
-    __wbindgen_generic_0000000000000007: function(arg0, arg1) {
+    __wbindgen_generic_0000000000000009: function(arg0, arg1) {
       const ret = getStringFromWasm0(arg0, arg1);
       return ret;
     },
@@ -1121,6 +1207,12 @@ function __wbg_get_imports() {
     "./mb_host_bg.js": import0
   };
 }
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2) {
+  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2);
+}
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64(arg0, arg1, arg2) {
+  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64(arg0, arg1, arg2);
+}
 function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2) {
   const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2);
   if (ret[1]) {
@@ -1133,14 +1225,14 @@ function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bin
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__57(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__58(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
@@ -1157,6 +1249,7 @@ var __wbindgen_enum_GpuCanvasAlphaMode = ["opaque", "premultiplied"];
 var __wbindgen_enum_GpuCanvasToneMappingMode = ["standard", "extended"];
 var __wbindgen_enum_GpuCompareFunction = ["never", "less", "equal", "less-equal", "greater", "not-equal", "greater-equal", "always"];
 var __wbindgen_enum_GpuCullMode = ["none", "front", "back"];
+var __wbindgen_enum_GpuDeviceLostReason = ["unknown", "destroyed"];
 var __wbindgen_enum_GpuFilterMode = ["nearest", "linear"];
 var __wbindgen_enum_GpuFrontFace = ["ccw", "cw"];
 var __wbindgen_enum_GpuIndexFormat = ["uint16", "uint32"];
@@ -1238,6 +1331,16 @@ function debugString(val) {
 ${val.stack}`;
   }
   return className;
+}
+function getArrayJsValueFromWasm0(ptr, len) {
+  ptr = ptr >>> 0;
+  const mem = getDataViewMemory0();
+  const result = [];
+  for (let i = ptr; i < ptr + 4 * len; i += 4) {
+    result.push(wasm.__wbindgen_externrefs.get(mem.getUint32(i, true)));
+  }
+  wasm.__externref_drop_slice(ptr, len);
+  return result;
 }
 function getArrayJsValueViewFromWasm0(ptr, len) {
   ptr = ptr >>> 0;
@@ -1442,6 +1545,97 @@ async function __wbg_init(module_or_path) {
   }
   const { instance, module } = await __wbg_load(await module_or_path, imports);
   return __wbg_finalize_init(instance, module);
+}
+
+// src/bridge.ts
+var native = window.webkit?.messageHandlers?.mb;
+function post(m) {
+  if (native) native.postMessage(m);
+  if (m.op !== "heartbeat") console.log("[mb]", m.op, JSON.stringify(m));
+}
+var hasNative = native !== void 0;
+
+// src/gpu.ts
+var RETRY_MS = [50, 300, 1e3];
+var MAX_REPLACEMENTS = 5;
+var WINDOW_MS = 3e4;
+var restoring = false;
+var gaveUp = false;
+var replaced = [];
+function message(e) {
+  return e instanceof Error ? `${e.name}: ${e.message}` : String(e);
+}
+function log(level, msg) {
+  post({ op: "log", level, msg: `runtime: ${msg}` });
+}
+function flushLog() {
+  for (const line of host_gpu_log()) log(2, line);
+}
+function present(draw) {
+  let ok;
+  try {
+    ok = draw();
+  } catch (e) {
+    host_gpu_fault(message(e));
+    ok = false;
+  }
+  flushLog();
+  if (!ok) void restore();
+}
+async function restore() {
+  if (restoring || gaveUp) return;
+  restoring = true;
+  const now = performance.now();
+  replaced = replaced.filter((t) => now - t < WINDOW_MS);
+  let why = `device replaced ${replaced.length} times in ${WINDOW_MS / 1e3} s`;
+  if (replaced.length < MAX_REPLACEMENTS) {
+    for (const wait of RETRY_MS) {
+      await new Promise((r) => setTimeout(r, wait));
+      try {
+        await host_gpu_connect();
+      } catch (e) {
+        why = message(e);
+        log(2, `gpu: no new device yet (${why})`);
+        continue;
+      }
+      let ok = false;
+      try {
+        ok = host_gpu_install();
+      } catch (e) {
+        host_gpu_fault(message(e));
+        why = message(e);
+      }
+      flushLog();
+      if (ok) {
+        replaced.push(performance.now());
+        restoring = false;
+        log(1, "gpu: new device ready");
+        present(host_redraw);
+        return;
+      }
+    }
+  }
+  restoring = false;
+  gaveUp = true;
+  log(2, `gpu: giving up on this page (${why})`);
+  post({ op: "gpu-lost", message: why });
+}
+function debugGpu(kind) {
+  if (kind === "lose") {
+    host_gpu_debug_lose();
+    return;
+  }
+  const g = globalThis;
+  const proto = g.GPUCommandEncoder.prototype;
+  const finish = proto.finish;
+  proto.finish = function() {
+    proto.finish = finish;
+    throw new DOMException("GPUCommandEncoder.finish: Unable to finish.", "InvalidStateError");
+  };
+  if (kind === "gone") {
+    const gpu = navigator.gpu;
+    gpu.requestAdapter = () => Promise.resolve(null);
+  }
 }
 
 // src/abi.json
@@ -2300,14 +2494,6 @@ var abi_default = {
   ]
 };
 
-// src/bridge.ts
-var native = window.webkit?.messageHandlers?.mb;
-function post(m) {
-  if (native) native.postMessage(m);
-  if (m.op !== "heartbeat") console.log("[mb]", m.op, JSON.stringify(m));
-}
-var hasNative = native !== void 0;
-
 // src/abi.ts
 var HOST_DIRECT = [
   "mb2d_clear",
@@ -2784,8 +2970,8 @@ var Audio = class {
       if (p >= 4 && p <= 50) this.period += (p - this.period) * 0.05;
     }
     this.lastFrameNow = now;
-    const present = this.period * PRESENT_FRAMES;
-    if (Math.abs(present - this.presentMs) > 1) this.presentMs = present;
+    const present2 = this.period * PRESENT_FRAMES;
+    if (Math.abs(present2 - this.presentMs) > 1) this.presentMs = present2;
     this.frameNow = now;
     this.frameGame = game;
     this.frameScale = scale > 0 ? scale : 1;
@@ -3644,7 +3830,7 @@ var Runtime = class _Runtime {
       if (loaded || performance.now() > deadline) {
         this.prerolling = false;
         this.session.audio.setMuted(false);
-        if (!this.stopped) host_end_frame();
+        if (!this.stopped) present(host_end_frame);
         return;
       }
       this.raf = requestAnimationFrame(frame);
@@ -3791,7 +3977,7 @@ var Runtime = class _Runtime {
     host_begin_frame();
     this.timed("mb_render", () => this.guest.mb_render());
     if (this.stopped) return;
-    if (this.presenting) host_end_frame();
+    if (this.presenting) present(host_end_frame);
     if (this.hashes.length < MAX_FRAME_HASHES) this.hashes.push(host_draw_hash());
   }
   timed(name, f, budget = CALLBACK_BUDGET_MS) {
@@ -3826,8 +4012,8 @@ var Runtime = class _Runtime {
     return this.hashes;
   }
   snapshot() {
-    const log = this.source.kind === "replay" ? { ...this.source.log, frames: this.source.log.frames.slice(0, this.cursor) } : this.recorder.log;
-    return { ...this.brief(), log: structuredClone(log) };
+    const log2 = this.source.kind === "replay" ? { ...this.source.log, frames: this.source.log.frames.slice(0, this.cursor) } : this.recorder.log;
+    return { ...this.brief(), log: structuredClone(log2) };
   }
 };
 function hexBytes(hex) {
@@ -3875,13 +4061,13 @@ function drawOverlays(layout, screen, mic) {
 }
 async function createSession(page, source, seedOverride) {
   const { boot, manifest: m } = page;
-  const log = source.kind === "replay" ? source.log : void 0;
-  const seed = BigInt(log?.seed ?? seedOverride ?? boot.seed);
-  const dailySeed = BigInt(log?.dailySeed ?? boot.dailySeed);
-  const store = log?.store ?? { ...page.store };
-  const playerId = log?.playerId ?? boot.playerId;
-  const locale = log?.locale ?? boot.locale;
-  const screen = log ? new Float32Array(log.screen) : page.screen;
+  const log2 = source.kind === "replay" ? source.log : void 0;
+  const seed = BigInt(log2?.seed ?? seedOverride ?? boot.seed);
+  const dailySeed = BigInt(log2?.dailySeed ?? boot.dailySeed);
+  const store = log2?.store ?? { ...page.store };
+  const playerId = log2?.playerId ?? boot.playerId;
+  const locale = log2?.locale ?? boot.locale;
+  const screen = log2 ? new Float32Array(log2.screen) : page.screen;
   host_new_session();
   page.audio.newSession();
   const session = new Session(page.audio, seed, dailySeed, hexBytes(playerId), locale, screen, GAME, store, page.assets);
@@ -3941,7 +4127,7 @@ async function main() {
     const f = fit(canvas, boot);
     layout = f.layout;
     host_resize(f.size[0], f.size[1]);
-    host_redraw();
+    present(host_redraw);
     drawOverlayLayer?.();
   };
   window.addEventListener("resize", refit);
@@ -3993,7 +4179,8 @@ async function main() {
     },
     speed: (k) => {
       Runtime.timeScale = Math.max(0.01, Math.min(4, k));
-    }
+    },
+    debugGpu
   };
   if (!hasNative) {
     const q2 = new URLSearchParams(location.search);
