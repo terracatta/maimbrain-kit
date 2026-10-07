@@ -1,0 +1,11 @@
+{
+  "name": "maimbrain-kit",
+  "owner": { "name": "Maimbrain", "url": "https://maimbrain.com" },
+  "plugins": [
+    {
+      "name": "maimbrain",
+      "source": "./",
+      "description": "The maimbrain-game skill: design, build and publish games for the Maimbrain feed."
+    }
+  ]
+}

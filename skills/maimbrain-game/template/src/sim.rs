@@ -1,0 +1,68 @@
+//! The rules, with no host calls: `cargo test -p NAME` runs them natively.
+
+use maimbrain::Rng;
+
+/// A bubble you must tap before it shrinks away.
+pub struct Sim {
+    pub x: f32,
+    pub y: f32,
+    pub r: f32,
+    pub score: u32,
+    pub over: bool,
+    /// Shrink speed (units/s); rises with every pop.
+    shrink: f32,
+    rng: Rng,
+}
+
+pub const START_R: f32 = 60.0;
+
+impl Sim {
+    pub fn new(seed: u64) -> Sim {
+        Sim { x: 180.0, y: 320.0, r: START_R, score: 0, over: false, shrink: 10.0, rng: Rng::new(seed) }
+    }
+
+    pub fn step(&mut self, dt: f32) {
+        if self.over {
+            return;
+        }
+        self.r -= self.shrink * dt;
+        if self.r <= 8.0 {
+            self.over = true;
+        }
+    }
+
+    /// A tap at (x, y); true if it popped the bubble.
+    pub fn tap(&mut self, x: f32, y: f32) -> bool {
+        if self.over || (x - self.x).hypot(y - self.y) > self.r + 12.0 {
+            return false;
+        }
+        self.score += 1;
+        self.shrink += 4.0;
+        self.r = START_R;
+        self.x = self.rng.range(70.0, 290.0);
+        self.y = self.rng.range(160.0, 460.0);
+        true
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn first_seconds_cannot_fail() {
+        let mut s = Sim::new(1);
+        for _ in 0..(60 * 3) {
+            s.step(1.0 / 60.0);
+        }
+        assert!(!s.over);
+    }
+
+    #[test]
+    fn tapping_the_bubble_scores() {
+        let mut s = Sim::new(1);
+        assert!(s.tap(s.x, s.y));
+        assert_eq!(s.score, 1);
+        assert!(!s.tap(-100.0, -100.0));
+    }
+}

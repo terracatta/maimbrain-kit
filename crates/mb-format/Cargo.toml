@@ -1,0 +1,19 @@
+[package]
+name = "mb-format"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+description = "Maimbrain .mbx bundle format: manifest schema, pack/unpack, validation"
+
+[dependencies]
+serde = { version = "1.0.229", features = ["derive"] }
+sha2 = "0.11.0"
+thiserror = "2.0.21"
+toml = "1.1.6"
+walrus = "0.27.2"
+wasmparser = "0.261.0"
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+
+[dev-dependencies]
+wasmi = "2.0.0"
+wat = "1.261.0"
