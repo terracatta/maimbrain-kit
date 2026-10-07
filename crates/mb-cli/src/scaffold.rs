@@ -17,7 +17,8 @@ const ICON: &[u8] = include_bytes!(concat!(env!("MB_TEMPLATE_DIR"), "/icon.png")
 /// Where the SDK comes from outside this monorepo.
 const SDK_GIT: &str = "https://github.com/terracatta/maimbrain-kit";
 
-pub fn new_game(dir: &Path, username: Option<&str>) -> Result<(), String> {
+/// `who`: (username, id namespace) from the server, if signed in.
+pub fn new_game(dir: &Path, who: Option<(&str, &str)>) -> Result<(), String> {
     let name = dir.file_name().and_then(|n| n.to_str()).ok_or("give the game a directory name, e.g. mb new frogger")?;
     if !name.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_') || name.is_empty() {
         return Err(format!("{name:?}: use lowercase letters, digits and _ (it becomes the crate name and the id's last part)"));
@@ -25,7 +26,8 @@ pub fn new_game(dir: &Path, username: Option<&str>) -> Result<(), String> {
     if dir.exists() {
         return Err(format!("{} already exists", dir.display()));
     }
-    let user = username.unwrap_or("YOURNAME");
+    let (user, namespace) = who.unwrap_or(("yourname", "com.maimbrain.yourname"));
+    let id = format!("{namespace}.{}", name.replace('_', "-"));
     // Inside the Maimbrain monorepo (games/<name>) the crate joins the workspace; elsewhere it's standalone.
     let in_monorepo = dir.parent().map(|p| p.join("../sdk/maimbrain/Cargo.toml").exists()).unwrap_or(false);
     let cargo = if in_monorepo {
@@ -40,7 +42,7 @@ pub fn new_game(dir: &Path, username: Option<&str>) -> Result<(), String> {
             + "\n# Standalone: not part of any parent workspace.\n[workspace]\n\n[profile.release]\nopt-level = \"s\"\nlto = true\ncodegen-units = 1\npanic = \"abort\"\n"
     };
     let manifest = MANIFEST
-        .replace("id = \"dev.maimbrain.NAME\"", &format!("id = \"com.maimbrain.{user}.{name}\""))
+        .replace("id = \"dev.maimbrain.NAME\"", &format!("id = \"{id}\""))
         .replace("creator = \"@maimbrain\"", &format!("creator = \"@{user}\""))
         .replace("name = \"Bubble\"", &format!("name = \"{}\"", title_case(name)));
     std::fs::create_dir_all(dir.join("src")).map_err(|e| e.to_string())?;
@@ -51,9 +53,9 @@ pub fn new_game(dir: &Path, username: Option<&str>) -> Result<(), String> {
     write("src/sim.rs", SIM.replace("NAME", name).as_bytes())?;
     write("icon.png", ICON)?;
     std::fs::create_dir_all(dir.join("assets")).map_err(|e| e.to_string())?;
-    eprintln!("Created {} (id com.maimbrain.{user}.{name})", dir.display());
-    if username.is_none() {
-        eprintln!("Not signed in: run mb login, then replace YOURNAME in manifest.toml with your username.");
+    eprintln!("Created {} (id {id})", dir.display());
+    if who.is_none() {
+        eprintln!("Not signed in: run mb login, then put your namespace (mb whoami) in manifest.toml's id and creator.");
     }
     eprintln!("Next: mb build {}   (then mb publish {})", dir.display(), dir.display());
     Ok(())

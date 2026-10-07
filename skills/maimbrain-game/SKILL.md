@@ -59,7 +59,7 @@ Put your own generator script in `games/<name>/tools/` and commit it (the art st
 - **Look at screenshots** of the title, the first seconds, mid-round, danger, failure and game-over. Check them against the [engagement checklist](engagement.md#checklist). Then fix what you see and look again.
 
 ### 5. Publish (when the user asks)
-`mb publish <game dir>` builds the game, uploads it to maimbrain.com and waits for the server's validation. It then waits for a moderator's review; `maimbrain.com/create` shows the status and any reviewer notes. Ids must be `com.maimbrain.<username>.<game>` and `creator` must be `@<username>` (`mb new` sets both). Each upload needs a higher `version` than the last.
+`mb publish <game dir>` builds the game, uploads it to maimbrain.com and waits for the server's validation. It then waits for a moderator's review; `maimbrain.com/create` shows the status and any reviewer notes. Ids must be in your namespace (`mb whoami` shows it: `com.maimbrain.<username>`, with `_` as `-`) and `creator` must be `@<username>` (`mb new` sets both). Each upload needs a higher `version` than the last.
 
 ### 6. Hand off honestly
 Write down what you couldn't verify without a phone (feel of tilt, haptics, audio balance, safe areas), with the exact numbers to tune (gain, dead zone, timings) collected as named constants at the top of one file.

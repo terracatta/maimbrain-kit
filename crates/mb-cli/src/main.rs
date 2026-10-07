@@ -122,7 +122,11 @@ enum Cmd {
 
 fn main() -> ExitCode {
     let result = match Cli::parse().cmd {
-        Cmd::New { dir } => scaffold::new_game(&dir, remote::whoami().ok().as_ref().and_then(|w| w["username"].as_str())),
+        Cmd::New { dir } => {
+            let who = remote::whoami().ok();
+            let pair = who.as_ref().and_then(|w| Some((w["username"].as_str()?, w["namespace"].as_str()?)));
+            scaffold::new_game(&dir, pair)
+        }
         Cmd::Login { server } => remote::login(server.as_deref()),
         Cmd::Whoami => remote::whoami().map(|w| println!("@{} ({})", w["username"].as_str().unwrap_or("?"), remote::server(None))),
         Cmd::Publish { path, out } => {
@@ -186,7 +190,10 @@ fn build(dir: &Path) -> Result<PathBuf, String> {
     let max_memory = manifest.perf_tier.max_memory_pages() * 65536;
     eprintln!("building {name} ({:?}, max memory {} MiB)", manifest.perf_tier, max_memory >> 20);
     let status = Command::new("cargo")
-        .args(["build", "-p", &name, "--target", "wasm32-unknown-unknown", "--release"])
+        // The game's own Cargo.toml: works for a standalone crate and for a workspace member.
+        .args(["build", "--manifest-path"])
+        .arg(dir.join("Cargo.toml"))
+        .args(["-p", &name, "--target", "wasm32-unknown-unknown", "--release"])
         // SPEC §3: the declared memory maximum is set by perf tier.
         .env("CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUSTFLAGS", format!("-C link-arg=--max-memory={max_memory}"))
         .status()
@@ -194,7 +201,7 @@ fn build(dir: &Path) -> Result<PathBuf, String> {
     if !status.success() {
         return Err(format!("cargo build failed for {name}"));
     }
-    let target = workspace_target_dir()?;
+    let target = workspace_target_dir(dir)?;
     let raw = target.join("wasm32-unknown-unknown/release").join(format!("{}.wasm", name.replace('-', "_")));
     let opt = raw.with_extension("opt.wasm");
     let wasm_opt = Command::new("wasm-opt")
@@ -227,9 +234,10 @@ fn mb_format_features() -> [&'static str; 7] {
     ]
 }
 
-fn workspace_target_dir() -> Result<PathBuf, String> {
+fn workspace_target_dir(dir: &Path) -> Result<PathBuf, String> {
     let out = Command::new("cargo")
-        .args(["metadata", "--format-version", "1", "--no-deps"])
+        .args(["metadata", "--format-version", "1", "--no-deps", "--manifest-path"])
+        .arg(dir.join("Cargo.toml"))
         .output()
         .map_err(|e| format!("running cargo metadata: {e}"))?;
     let meta: serde_json::Value = serde_json::from_slice(&out.stdout).map_err(|e| e.to_string())?;
