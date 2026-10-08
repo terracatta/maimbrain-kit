@@ -1184,15 +1184,15 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000004: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__86);
       return ret;
     },
     __wbindgen_generic_0000000000000005: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__87);
       return ret;
     },
     __wbindgen_generic_0000000000000006: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__88);
       return ret;
     },
     __wbindgen_generic_0000000000000007: function(arg0) {
@@ -1225,8 +1225,8 @@ function __wbg_get_imports() {
 function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2) {
   wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2);
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83(arg0, arg1, arg2) {
-  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__86(arg0, arg1, arg2) {
+  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__86(arg0, arg1, arg2);
 }
 function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2) {
   const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2);
@@ -1240,14 +1240,14 @@ function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bin
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__87(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__87(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__88(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__88(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
@@ -2055,6 +2055,33 @@ var abi_default = {
       results: []
     },
     {
+      name: "mb2d_font_load",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb2d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb2d_font_metrics",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb2d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
       name: "mb3d_mesh",
       params: [
         "i32",
@@ -2594,6 +2621,17 @@ var abi_default = {
       results: []
     },
     {
+      name: "mb3d_speed",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: []
+    },
+    {
       name: "mb_sound",
       params: [
         "i32"
@@ -2844,6 +2882,7 @@ var FOG_SIZE = 48;
 var STYLE_SIZE = 32;
 var TEXT_DESC_SIZE = 64;
 var DOF_SIZE = 16;
+var SPEED_SIZE = 32;
 var NAME_MAX = 256;
 var TEXT_MAX_BYTES = 4096;
 var MESH_MAX_BYTES = 64 * 1024 * 1024;
@@ -2952,8 +2991,18 @@ function buildImports(s, host, m) {
       toHost(data);
       return host.mbh_image(data.length);
     }),
-    // Games can't bundle fonts yet; use the host font ids 0–2 (SPEC §5.3).
+    // mb2d 1's never-implemented font call; mb2d 2 games use mb2d_font_load (SPEC §5.3).
     mb2d_font: (() => -7 /* Unsupported */),
+    // 5.3 mb2d 2: game fonts (.mbf baked by `mb font add`).
+    mb2d_font_load: ((asset) => {
+      const n = assetToHost(asset);
+      return n < 0 ? n : host.mbh_font_load(n);
+    }),
+    mb2d_font_metrics: ((font, out) => {
+      const r = host.mbh_font_metrics(font);
+      if (r >= 0) bytes().set(new Uint8Array(host.memory.buffer, host.host_scratch(32), 32), out);
+      return r;
+    }),
     // 5.4 mb3d, memory-passing calls
     mb3d_mesh: ((ptr, len) => {
       if (len < 12 || len > MESH_MAX_BYTES) return -2 /* InvalidArgument */;
@@ -3044,6 +3093,10 @@ function buildImports(s, host, m) {
     mb3d_dof: ((ptr) => {
       toHost(slice(ptr, DOF_SIZE));
       host.mbh_dof();
+    }),
+    mb3d_speed: ((ptr) => {
+      toHost(slice(ptr, SPEED_SIZE));
+      host.mbh_speed();
     }),
     // 5.6 audio
     mb_sound: ((asset) => {

@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T03:00:13Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a low, wide wedge of yellow cheese, twice as wide as it is tall, shaped as a symmetric trapezoid: a long flat bottom edge, a short flat top edge less than half as wide as the bottom, straight slanted sides; a few round holes kept well inside the shape; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+  "full_prompt": "A single 2D game sprite of a low, wide wedge of yellow cheese, twice as wide as it is tall, shaped as a symmetric trapezoid: a long flat bottom edge, a short flat top edge less than half as wide as the bottom, straight slanted sides; a few round holes kept well inside the shape; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers). Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 58329462,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/cheese-58329462.jpg",
+  "raw_sha256": "db10117ecfee92c5c2ebd68a61616e1acd781aa6187a203f919d4d683e093f52",
+  "output_sha256": "9078aa9e9e7c097a2cae9bfbd5e21a19ce551e3fc2f287754a95221e1b713252",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "16:9",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 0,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "cheese",
+    "no_style": false,
+    "out": "assets/cheese.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 58329462,
+    "size": [
+      168,
+      84
+    ],
+    "subject": "a low, wide wedge of yellow cheese, twice as wide as it is tall, shaped as a symmetric trapezoid: a long flat bottom edge, a short flat top edge less than half as wide as the bottom, straight slanted sides; a few round holes kept well inside the shape; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#040ffe",
+    "size": [
+      168,
+      84
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

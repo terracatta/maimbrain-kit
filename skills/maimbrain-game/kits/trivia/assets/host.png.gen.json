@@ -1,0 +1,68 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:57:05Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "Watt, a cheerful cartoon lightbulb quiz-show host: a round cream-yellow glass bulb head with a big expressive face (large oval eyes with pupils, eyebrows, a wide mouth), a ribbed silver screw base as his body, a tomato-red bow tie with white polka dots at the collar, two small white-gloved cartoon hands. Seven expression frames, in order: 1 idle, friendly closed-mouth smile, hands at his sides; 2 thinking, one eyebrow raised, eyes glancing up and to the side, one gloved finger on his chin; 3 nervous, very wide eyes, wobbly zigzag mouth, sweat drops flying off the glass, both hands clutching his bow tie; 4 happy, eyes squeezed into happy arcs, huge open grin, both arms thrown up; 5 star-struck, eyes are big mustard five-point stars, enormous grin, jazz hands, small sparkles around the bulb; 6 flickering, the glass dimmed to grey, wincing with eyes squeezed shut, a little zigzag spark at the top; 7 blown out, the glass dark grey and cracked with jagged crack lines, eyes are X marks, mouth a wavy line, a small wisp of smoke from the top, slumped",
+  "full_prompt": "An animation sprite sheet: 7 frames of Watt, a cheerful cartoon lightbulb quiz-show host: a round cream-yellow glass bulb head with a big expressive face (large oval eyes with pupils, eyebrows, a wide mouth), a ribbed silver screw base as his body, a tomato-red bow tie with white polka dots at the collar, two small white-gloved cartoon hands. Seven expression frames, in order: 1 idle, friendly closed-mouth smile, hands at his sides; 2 thinking, one eyebrow raised, eyes glancing up and to the side, one gloved finger on his chin; 3 nervous, very wide eyes, wobbly zigzag mouth, sweat drops flying off the glass, both hands clutching his bow tie; 4 happy, eyes squeezed into happy arcs, huge open grin, both arms thrown up; 5 star-struck, eyes are big mustard five-point stars, enormous grin, jazz hands, small sparkles around the bulb; 6 flickering, the glass dimmed to grey, wincing with eyes squeezed shut, a little zigzag spark at the top; 7 blown out, the glass dark grey and cracked with jagged crack lines, eyes are X marks, mouth a wavy line, a small wisp of smoke from the top, slumped, in a grid of 3 columns and 3 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. The same character drawn identically in every frame, same size and position, only the face and small details change. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1872065215,
+  "seed_honored": true,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "b6a8d0b2107e73287aa4ff6f77e8acc7b73c142e07ecfcc0094760e2aa0591eb"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/host-1872065215.jpg",
+  "raw_sha256": "f4e0db73042da10cddffdf653dac780ffee1e0231f42de7fa6066e89a6ec05e6",
+  "output_sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2",
+  "allowed_names": [],
+  "model_text": "Here is the animation sprite sheet of Watt with 7 expression frames, created in a 1950s TV game-show print style on a flat magenta background.",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 4,
+    "frames": 7,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 20,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "host",
+    "no_style": false,
+    "out": "assets/host.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "2K",
+    "seed": 1872065215,
+    "size": [
+      320,
+      352
+    ],
+    "subject": "Watt, a cheerful cartoon lightbulb quiz-show host: a round cream-yellow glass bulb head with a big expressive face (large oval eyes with pupils, eyebrows, a wide mouth), a ribbed silver screw base as his body, a tomato-red bow tie with white polka dots at the collar, two small white-gloved cartoon hands. Seven expression frames, in order: 1 idle, friendly closed-mouth smile, hands at his sides; 2 thinking, one eyebrow raised, eyes glancing up and to the side, one gloved finger on his chin; 3 nervous, very wide eyes, wobbly zigzag mouth, sweat drops flying off the glass, both hands clutching his bow tie; 4 happy, eyes squeezed into happy arcs, huge open grin, both arms thrown up; 5 star-struck, eyes are big mustard five-point stars, enormous grin, jazz hands, small sparkles around the bulb; 6 flickering, the glass dimmed to grey, wincing with eyes squeezed shut, a little zigzag spark at the top; 7 blown out, the glass dark grey and cracked with jagged crack lines, eyes are X marks, mouth a wavy line, a small wisp of smoke from the top, slumped",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      320,
+      352
+    ],
+    "cols": 4,
+    "frames": 7,
+    "keyed_background": "#fe3bf5",
+    "rust": "frame i's source rect: [(i % 4) × 320, (i / 4) × 352, 320, 352] (e.g. 7 frames at 8–12 fps)",
+    "size": [
+      1280,
+      704
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

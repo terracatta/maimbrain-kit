@@ -1,0 +1,77 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T03:02:25Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a shiny gold coin with a raised star in the middle and a darker rim, spinning: 6 frames from face-on to edge-on and back",
+  "full_prompt": "An animation sprite sheet: 6 frames of a shiny gold coin with a raised star in the middle and a darker rim, spinning: 6 frames from face-on to edge-on and back, in a grid of 3 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Side view, facing right. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 16×16 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1579987781,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/coin-1579987781.jpg",
+  "raw_sha256": "8f5934354051c27091814abfa3108b8bc491a2245d6b17c73535dd2d25ac3c7d",
+  "output_sha256": "a05090ec1ea5f10759d11288e50503e790af191cf2185a3603cebfb209eff657",
+  "allowed_names": [],
+  "model_text": "I have generated a high-contrast 16-bit chunky pixel art animation sprite sheet for the spinning gold coin based on your specific grid, sequence, and palette requirements, matching the visual style of image_0.png.",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 6,
+    "frames": 6,
+    "grid": [
+      16,
+      16
+    ],
+    "grid_explicit": true,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "coin",
+    "no_style": false,
+    "out": "assets/coin.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1579987781,
+    "size": [
+      48,
+      48
+    ],
+    "subject": "a shiny gold coin with a raised star in the middle and a darker rim, spinning: 6 frames from face-on to edge-on and back",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      48,
+      48
+    ],
+    "cols": 6,
+    "frames": 6,
+    "keyed_background": "#fd0afa",
+    "pixel_scale": 3,
+    "rust": "frame i's source rect: [(i % 6) × 48, (i / 6) × 48, 48, 48] (e.g. 6 frames at 8–12 fps)",
+    "size": [
+      288,
+      48
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

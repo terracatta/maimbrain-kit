@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:58:10Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a small glossy round dark-red cherry bomb with a short brown stem as its fuse and a bright yellow spark at the tip",
+  "full_prompt": "A single 2D game sprite of a small glossy round dark-red cherry bomb with a short brown stem as its fuse and a bright yellow spark at the tip. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. A single clay model seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 697403761,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "afb6ee6adc17922bc0266740b583b2fdadf73d88034cbfe47bff7bf7eb53ad06"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/bomb-697403761.jpg",
+  "raw_sha256": "ee128c213710a24e26115c59d5b888205f604c29ba53f8d423db9d1d09ea7a19",
+  "output_sha256": "e07ae4ef89847b31555b9cacebe1a9bc09d10856b4e1c0cf6c68ae2a48723b56",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 3,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "bomb",
+    "no_style": false,
+    "out": "assets/bomb.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 697403761,
+    "size": [
+      48,
+      48
+    ],
+    "subject": "a small glossy round dark-red cherry bomb with a short brown stem as its fuse and a bright yellow spark at the tip",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#09f606",
+    "size": [
+      48,
+      48
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

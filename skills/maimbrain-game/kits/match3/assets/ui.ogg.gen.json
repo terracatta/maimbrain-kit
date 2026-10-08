@@ -1,0 +1,53 @@
+{
+  "generator": "mb 0.4.1 sfx",
+  "date": "2026-10-08T03:35:35Z",
+  "provider": "elevenlabs",
+  "model": "eleven_text_to_sound_v2",
+  "prompt": "one single soft wooden click that starts instantly, a tiny wooden toy button pressed once",
+  "full_prompt": "one single soft wooden click that starts instantly, a tiny wooden toy button pressed once. soft, cute, gentle and round, cozy bedtime storybook, clean, no music. A single clean sound effect for a mobile game, about 0.5 seconds, starting immediately with no silence before it; no music, no voice.",
+  "seed": 947723263,
+  "seed_honored": false,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.002,
+  "cost_usd": null,
+  "raw": "art/raw/ui-947723263.pcm",
+  "raw_sha256": "5a57305a62a43fa48056a552937c20f8bf3e7ca02de8da2fa1073984e124e9ad",
+  "output_sha256": "79723c856d327dd9f732d1587151fbec7839df2d232a8c98ca1a2f5382a28720",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "bars": null,
+    "bpm": null,
+    "kind": "sfx",
+    "layers": false,
+    "looping": false,
+    "model": "eleven_text_to_sound_v2",
+    "name": "ui",
+    "negative": null,
+    "no_style": false,
+    "once": false,
+    "out": "assets/ui.ogg",
+    "provider": "elevenlabs",
+    "quality": 3.0,
+    "rate": 32000,
+    "seconds": 0.5,
+    "seed": 947723263,
+    "split_hz": 700.0,
+    "subject": "one single soft wooden click that starts instantly, a tiny wooden toy button pressed once"
+  },
+  "result": {
+    "loud_rms_db": -20.484445571899414,
+    "peak_db": -3.1675891876220703,
+    "seconds": 0.28587499260902405,
+    "source_channels": 1,
+    "source_rate": 24000,
+    "source_seconds": 0.9599999785423279,
+    "warnings": []
+  },
+  "note": "Generated with ElevenLabs; check your plan's license terms (the free plan has non-commercial terms)."
+}

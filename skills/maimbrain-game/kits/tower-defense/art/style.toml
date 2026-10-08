@@ -1,0 +1,58 @@
+# The style guide for Cake Keep's generated art. `mb art` applies it to every
+# image (sprites, sheets, the map, the icon) so they look like one set. To
+# restyle the kit: edit this file, then run tools/regen.sh (DESIGN.md, "Make it yours").
+
+name = "Cake Keep"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above"
+
+# Short style words added to every prompt.
+keywords = ["readable silhouettes", "chunky proportions", "bright saturated candy colors", "soft subsurface glow on jelly", "clean simple shapes"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "flat vector art", "outlines drawn in ink", "busy detail", "tiny fiddly parts", "harsh specular highlights", "dark gloomy lighting", "any green on characters or towers"]
+
+# Hex colors, darkest first. Sent with every prompt.
+palette = ["#3a1f35", "#4f9a5e", "#9ed99a", "#c98a52", "#f3d9a4", "#ff5d73", "#ffd23f", "#8fe3ff", "#fff6ea"]
+palette_lock = false
+
+pixel_art = false
+pixel_scale = 4
+
+# Quantize every asset to at most this many colors (0: off). Per-command --colors overrides.
+colors = 96
+
+# Up to 3 images whose style every generation should match. The gummy jelly
+# is the hero: once it looked right, everything after it matched it.
+references = ["assets/jelly_gummy.png"]
+
+# Flat background asked for on transparent assets. Pure green: nothing on the
+# characters, towers or cake is green (see `avoid`), so keying is clean.
+key = "#00ff00"
+
+# provider = "gemini"
+# model = "gemini-nano-banana-2.1"
+# resolution = "1K"
+
+# Per-kind additions and default sizes (PNG pixels; the canvas is 2 px per logical unit).
+[sprite]
+prompt = "a single clay model seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it"
+size = [128, 128]
+
+[frames]
+prompt = "the same clay model in every frame, same size, same camera angle, seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it"
+size = [96, 96]
+
+[background]
+prompt = "seen straight from above, an even soft studio light, a plasticine diorama"
+
+[icon]
+prompt = "a close-up of a clay cake with a worried face on a plate and an angry red jelly blob creeping toward it, bright and bold"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "bouncy circus marching band: oompah tuba, snare drum rolls, glockenspiel, clarinet and cornet melody, cheeky and playful, steady march tempo"
+
+[sfx]
+prompt = "cartoon claymation foley, squishy and playful, crisp and short, dry with no reverb tail"

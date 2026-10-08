@@ -1,0 +1,53 @@
+{
+  "generator": "mb 0.4.1 sfx",
+  "date": "2026-10-08T03:35:02Z",
+  "provider": "elevenlabs",
+  "model": "eleven_text_to_sound_v2",
+  "prompt": "a dull soft stone clonk, a small pebble knocking on a wooden table",
+  "full_prompt": "a dull soft stone clonk, a small pebble knocking on a wooden table. soft, cute, gentle and round, cozy bedtime storybook, clean, no music. A single clean sound effect for a mobile game, about 0.5 seconds, starting immediately with no silence before it; no music, no voice.",
+  "seed": 797491467,
+  "seed_honored": false,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.002,
+  "cost_usd": null,
+  "raw": "art/raw/rock-797491467.pcm",
+  "raw_sha256": "a1424ffa8a1caf7d63c8128d50c515ac36c49b4000297cd7f2c293aab0c86b22",
+  "output_sha256": "d513429fb77031bd26be8db1612d0d69bfb9e3eb849dbb1ad69b7081ca168a6a",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "bars": null,
+    "bpm": null,
+    "kind": "sfx",
+    "layers": false,
+    "looping": false,
+    "model": "eleven_text_to_sound_v2",
+    "name": "rock",
+    "negative": null,
+    "no_style": false,
+    "once": false,
+    "out": "assets/rock.ogg",
+    "provider": "elevenlabs",
+    "quality": 3.0,
+    "rate": 32000,
+    "seconds": 0.5,
+    "seed": 797491467,
+    "split_hz": 700.0,
+    "subject": "a dull soft stone clonk, a small pebble knocking on a wooden table"
+  },
+  "result": {
+    "loud_rms_db": -20.28306007385254,
+    "peak_db": -3.714709520339966,
+    "seconds": 0.24978125095367432,
+    "source_channels": 1,
+    "source_rate": 24000,
+    "source_seconds": 0.9599999785423279,
+    "warnings": []
+  },
+  "note": "Generated with ElevenLabs; check your plan's license terms (the free plan has non-commercial terms)."
+}

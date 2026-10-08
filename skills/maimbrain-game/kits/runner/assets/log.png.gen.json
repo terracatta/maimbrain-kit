@@ -1,0 +1,70 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T03:02:10Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a long fallen tree log lying horizontally, seen from the side: rough brown bark with a few knots running the whole length, the left end a pale cut face with growth rings, the right end also cut flat, perfectly straight and even thickness",
+  "full_prompt": "A single 2D game sprite of a long fallen tree log lying horizontally, seen from the side: rough brown bark with a few knots running the whole length, the left end a pale cut face with growth rings, the right end also cut flat, perfectly straight and even thickness. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Side view, facing right. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 64×20 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1335438743,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/log-1335438743.jpg",
+  "raw_sha256": "c09bd3941021fd93498262675c48f147813c7c92f1c91e18f3846e3e8fb16ee0",
+  "output_sha256": "f4c5f75beabcae4d14bb264f455f719cf9db4ebffeb3f6ef33c11b7139a4e9bc",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "21:9",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": [
+      64,
+      20
+    ],
+    "grid_explicit": true,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "log",
+    "no_style": false,
+    "out": "assets/log.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1335438743,
+    "size": [
+      192,
+      60
+    ],
+    "subject": "a long fallen tree log lying horizontally, seen from the side: rough brown bark with a few knots running the whole length, the left end a pale cut face with growth rings, the right end also cut flat, perfectly straight and even thickness",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#fd0cfb",
+    "pixel_scale": 3,
+    "size": [
+      192,
+      60
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

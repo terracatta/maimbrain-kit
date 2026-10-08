@@ -7,10 +7,12 @@
 //!     .shadow(0.0, 4.0, 0x00000080).align(Align::Center).draw(180.0, 120.0);
 //! ```
 //!
-//! Inter (`Font::Sans`, `Font::SansBold`) is a signed-distance font: crisp at
-//! any size, with outlines, glows and soft shadows done by the host. The
-//! pixel font gets outlines and shadows by drawing offset copies, a whole
-//! art pixel (`size / 8`) apart, so keep its size a multiple of 8.
+//! Inter (`Font::Sans`, `Font::SansBold`) and game fonts baked as distance
+//! fields (`Font::asset`, most library fonts) are crisp at any size, with
+//! outlines, glows and soft shadows done by the host. Bitmap fonts (the
+//! pixel font, library pixel fonts) get outlines and shadows by drawing
+//! offset copies, a whole art pixel (`size / pixel_em`) apart, so keep their
+//! size a multiple of `font.pixel_em()` (8 for `Font::Pixel`; `theme.fit`).
 
 use crate::gfx2d::{self, Font, TextStyle};
 
@@ -49,10 +51,8 @@ pub struct Metrics {
 }
 
 pub fn metrics(font: Font) -> Metrics {
-    match font {
-        Font::Pixel => Metrics { ascent: 0.875, cap: 0.875, line: 1.25 },
-        _ => Metrics { ascent: 0.96875, cap: 0.734, line: 1.2099 },
-    }
+    let m = font.metrics();
+    Metrics { ascent: m.ascent, cap: m.cap, line: m.line }
 }
 
 /// A piece of text with its look. Build with [`text`], then `draw`.
@@ -269,12 +269,12 @@ impl<'a> Text<'a> {
         if line.is_empty() {
             return;
         }
-        let pixel = self.font == Font::Pixel;
+        let pixel_em = self.font.pixel_em();
         let (sdx, sdy, sblur, scol) = self.shadow;
         let (ow, ocol) = self.outline;
-        if pixel {
-            let px = self.size / 8.0;
-            let o = if ow > 0.0 && ocol & 0xff != 0 { (ow * 8.0).round().max(1.0) * px } else { 0.0 };
+        if pixel_em > 0.0 {
+            let px = self.size / pixel_em;
+            let o = if ow > 0.0 && ocol & 0xff != 0 { (ow * pixel_em).round().max(1.0) * px } else { 0.0 };
             if scol & 0xff != 0 {
                 self.raw(line, x + sdx, y + sdy, scol, o, scol);
             }

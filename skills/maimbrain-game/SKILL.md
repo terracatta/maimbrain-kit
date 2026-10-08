@@ -10,10 +10,44 @@ A Maimbrain game lives in a vertical feed, between other games, in front of some
 Read these before writing code:
 1. **`docs/SPEC.md`**: the contract. Especially §2 (manifest), §3 (determinism), §5.2 (feed navigation: browse vs play, the card overlay areas), §5.7 (sensors only in play), §9 (build, preview, test).
 2. **[engagement.md](engagement.md)**: what makes a game work *in this feed*. Its rules are requirements, not suggestions.
-3. **[template/](template/)**: a tiny complete game (tap the bubble) to start from; **[template-3d/](template-3d/)** is the 3D one (catch the drone; see the 3D section). `mb new games/<name>` creates a game from the 2D template, `mb new --3d games/<name>` from the 3D one. Signed in (`mb login`), the id and creator come from your account; signed out it still works, with a placeholder id and creator (or pass `--id dev.you.name --creator @you`), which build and preview fine but must become your namespace before `mb publish`. You can also copy a template to `games/<name>/` by hand and replace `NAME` in `Cargo.toml` and `manifest.toml` (and `icon.png` with your own). Keep its shape: pure rules in `src/sim.rs` with tests, and a thin host layer in `src/lib.rs` that handles tap to start, round reporting, score-before-Over, the retry guard and saving the best score.
+3. **[kits/](kits/)**: if the brief is a familiar genre (runner, stacker, shooter, match-3, racer, tower defense, trivia), start from that genre's kit instead of the template: see [Start from a kit](#start-from-a-kit). Otherwise, **[template/](template/)**: a tiny complete game (tap the bubble) to start from; **[template-3d/](template-3d/)** is the 3D one (catch the drone; see the 3D section). `mb new games/<name>` creates a game from the 2D template, `mb new --3d games/<name>` from the 3D one. Signed in (`mb login`), the id and creator come from your account; signed out it still works, with a placeholder id and creator (or pass `--id dev.you.name --creator @you`), which build and preview fine but must become your namespace before `mb publish`. You can also copy a template to `games/<name>/` by hand and replace `NAME` in `Cargo.toml` and `manifest.toml` (and `icon.png` with your own). Keep its shape: pure rules in `src/sim.rs` with tests, and a thin host layer in `src/lib.rs` that handles tap to start, round reporting, score-before-Over, the retry guard and saving the best score.
 4. **`sdk/maimbrain/src/`**: the SDK. Read the core (lib, sys, input, gfx2d, audio, store, sensors) in full; for the UI and juice kit (`ui/`, `motion.rs`, `juice.rs`), **`docs/UI.md`** is the tour and the section [UI and juice](#ui-and-juice) below has the recipes.
-5. **[assets.md](assets.md)** before making art or sound: when to generate it (`mb art`, `mb music`, `mb sfx`) and when to draw it in code, the style guide, prompts, iterating, checking results, budgets.
-6. **`docs/PHYSICS.md`** if the game has things that stack, topple, bounce, roll, swing or break (see the Physics section).
+5. **[identity.md](identity.md)**: the art-direction step. Pick and write down the game's own look (reference, palette, a font pairing from the library, shape language, motion, one signature idea) before building, so it doesn't come out looking like every other Maimbrain game (docs/IDENTITY.md has the measurements).
+6. **[assets.md](assets.md)** before making art or sound: when to generate it (`mb art`, `mb music`, `mb sfx`) and when to draw it in code, the style guide, prompts, iterating, checking results, budgets.
+7. **`docs/PHYSICS.md`** if the game has things that stack, topple, bounce, roll, swing or break (see the Physics section).
+
+## Start from a kit
+
+The kits are small, complete, polished games, one per common genre, that already do everything this skill asks: a live title card, the UI kit's HUD and results card, juice, sound and music, a difficulty curve tuned with a bot, rounds, score submission, the retry guard, the best score, a daily mode where it fits, pure rules in `src/sim.rs` with tests, and the tuning knobs at the top of that file. Starting from one puts you at "good" on the first build; your job becomes making it *yours*.
+
+```sh
+mb kits                                  # the list, with what each plays like
+mb new --kit runner games/<name>         # copies the kit; same --id/--creator rules as the templates
+```
+
+| Kit | Ships as | Tech | Pick it when the brief is… |
+|---|---|---|---|
+| `runner` | Bun Run | 2D | an endless runner, one-tap jumper, "dodge things as you go", auto-scrolling platformer |
+| `stacker` | Picnic Pile | 2D + physics2d | stacking, balancing, dropping things on a pile, "how high can you build", anything wobbly |
+| `shooter` | Nova Pip | 2D | a vertical shooter, bullet dodger, space/sky/sea shoot-'em-up, waves and a boss |
+| `match3` | Poppets | 2D | a swap or match puzzle, gems/candies/tiles, cascades and combos |
+| `racer` | Swerve | 3D (mb3d 2) | driving, lane racing, traffic dodging, anything "behind the vehicle" in 3D |
+| `tower-defense` | Cake Keep | 2D | defending a base, placing towers or units, lanes and waves |
+| `trivia` | Bright Spark | 2D, text | a quiz, questions and answers, true/false, guess-the-thing |
+
+Don't force a kit onto a brief it doesn't fit: games built on a sensor (tilt, mic, shake), rhythm games (`games/summoned`), toys and anything with an unusual verb start from the template. A brief that mixes genres ("a runner where you shoot") starts from the kit with the core verb and borrows from another (copy the module; kits share the same shape).
+
+**After `mb new --kit`:**
+1. Read `games/<name>/DESIGN.md` (how it plays, the tuning knobs, "Make it yours", the bot's numbers) and skim `src/`. `cargo test -p <name>` and `mb build` pass as copied; keep them passing.
+2. Rewrite DESIGN.md for *your* game before changing code (the workflow below still applies: the verb, the 1-second read, the first 10 seconds…).
+3. Make the three changes below, then re-tune with the bot (`cargo test -p <name> --release -- --ignored --nocapture difficulty`), preview, `mb.verify()`, screenshots, the engagement checklist.
+
+**Make it yours: three changes, every time.** A kit played as is feels like every other game made from it. Do all three:
+1. **A new identity.** Theme, character, world, title, tagline, palette and sounds, changed together (each kit groups its look in one place; its art and audio come from the generators: edit `art/style.toml` and the prompts in `tools/regen.sh`, then rerun it, or `mb regen` one asset; see [assets.md](assets.md)). A stranger who has seen the kit must not recognize your title card. Never ship the kit's title, character or tagline.
+2. **A twist on the verb or a rule.** One change to *how it plays*, not just how it looks: a runner that flips gravity instead of jumping, a stacker whose platform tilts, a match-3 where matches push the board up, a racer that drifts, trivia where you pick the wrong answer. Each kit's DESIGN.md lists ideas and the code to touch.
+3. **One new thing.** A mechanic, enemy, power-up or event the kit doesn't have, introduced 15–30 s in, so the second half of a round surprises.
+
+Also change the fail moment and the game-over card's aftermath (they're the most-shared screens), and keep what the kit gets right: the sim/test/bot split, the round and score hooks, the retry guard, determinism (`mb.verify()` must still match).
 
 ## Workflow
 
@@ -26,6 +60,9 @@ Write `games/<name>/DESIGN.md` before any code, answering:
 - **The loop**: round length (aim for 30–90 s for a typical player), what escalates, and what's new every ~15 s.
 - **The cards**: what the title card, the game-over card and a replay card each show (engagement.md §Cards).
 - **Score**: what's counted, shown big, and saved as best.
+
+### 1b. Art direction: choose an identity
+Follow [identity.md](identity.md): add an `## Identity` section to DESIGN.md with a reference era or medium, a palette, a font pairing from the library (`mb fonts`, `mb fonts --preview`), a shape language, a motion personality, the title/results/HUD layouts, and one signature visual idea. Set `IDENTITY` in `src/lib.rs` to match (`mb new` puts a random kit identity there so new games don't all start alike; don't ship it unexamined). Bake the fonts with `mb font add`. Avoid the house defaults that docs/IDENTITY.md lists: pixel-font titles with hard shadows, purple gradients, centred "DON'T…" taglines, "SPLAT!" + big number + "NEW BEST!" cards.
 
 ### 2. Simulation first, in plain Rust, with tests
 Split the crate: pure simulation modules (state, rules, physics, difficulty) that take inputs as arguments, plus one thin host layer (`lib.rs` in the template, or a `game.rs` it calls) that reads input/sensors, calls the sim, plays sound/haptics, and draws. The SDK compiles on the host with no-op stubs (SPEC §9), so `cargo test -p <name>` runs your sim natively. Put tests in `src/` (`#[cfg(test)] mod tests;`): the crate is a `cdylib`, so `tests/` can't link it unless you add `"rlib"` to `crate-type`.
@@ -53,6 +90,7 @@ Two sources, usually mixed; [assets.md](assets.md) says which to use for what:
 - **Code-drawn**, with the bundled scripts:
   - `scripts/pixel.py`: an RGBA canvas (rects, ellipses, polygons, lines, outline, dither, blit, flip), a PNG writer and an atlas packer that writes a Rust table of source rects. Stdlib only.
   - `scripts/check_audio.py`: you can't listen, so run this on your assets after every audio change. It reports length, peak, loudness, harshness and loop clicks, and flags silent or clipping files.
+  - `scripts/mix_check.py`: renders a bot round's sound events with the real files and checks the mix: music audible over the effects, each sound's level for how often it plays, voices, variation, key. The rules and how to get the event log are in [assets.md §5](assets.md#5-mix-the-sound).
   - `scripts/sfx.py`: 8-bit effects (square/triangle/saw/noise with sweeps, vibrato, arpeggios, stutters) and a step sequencer for chiptune loops, encoded to mono Ogg Vorbis with `oggenc`. `save_ogg` normalizes loudness and limits peaks, then decodes what it wrote and re-encodes it quieter if Vorbis overshot, so its files pass check_audio's clip check; very peaky sounds (an explosion with a long tail) come out quieter than the loudness target as a result. `python3 sfx.py --self-test` checks the encoder setup.
   - `scripts/make_glb.py`: an example `.glb` generator for 3D games (see the 3D section).
 
@@ -108,22 +146,23 @@ Write down what you couldn't verify without a phone (feel of tilt, haptics, audi
 - **Failure order**: when the player fails, play the freeze and fail animation while still `Playing`, and report `Over` (after submitting the score) when the game-over screen appears. Reporting `Over` at the moment of failure would send the player back to browse ~1.2 s later, mid-animation.
 - **After a round ends**: ignore taps for ~0.35 s after reporting `Over`, so a frantic tap during the failure doesn't instantly restart, then let any tap retry.
 - The helpers every game needs (outlined text, easing, springs, a particle pool, screen shake, buttons, a title and a game-over card) are in the SDK's kit: see [UI and juice](#ui-and-juice). Don't hand-roll them.
-- **Text**: the pixel font (id 2) is crisp at multiples of 8. Use ≥ 16 for anything the player must read, 8 only for fine print. Inter (0/1) for sizes that aren't multiples of 8. The pixel font is ASCII plus `× ÷ · ° • … ← ↑ → ↓ ♥ ★`; anything else (é, ü, €) draws as `?`, so use Inter for player names and other text that might need it (SPEC §5.3).
+- **Text and fonts**: use the game's own fonts (identity.md). `mb font add <game> <library id>` bakes one of 96 library fonts (OFL/Apache) into `assets/fonts/<id>.mbf`; draw with `Font::asset("assets/fonts/<id>.mbf", fallback)` anywhere a font goes (`gfx2d::text`, `ui::text`, a `Theme`, 3D text). Needs `stdlib = { mb2d = 2 }`. Fonts are subset to `--chars` (ASCII by default), so text outside it draws as `?`; bake `--chars latin1` for player names. Distance-field fonts are crisp at any size and take the host's outlines and glows. Bitmap (pixel) fonts are crisp at multiples of `font.pixel_em()` (`theme.fit(font, size)` rounds for you). Use ≥ 16 units for anything the player must read. The built-in Inter (0/1) and 5×7 pixel font (2) are fallbacks; the pixel font is ASCII plus `× ÷ · ° • … ← ↑ → ↓ ♥ ★` (SPEC §5.3).
 
 ## UI and juice
 
 Hand-rolled title screens, score labels and game-over text are where games look cheapest. Use the SDK's kit instead (`docs/UI.md` has the full tour; `games/gallery` shows every piece, `mb serve games/gallery`):
-- `maimbrain::ui`: a `Theme` (presets `candy`, `night`, `arcade`, `paper`, `jungle`, or your own colors), anti-aliased shapes (`ui::shape`), styled text (`ui::text(..)` with outline, soft shadow, glow, wrap, alignment, measuring), 33 vector `Icon`s, `Button`s (pressed state, 44 pt touch area, haptic hook), pills, progress bars, ring meters, ribbons, `Layout` (safe area, the card area clear of the feed overlays, the pause-pill zone), and ready-made `TitleCard`, `ResultsCard`, `Hud` and `Countdown`.
+- `maimbrain::ui`: a `Theme` composed from the game's identity (`Theme::from_identity("…")`, or one of 17 `Theme::preset`s that look nothing alike: shape language, borders, textures, title/results/HUD layouts, motion personality, letter case, library fonts; the old `candy`/`night`/`arcade`/`paper`/`jungle` are the house look), anti-aliased shapes (`ui::shape`), styled text (`ui::text(..)` with outline, soft shadow, glow, wrap, alignment, measuring), 33 vector `Icon`s, `Button`s (pressed state, 44 pt touch area, haptic hook), pills, progress bars, ring meters, ribbons, `Layout` (safe area, the card area clear of the feed overlays, the pause-pill zone), and ready-made `TitleCard`, `ResultsCard`, `Hud` and `Countdown`.
 - `maimbrain::motion`: `Ease` (the full easings.net set), `Tween`, `Spring` (critical / bouncy / wobbly), `Seq`, `stagger`, `Shake`, `Punch`, `Counter` (rolling numbers), `HitStop`, `Pulse`.
 - `maimbrain::juice`: `Particles` (confetti, cannons, sparkles, stars, puffs, sparks, rings, `celebrate`), `Popups` ("+100"), `Combo`, `Flash`, `VignettePulse`.
 
-The templates already use it: copy their shape. Rules: update every kit object in `update(dt)` and draw it in `render` (it never reads a clock, so it replays); seed `Particles` from your game's `Rng`; restyle by changing the `Theme`, not by forking widgets; keep cards' buttons inside `layout.card`.
+The templates already use it: copy their shape, not their look. Rules: update every kit object in `update(dt)` and draw it in `render` (it never reads a clock, so it replays); seed `Particles` from your game's `Rng`; restyle by changing the `Theme` and its `style`, not by forking widgets; keep cards' buttons inside `layout.card`. When no layout fits the game's world, draw your own card (a receipt, a rosette, a chalkboard) with the kit's text and shapes: that is often the most memorable thing in a game.
 
 **Title screen in 10 lines**
 ```rust
 // init
 let layout = Layout::new();
-let title = TitleCard::new("BUBBLE", Theme::candy()).tagline("don't let it pop").best(best as i64);
+let theme = Theme::from_identity(IDENTITY).load_fonts();   // identity.md
+let title = TitleCard::new("BUBBLE", theme).tagline("don't let it pop").best(best as i64);
 // update
 self.title.update(dt);
 // render, over your live scene (the card sells; any tap starts the round)
@@ -142,7 +181,7 @@ if let Some(card) = &mut self.results {
 // render
 if let Some(card) = &self.results { card.draw() }
 ```
-It rolls the score up, then shows BEST (and "3 MORE TO BEAT IT" when close) or stamps a NEW BEST! ribbon with confetti.
+It rolls the score up, then shows BEST (and "3 MORE TO BEAT IT" when close) or celebrates a new best, in the theme's results layout (a panel with a ribbon, a receipt, a scoreboard, a stamp, an editorial page). Write the heading in the game's own voice; "SPLAT!" is the example everyone copies.
 
 **Combo meter**
 ```rust
@@ -179,7 +218,7 @@ Start from **[template-3d/](template-3d/)** (`mb new --3d games/<name>`): a smal
 
 The API is SPEC §5.4; the SDK binding is `maimbrain::gfx3d`.
 
-- **Manifest**: `stdlib = { mb3d = 2, mb2d = 1 }` (mb2d for the HUD) and `perf_tier = "full"`. mb3d 2 (the template's default) adds animated characters, instancing, freeing, fog, toon shading and outlines, 3D text and depth of field (below); a game declaring `mb3d = 1` gets v1 unchanged.
+- **Manifest**: `stdlib = { mb3d = 2, mb2d = 2 }` (mb2d for the HUD; 2 for game fonts, which 3D text can use too) and `perf_tier = "full"`. mb3d 2 (the template's default) adds animated characters, instancing, freeing, fog, toon shading and outlines, 3D text and depth of field (below); a game declaring `mb3d = 1` gets v1 unchanged.
 - **Shape of a 3D game**: build meshes, materials, emitters, trails and nodes in `init` (or when assets arrive), keep their handles in your state, update node transforms in `update`, and in `render` call `gfx3d::camera(..)`, `gfx3d::render()`, then any mb2d HUD. The scene persists; don't recreate it every frame.
 - **Build once, pool; free what you're done with.** Meshes, textures, materials, models, emitters and trails count against the limits (512 meshes, 1024 materials, 64 textures, 64 models, 256 emitters, 64 trails; SPEC §5.4). Build them once and pool: one emitter per particle look fired wherever it's needed, one material per look (`Material::set` to pulse it), a fixed pool of enemy nodes hidden with `set_visible(false)` and reused, trails moved between nodes with `detach()` + `attach(node)` (that starts a fresh ribbon; the old one fades out where it was). `Node::destroy` frees a node and its children; with mb3d 2, `free()` on a mesh, material, texture, emitter, trail or model releases it (a level's props when the next level loads; don't create and free things every few frames).
 - **Point lights**: 8 slots. A light keeps its slot from its first `point_light` call until its node is destroyed; intensity 0 darkens it but keeps the slot, and hiding the node doesn't switch it off. Keep one or two flash lights and move them.
@@ -302,6 +341,8 @@ gfx3d::shockwave(at, 4.5, 0.012, 0.9);
 
 **Things that move.** Particles live in world space and keep only the velocity their burst gave them. If what exploded was moving (an enemy flying alongside an on-rails camera), plain `emit` leaves the cloud behind and it streams away; fire it with `emit_moving(at, dir, count, velocity)` instead, passing the object's velocity, and the whole cloud rides along while it spreads (the template's catch does this with the drone's velocity). The other way is a floating frame: keep the player and camera near the origin and move the world past them, so things flying with the camera are nearly still. Pick one frame for the whole game. Trails follow their node's world position each frame, so a trail on something the camera flies with streaks only if the node really moves in the world.
 
+**Selling speed** (racers, chases, dashes): `gfx3d::speed_blur(&SpeedBlur { radial, center, motion, stretch, .. })` (mb3d 2) adds a radial blur toward `center` (put it on the projected player), a directional motion blur along `motion` (how far a far point moved on screen since the last frame) and stretching at the screen edges, all cheap. Scale them with speed, and pair them with a field of view that widens with speed, a low camera, a constant small road shake and streak particles flying past the lens.
+
 ### HUD over 3D
 `gfx3d::project(world)` gives the logical screen position (mb2d's coordinates), depth and whether it's on screen: put labels, reticles and off-screen arrows there. Everything mb2d draws in the frame lands on top of the 3D image. Call it after `gfx3d::camera` in `render` (it uses the latest camera). For game logic (lock-on, tap hit tests), use `camera.project(world, W, H)` on your own `Camera` value instead: the same formula (SPEC §5.4) in plain Rust, so it runs in `cargo test` (where `gfx3d::project` returns zeros) and agrees with the host to within float rounding.
 
@@ -347,5 +388,8 @@ The SDK has deterministic rigid-body physics (Rapier inside your wasm): `maimbra
 - [ ] `await mb.verify()` after a played round returns `match: true` (the run replays exactly).
 - [ ] Every item in the [engagement checklist](engagement.md#checklist).
 - [ ] Screenshots reviewed for the title card, game-over card, mid-round and both edges of danger.
+- [ ] The identity check in [identity.md](identity.md#3-check-it-against-the-house-look) answered against docs/IDENTITY.md: the game's own fonts (`mb build` gives no font or theme warning), palette and cards, and no "yes" left that you couldn't justify.
+- [ ] Started from a kit? All three "Make it yours" changes are in, and nothing of the kit's title, character or tagline is left.
 - [ ] DESIGN.md updated to match what you built, with the "not verified on device" list and tuning constants.
 - [ ] Generated assets: every preview looked at, `mb art check` clean (no mock placeholders, within budgets), and the user told what the art and sound cost.
+- [ ] Sound: `check_audio.py` and `mix_check.py` (on a bot round) clean, or each flag explained in DESIGN.md.

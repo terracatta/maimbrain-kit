@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art ui",
+  "date": "2026-10-08T03:00:42Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a blank 1950s theater marquee sign: a wide rounded tomato-red sign board with a thick ink outline, its border studded with a single row of round cream light bulbs evenly spaced all the way around, a large empty flat teal panel in the middle for lettering, a small mustard atomic starburst on each end",
+  "full_prompt": "A 2D game UI element: a blank 1950s theater marquee sign: a wide rounded tomato-red sign board with a thick ink outline, its border studded with a single row of round cream light bulbs evenly spaced all the way around, a large empty flat teal panel in the middle for lettering, a small mustard atomic starburst on each end. Flat-on, centered, crisp edges, no text or letters. Flat front view, symmetrical. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1001529302,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/host.png",
+      "sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "26fffcad89b4b13ca635ceeefd7b1004a0d46dcf491fb437aaecc6775ce72572"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/marquee-1001529302.jpg",
+  "raw_sha256": "a8b3db359351c986a3164c4119d322f52623ecabbd14bd21dad15199c1b955f5",
+  "output_sha256": "aa3fd8116144dc7d0095ad3a02eee2037944fa75e0f68bc6e00aece5a38d8c81",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "21:9",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "ui",
+    "layer": null,
+    "margin": 2,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "marquee",
+    "no_style": false,
+    "out": "assets/marquee.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1001529302,
+    "size": [
+      680,
+      300
+    ],
+    "subject": "a blank 1950s theater marquee sign: a wide rounded tomato-red sign board with a thick ink outline, its border studded with a single row of round cream light bulbs evenly spaced all the way around, a large empty flat teal panel in the middle for lettering, a small mustard atomic starburst on each end",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#fd1ef9",
+    "size": [
+      680,
+      300
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

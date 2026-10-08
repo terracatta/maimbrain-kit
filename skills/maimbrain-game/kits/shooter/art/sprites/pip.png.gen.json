@@ -1,0 +1,61 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:54:05Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a sleek little spaceship pod pointing straight up, seen from above: a rounded capsule body like a teardrop with a pointed nose at the top, two short swept-back wings, a big dark empty visor window across the upper body (an empty glass dome, nothing inside it), cyan neon outline with magenta accents on the wing tips, an engine nozzle at the bottom",
+  "full_prompt": "A single 2D game sprite of a sleek little spaceship pod pointing straight up, seen from above: a rounded capsule body like a teardrop with a pointed nose at the top, two short swept-back wings, a big dark empty visor window across the upper body (an empty glass dome, nothing inside it), cyan neon outline with magenta accents on the wing tips, an engine nozzle at the bottom. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen from directly above / straight on, centered, a single game sprite for a vertical arcade shooter. Art style: neon synthwave vector art: bold glowing magenta and cyan tube outlines around dark indigo glass bodies, clean geometric shapes, a bright white-hot core inside every neon line, retro 1980s arcade night. Readable silhouettes, symmetrical geometric shapes, thick glowing outlines, dark filled interiors, high contrast. Use only these colors: #0a0820, #1c1450, #4a2aa0, #ff2fb4, #22e6ff, #ff5a8a, #ffc23a, #f4f0ff. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, busy detail, soft outer haze or bloom bleeding past the outline, drop shadows, gradients outside the subject, faces or eyes unless asked. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1711301193,
+  "seed_honored": true,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "9178aae72ffcb477205f95276de3c6e9d9000607d21926fef615d19b4f495071"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/pip-1711301193.jpg",
+  "raw_sha256": "8f60a1fd51fbb8ed8b9fd4ea2dfee657ce3ac3013885fcab06850ceffb29daf9",
+  "output_sha256": "857f2cf59f74d2e21b5c3705309b179722e4fc08dd53fc081103deabf0c7d5bb",
+  "allowed_names": [],
+  "model_text": "Here is your 2D spaceship pod game sprite, designed in a neon synthwave vector art style and positioned squarely on a flat, pure green background.",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "pip",
+    "no_style": false,
+    "out": "art/sprites/pip.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1711301193,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a sleek little spaceship pod pointing straight up, seen from above: a rounded capsule body like a teardrop with a pointed nose at the top, two short swept-back wings, a big dark empty visor window across the upper body (an empty glass dome, nothing inside it), cyan neon outline with magenta accents on the wing tips, an engine nozzle at the bottom",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0ad509",
+    "size": [
+      128,
+      128
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

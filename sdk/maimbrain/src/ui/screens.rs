@@ -17,11 +17,11 @@ use super::layout::{Layout, Rect};
 use super::shape::{disc, sparkle};
 use super::text::{VAlign, fmt_int, text};
 use super::theme::Theme;
-use super::widgets::{Button, ButtonKind, Tap, panel, pill, ribbon};
-use crate::gfx2d::{self, Font};
+use super::widgets::{Button, ButtonKind, Tap, ribbon};
+use crate::gfx2d;
 use crate::input::Event;
 use crate::juice::Particles;
-use crate::motion::{Counter, Ease, Pulse, Spring, stagger};
+use crate::motion::{Counter, Ease, Pulse, Spring};
 
 /// Draws `s` letter by letter around centre (cx, cy): each letter drops in
 /// (staggered) and then bobs. `t` is seconds since the entrance began.
@@ -33,46 +33,38 @@ pub fn bouncy_title(s: &str, cx: f32, cy: f32, size: f32, t: f32, theme: &Theme,
     let measure = |size: f32| -> (Vec<f32>, f32) {
         let mut b = [0u8; 4];
         let ws: Vec<f32> = s.chars().map(|c| gfx2d::measure(font, size, c.encode_utf8(&mut b))).collect();
-        let total = ws.iter().sum::<f32>() + size * 0.03 * ws.len().saturating_sub(1) as f32;
+        let total = ws.iter().sum::<f32>() + size * (0.03 + theme.style.tracking) * ws.len().saturating_sub(1) as f32;
         (ws, total)
     };
     let (mut ws, mut total) = measure(size);
     if total > max_w && total > 0.0 {
         size = theme.fit(font, size * max_w / total);
-        if font == Font::Pixel && size * total / theme.fit(font, size) > max_w {
+        if font.is_bitmap() && size * total / theme.fit(font, size) > max_w {
             size = (size - 8.0).max(8.0);
         }
         (ws, total) = measure(size);
     }
     let m = super::text::metrics(font);
+    let motion = theme.style.motion;
     let mut x = cx - total / 2.0;
     for (i, c) in s.chars().enumerate() {
         let w = ws[i];
-        let k = stagger(t, i, 0.055, 0.55);
+        let k = motion.progress(t, i);
         if k > 0.0 {
-            let drop = Ease::BackOut.at(k);
-            let bob = (t * 2.3 + i as f32 * 0.55).sin() * size * 0.04 * k;
-            let tilt = (t * 1.7 + i as f32 * 0.8).sin() * 0.035;
-            let lx = x + w / 2.0;
-            let ly = cy - (1.0 - drop) * size * 0.9 + bob;
+            let drop = motion.enter(k);
+            let (dx, dy, tilt) = motion.idle(t, i);
+            let lx = x + w / 2.0 + dx * size * k;
+            let ly = cy - (1.0 - drop) * size * 0.9 + dy * size * k;
             gfx2d::push();
             gfx2d::translate(lx, ly);
             gfx2d::rotate(tilt);
             let sc = 0.4 + 0.6 * drop;
             gfx2d::scale(sc, sc);
             let a = (k * 3.0).min(1.0);
-            text(c.encode_utf8(&mut buf))
-                .font(font)
-                .size(size)
-                .color(color)
-                .outline(theme.outline_em, theme.outline)
-                .soft_shadow(0.0, size * 0.07, 0.06, theme.shadow)
-                .alpha(a)
-                .middle()
-                .draw(0.0, 0.0);
+            super::layouts::styled(theme, c.encode_utf8(&mut buf), font, size, color).tracking(0.0).alpha(a).middle().draw(0.0, 0.0);
             gfx2d::pop();
         }
-        x += w + size * 0.03;
+        x += w + size * (0.03 + theme.style.tracking);
     }
     Rect::centered(cx, cy, total, m.cap * size)
 }
@@ -144,36 +136,16 @@ impl TitleCard {
     pub fn draw(&self, layout: &Layout) {
         let th = &self.theme;
         let y = self.y.unwrap_or(layout.safe.y + 40.0 + self.size * 0.6);
-        let cx = layout.screen.cx();
-        let r = bouncy_title(&self.title, cx, y, self.size, self.t, th, self.color.unwrap_or(th.text), layout.safe.w - 32.0);
-        twinkles(r.inset(-8.0), self.t, lighten(th.gold, 0.4));
-        let mut below = r.bottom() + self.size * 0.42;
-        if let Some(tag) = &self.tagline {
-            let a = Ease::QuadOut.at(((self.t - 0.45) / 0.4).clamp(0.0, 1.0));
-            let size = th.fit(th.body_font, 18.0);
-            text(tag)
-                .font(th.body_font)
-                .size(size)
-                .color(th.text)
-                .soft_shadow(0.0, 2.0, 0.08, th.shadow)
-                .outline(0.05, with_alpha(th.outline, 0.6))
-                .alpha(a)
-                .center()
-                .wrap(layout.card.w)
-                .draw(cx, below + (1.0 - a) * 8.0);
-            below += size * 1.6;
-        }
-        if let Some(b) = self.best {
-            let k = ((self.t - 0.7) / 0.5).clamp(0.0, 1.0);
-            if k > 0.0 {
-                let s = Ease::BackOut.at(k);
-                gfx2d::push();
-                gfx2d::translate(cx, below + 18.0);
-                gfx2d::scale(s, s);
-                pill(&format!("{} {}", self.best_label, fmt_int(b)), 0.0, 0.0, 34.0, with_alpha(th.outline, 0.55), th.gold, th.body_font, Some(Icon::TROPHY));
-                gfx2d::pop();
-            }
-        }
+        let args = super::layouts::TitleArgs {
+            title: &self.title,
+            tagline: self.tagline.as_deref(),
+            best: self.best.map(|b| (self.best_label.as_str(), b)),
+            size: self.size,
+            y,
+            color: self.color.unwrap_or(th.text),
+            t: self.t,
+        };
+        super::layouts::title(th, layout, &args);
     }
 }
 
@@ -284,22 +256,29 @@ impl ResultsCard {
 
     /// The panel's rect (or the floating block's).
     pub fn panel_rect(&self) -> Rect {
-        let h = if self.panel { 236.0 } else { 200.0 };
-        let y = if self.panel { (self.area.y + 48.0).max(self.area.cy() - h / 2.0 - 40.0) } else { self.area.y + 24.0 };
-        Rect::new(self.area.x, y, self.area.w, h)
+        super::layouts::results_rect(&self.layout_theme(), self.area)
+    }
+
+    /// The theme with `floating()` applied to its results layout.
+    fn layout_theme(&self) -> Theme {
+        let mut t = self.theme;
+        if !self.panel {
+            t.style.results = super::style::ResultsLayout::Floating;
+        }
+        t
     }
 
     fn place(&mut self) {
         let p = self.panel_rect();
-        let cy = if self.panel { p.bottom() } else { p.bottom() + 20.0 };
-        let mut retry = Button::icon(p.cx(), cy, 68.0, Icon::RESTART);
+        let (cx, cy) = super::layouts::retry_center(&self.layout_theme(), p);
+        let mut retry = Button::icon(cx, cy, 68.0, Icon::RESTART);
         if let Some(old) = &self.retry {
             retry.haptic = old.haptic;
         }
         self.retry = Some(retry);
         if let Some(e) = &mut self.extra {
             let w = 150.0;
-            e.rect = Rect::centered(p.cx(), cy + 34.0 + 18.0 + 26.0, w, 44.0);
+            e.rect = Rect::centered(cx.max(p.x + w / 2.0), cy + 34.0 + 18.0 + 26.0, w, 44.0);
         }
     }
 
@@ -376,16 +355,46 @@ impl ResultsCard {
 
     pub fn draw(&self) {
         let th = &self.theme;
+        let lt = self.layout_theme();
+        if !matches!(lt.style.results, super::style::ResultsLayout::Panel | super::style::ResultsLayout::Floating) {
+            let best = if self.lower_is_better {
+                if self.prev_best > 0 { self.prev_best.min(self.score.max(1)) } else { self.score }
+            } else {
+                self.prev_best.max(if self.landed { self.score } else { 0 })
+            };
+            let a = super::layouts::ResultsArgs {
+                heading: &self.heading,
+                label: &self.label,
+                shown: self.counter.value(),
+                punch: self.counter.scale(),
+                best,
+                new_best: self.is_new_best(),
+                landed: self.landed,
+                stamp: self.stamp.value,
+                t: self.t,
+                area: self.area,
+            };
+            super::layouts::results(&lt, &a);
+            let ba = ((self.t - 0.6) / 0.3).clamp(0.0, 1.0);
+            for b in self.retry.iter().chain(self.extra.iter()) {
+                if ba > 0.0 {
+                    b.draw_alpha(th, ba);
+                }
+            }
+            self.fx.draw();
+            return;
+        }
         let p = self.panel_rect();
-        let enter = Ease::BackOut.at((self.t / 0.45).min(1.0));
+        let panel = lt.style.results == super::style::ResultsLayout::Panel;
+        let enter = th.style.motion.enter((self.t / th.style.motion.duration().max(0.3)).min(1.0));
         let a = (self.t / 0.2).min(1.0);
         gfx2d::push();
         gfx2d::translate(p.cx(), p.cy());
         let s = 0.82 + 0.18 * enter;
         gfx2d::scale(s, s);
         gfx2d::translate(-p.cx(), -p.cy() + (1.0 - enter) * 30.0);
-        if self.panel {
-            panel(p, &with_alpha_theme(th, a));
+        if panel {
+            super::widgets::panel(p, &with_alpha_theme(th, a));
             if self.flash.active() {
                 // A bright rim when a new best lands.
                 gfx2d::rrect(p.x - 3.0, p.y - 3.0, p.w + 6.0, p.h + 6.0, th.radius + 3.0, 4.0, 6.0, fade(th.gold, self.flash.value()), fade(th.gold, self.flash.value()));
@@ -394,22 +403,17 @@ impl ResultsCard {
         let cx = p.cx();
         // Heading straddling the panel's top edge.
         let hsize = th.fit(th.title_font, 38.0);
-        let head_y = if self.panel { p.y } else { p.y + 10.0 };
-        text(&self.heading)
-            .font(th.title_font)
-            .size(hsize)
-            .color(th.text)
-            .outline(th.outline_em, th.outline)
-            .soft_shadow(0.0, 3.0, 0.06, th.shadow)
-            .alpha(a)
-            .middle()
-            .draw(cx, head_y);
+        let head_y = if panel { p.y } else { p.y + 10.0 };
+        let heading = th.case(&self.heading);
+        let ht = super::layouts::styled(th, &heading, th.title_font, hsize, th.text);
+        let ht = if panel || th.style.outlined { ht.outline(th.outline_em.max(0.04), th.outline) } else { ht };
+        ht.alpha(a).middle().draw(cx, head_y);
         let mut y = head_y + hsize * 0.9;
         if !self.label.is_empty() {
             let ls = th.fit(th.body_font, 15.0);
             let l = text(&self.label).font(th.body_font).size(ls).color(th.text_dim).tracking(0.12);
             // Over a busy scene the label needs an edge.
-            let l = if self.panel { l } else { l.outline(0.1, with_alpha(th.outline, 0.7)) };
+            let l = if panel { l } else { l.outline(0.1, with_alpha(th.outline, 0.7)) };
             l.alpha(a).middle().draw(cx, y);
             y += ls * 0.9;
         }
@@ -421,15 +425,7 @@ impl ResultsCard {
         let k = self.counter.scale();
         gfx2d::scale(k, k);
         let col = if self.landed && self.is_new_best() { th.gold } else { th.text };
-        text(&fmt_int(self.counter.value()))
-            .font(th.number_font)
-            .size(nsize)
-            .color(col)
-            .outline(th.outline_em * 0.9, th.outline)
-            .soft_shadow(0.0, 4.0, 0.06, th.shadow)
-            .alpha(a)
-            .middle()
-            .draw(0.0, 0.0);
+        super::layouts::styled(th, &fmt_int(self.counter.value()), th.number_font, nsize, col).tracking(0.0).alpha(a).middle().draw(0.0, 0.0);
         gfx2d::pop();
         let row = ny + nsize * 0.62;
         // Best, or the new-best ribbon.
@@ -451,7 +447,7 @@ impl ResultsCard {
             let k = ((self.t - 0.5) / 0.3).clamp(0.0, 1.0);
             if best > 0 && k > 0.0 {
                 let bg = with_alpha(th.outline, 0.45 * k);
-                pill(&format!("BEST {}", fmt_int(best)), cx, row + 6.0, 32.0, bg, fade(th.gold, k), th.body_font, Some(Icon::TROPHY));
+                super::widgets::pill_in(th, &format!("{} {}", th.case("BEST"), fmt_int(best)), cx, row + 6.0, 32.0, bg, fade(th.gold, k), Some(Icon::TROPHY));
                 // A dare when it was close.
                 let gap = if self.lower_is_better { self.score - self.prev_best } else { self.prev_best - self.score };
                 if self.landed && !self.lower_is_better && gap > 0 && (gap as f32) <= (self.prev_best as f32 * 0.25).max(3.0) {
@@ -534,36 +530,36 @@ impl Hud {
     }
     pub fn draw(&self, layout: &Layout) {
         let th = &self.theme;
-        let cx = layout.hud.cx();
-        let size = th.fit(th.number_font, self.size);
-        let y = layout.hud.y + 14.0 + size * 0.45;
         let col = if self.beat { lighten(th.gold, 0.15 * self.beaten.value()) } else { th.text };
-        gfx2d::push();
-        gfx2d::translate(cx, y);
-        let k = self.score.scale();
-        gfx2d::scale(k, k);
-        text(&fmt_int(self.score.value())).font(th.number_font).size(size).color(col).outline(th.outline_em, th.outline).soft_shadow(0.0, 3.0, 0.05, th.shadow).middle().draw(0.0, 0.0);
-        gfx2d::pop();
-        let mut below = y + size * 0.62;
+        let (cx, mut below, align) = super::layouts::hud_score(th, layout, &fmt_int(self.score.value()), self.size, self.score.scale(), col);
         let small = th.fit(th.body_font, 14.0);
         if self.beat {
             let s = 1.0 + 0.25 * self.beaten.value();
+            let label = th.case("NEW BEST");
+            let w = super::widgets::pill_width(&label, 24.0, th.body_font, true);
+            let px = match align {
+                super::text::Align::Right => cx - w / 2.0,
+                _ => cx,
+            };
             gfx2d::push();
-            gfx2d::translate(cx, below + 10.0);
+            gfx2d::translate(px, below + 10.0);
             gfx2d::scale(s, s);
-            pill("NEW BEST", 0.0, 0.0, 24.0, with_alpha(th.outline, 0.5), th.gold, th.body_font, Some(Icon::CROWN));
+            super::widgets::pill_in(th, &label, 0.0, 0.0, 24.0, with_alpha(th.outline, 0.5), th.gold, Some(Icon::CROWN));
             gfx2d::pop();
             below += 26.0;
         } else if self.best > 0 {
-            text(&format!("BEST {}", fmt_int(self.best))).font(th.body_font).size(small).color(th.text_dim).outline(0.08, with_alpha(th.outline, 0.6)).middle().draw(cx, below + 6.0);
+            text(&format!("{} {}", th.case("BEST"), fmt_int(self.best))).font(th.body_font).size(small).color(th.text_dim).outline(0.08, with_alpha(th.outline, 0.6)).align(align).valign(VAlign::Middle).draw(cx, below + 6.0);
             below += 20.0;
         }
         if let Some(p) = self.progress {
-            super::widgets::progress_bar(Rect::centered(cx, below + 8.0, 160.0, 10.0), p, th.accent, with_alpha(th.outline, 0.45));
+            let bx = if align == super::text::Align::Right { cx - 80.0 } else { cx };
+            super::widgets::progress_bar(Rect::centered(bx, below + 8.0, 160.0, 10.0), p, th.accent, with_alpha(th.outline, 0.45));
         }
         if let Some((n, max)) = self.lives {
             let hs = 22.0;
-            let right = layout.hud.right() - 16.0;
+            // Top-right, or (when the score sits there) just right of the pause pill.
+            let corner = th.style.hud == super::style::HudLayout::Corner;
+            let right = if corner { layout.pill_zone().right() + 16.0 + max as f32 * (hs + 4.0) } else { layout.hud.right() - 16.0 };
             for i in 0..max {
                 let x = right - (max - 1 - i) as f32 * (hs + 4.0) - hs / 2.0;
                 let on = i < n;

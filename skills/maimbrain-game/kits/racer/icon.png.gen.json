@@ -1,0 +1,60 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:12:37Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a chunky low-poly teal coupe with a white racing stripe and a big black spoiler, seen from low behind, racing down a three-lane desert highway toward a huge low sunset sun between red mesas, glowing red tail lights, blue exhaust flames, palm trees whipping past",
+  "full_prompt": "A square app icon for a mobile game: a chunky low-poly teal coupe with a white racing stripe and a big black spoiler, seen from low behind, racing down a three-lane desert highway toward a huge low sunset sun between red mesas, glowing red tail lights, blue exhaust flames, palm trees whipping past. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. A chunky teal coupe with a white racing stripe and a big spoiler, seen from low behind, tearing down a three-lane desert highway toward a huge low sunset sun between mesas, glowing tail lights and blue exhaust flames. Art style: low-poly toon 3D at golden hour: chunky faceted shapes, flat two-to-three band cel shading, dark plum ink outlines, backlit by a low sun so rims glow, warm pink-orange haze swallowing the distance. Readable silhouettes, chunky proportions, faceted low-poly, warm rim light, sunset haze, high contrast hero. Use only these colors: #1d0b1e, #3b3245, #a65a4c, #d99a6c, #ff9a4a, #ffc23a, #22d3c5, #fff4e8. Avoid: text, letters, watermark, signature, logo, photorealism, busy detail, noisy textures, cold blue daylight, gradients with banding, chrome reflections, night city neon. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 571126473,
+  "seed_honored": true,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "d33d426a4731215ef3e7a95e690ce0d64117e8e2103e77b50f93d45c40576453"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-571126473.jpg",
+  "raw_sha256": "9e9b6b9d07f2275f1500e7a6d6255663c405fd84528cd9e2ac4dcb182d66595f",
+  "output_sha256": "57fedefc3957eaaf94f1eea01f9541fc300f366adf0bfd1e81100ccb5a9d1525",
+  "allowed_names": [],
+  "model_text": "Here is the square app icon for your mobile game:",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 571126473,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "a chunky low-poly teal coupe with a white racing stripe and a big black spoiler, seen from low behind, racing down a three-lane desert highway toward a huge low sunset sun between red mesas, glowing red tail lights, blue exhaust flames, palm trees whipping past",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:25:54Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a clay strawberry cake with pink frosting and a cherry on top sitting on a plate, its face nervous and wide-eyed, while two angry red jelly blobs creep up from the bottom corners, on a mint-green clay lawn, bold and simple",
+  "full_prompt": "A square app icon for a mobile game: a clay strawberry cake with pink frosting and a cherry on top sitting on a plate, its face nervous and wide-eyed, while two angry red jelly blobs creep up from the bottom corners, on a mint-green clay lawn, bold and simple. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. A close-up of a clay cake with a worried face on a plate and an angry red jelly blob creeping toward it, bright and bold. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 671477527,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "4b56505f23bc2a822d0ea396d5e9e9af41ecdd50e55b5205beb96f4ea98543eb"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-671477527.jpg",
+  "raw_sha256": "26e223d895c9b0a601d1d83f51726068be8f382cfb0651558ceb69eb70e6c973",
+  "output_sha256": "8c1e5c1fd49435c1b678de258ab09d84e875758fa31503b5fab3da8d387721c5",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 671477527,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "a clay strawberry cake with pink frosting and a cherry on top sitting on a plate, its face nervous and wide-eyed, while two angry red jelly blobs creep up from the bottom corners, on a mint-green clay lawn, bold and simple",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

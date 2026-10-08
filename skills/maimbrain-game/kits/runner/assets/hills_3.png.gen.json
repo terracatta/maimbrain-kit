@@ -1,0 +1,80 @@
+{
+  "generator": "mb 0.4.1 art layer",
+  "date": "2026-10-08T03:09:54Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a sunny meadow world. The scene from back to front, one part per layer: layer 1 is a bright blue sky in flat horizontal color bands, lighter near the horizon, with a few puffy white pixel clouds; layer 2 is a range of far-off pale lilac and blue mountains with snowy tips; layer 3 is rolling bright green hills dotted with round bushes; layer 4 is a row of round leafy trees, tall grass tufts and small flowers. Draw only the part that belongs to this layer — the nearest layer: foreground shapes along the bottom of the image, darkest and most detailed",
+  "full_prompt": "One parallax layer of a side-scrolling 2D game background: a sunny meadow world. The scene from back to front, one part per layer: layer 1 is a bright blue sky in flat horizontal color bands, lighter near the horizon, with a few puffy white pixel clouds; layer 2 is a range of far-off pale lilac and blue mountains with snowy tips; layer 3 is rolling bright green hills dotted with round bushes; layer 4 is a row of round leafy trees, tall grass tufts and small flowers. Draw only the part that belongs to this layer — the nearest layer: foreground shapes along the bottom of the image, darkest and most detailed. Only this layer's shapes, wide and horizontally continuous, the rest of the image empty. Side-scrolling platformer scenery on a sunny day. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 480×320 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. The last attached image shows the subject: redraw it in this art style, keeping what makes it recognizable. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 376043716,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    },
+    {
+      "path": "assets/hills_0.png",
+      "sha256": "0548a29550971066ccde9817132361b6ea36159de7c93a22aacfb14df6ef811a"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/hills_3-376043716.jpg",
+  "raw_sha256": "e71b3506721b2e435abb4a5d66db8e5f16645d1b39840b4f67ec38fd38387e04",
+  "output_sha256": "6d1914b0b82f12a333cfa4f1831727585a4a69e60ce4fce9cc0540006f3e4fbd",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": [
+      480,
+      320
+    ],
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "layer",
+    "layer": [
+      3,
+      4
+    ],
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "hills_3",
+    "no_style": false,
+    "out": "assets/hills_3.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [
+      "assets/hills_0.png"
+    ],
+    "resolution": "2K",
+    "seed": 376043716,
+    "size": [
+      1440,
+      960
+    ],
+    "subject": "a sunny meadow world. The scene from back to front, one part per layer: layer 1 is a bright blue sky in flat horizontal color bands, lighter near the horizon, with a few puffy white pixel clouds; layer 2 is a range of far-off pale lilac and blue mountains with snowy tips; layer 3 is rolling bright green hills dotted with round bushes; layer 4 is a row of round leafy trees, tall grass tufts and small flowers. Draw only the part that belongs to this layer — the nearest layer: foreground shapes along the bottom of the image, darkest and most detailed",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#fb16f3",
+    "pixel_scale": 3,
+    "size": [
+      1440,
+      960
+    ],
+    "warnings": [],
+    "wraps": "x"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

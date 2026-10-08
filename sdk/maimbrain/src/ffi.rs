@@ -65,6 +65,9 @@ imports! {
     pub fn mb2d_rrect(x: f32, y: f32, w: f32, h: f32, radius: f32, stroke: f32, feather: f32, top: u32, bottom: u32);
     pub fn mb2d_text_style(weight: f32, outline: f32, outline_rgba: u32, soft: f32);
     pub fn mb2d_antialias(on: u32);
+    // 5.3 mb2d 2: game fonts
+    pub fn mb2d_font_load(asset: u32) -> i32 = -7;
+    pub fn mb2d_font_metrics(font: u32, out: *mut u8) -> i32 = -1;
 
     // 5.4 mb3d
     pub fn mb3d_mesh(ptr: *const u8, len: u32) -> i32 = 1;
@@ -108,6 +111,7 @@ imports! {
     pub fn mb3d_material_style(material: u32, ptr: *const u8) -> i32;
     pub fn mb3d_text(node: u32, desc: *const u8, text: *const u8, len: u32) -> i32;
     pub fn mb3d_dof(ptr: *const u8);
+    pub fn mb3d_speed(ptr: *const u8);
 
     // 5.6 audio
     pub fn mb_sound(asset: u32) -> i32;

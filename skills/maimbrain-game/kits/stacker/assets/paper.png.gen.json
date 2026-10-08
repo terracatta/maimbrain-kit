@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-08T03:27:44Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "db1763bea36e9ad8ea054bf1f2ff950e174d2b03e30b62e8620edc92ea922745",
+  "packed_from": [
+    {
+      "date": "2026-10-08T03:05:19Z",
+      "file": "art/sprites/paper.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a close-up of a sheet of handmade cream paper, matte, with faint wispy fibers and tiny flecks scattered evenly across it, nothing else",
+      "provider": "gemini",
+      "seed": 777
+    }
+  ]
+}

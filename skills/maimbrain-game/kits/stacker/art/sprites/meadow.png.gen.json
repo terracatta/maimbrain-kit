@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T03:04:05Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a wide strip of foreground meadow grass, six times as wide as it is tall: layered bright green paper grass with a wavy tufted top edge, a few small paper flowers (white daisies, yellow buttercups, red poppies), flat bottom edge, filling the strip edge to edge",
+  "full_prompt": "A single 2D game sprite of a wide strip of foreground meadow grass, six times as wide as it is tall: layered bright green paper grass with a wavy tufted top edge, a few small paper flowers (white daisies, yellow buttercups, red poppies), flat bottom edge, filling the strip edge to edge. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers). Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1305392603,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/meadow-1305392603.jpg",
+  "raw_sha256": "8729ee83751f2b263f1e7411625f6679626555e71d4e152f0f79280b7f8f4f0b",
+  "output_sha256": "6180395dbe81dca72218df38bcb1d1192fa4caaf487b8a1d01676abb238cd472",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "21:9",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 0,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "meadow",
+    "no_style": false,
+    "out": "assets/meadow.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1305392603,
+    "size": [
+      720,
+      120
+    ],
+    "subject": "a wide strip of foreground meadow grass, six times as wide as it is tall: layered bright green paper grass with a wavy tufted top edge, a few small paper flowers (white daisies, yellow buttercups, red poppies), flat bottom edge, filling the strip edge to edge",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0434ff",
+    "size": [
+      720,
+      120
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

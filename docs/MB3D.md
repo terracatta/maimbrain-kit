@@ -2,7 +2,7 @@
 
 The host 3D engine: a retained scene graph that games drive through `mb3d_*` calls, rendered by `mb-host` (Rust → wasm32, wgpu on WebGPU) in the same frame as `mb2d`. The flagship that drives it is **Starfall**: a portrait, touch-only, on-rails space shooter through a nebula canyon (sweep to lock on to up to 8 enemies, release for homing lasers; bloom, particles, trails, a crystal boss).
 
-**mb3d 2** (declare `stdlib = { mb3d = 2 }`) adds animated glTF characters (skins, clips, morph targets, bones as nodes), instancing, freeing resources, fog, toon shading and outlines, 3D text and depth of field. See ["mb3d 2"](#mb3d-2) below; everything before it describes v1, which games declaring `mb3d = 1` still get unchanged.
+**mb3d 2** (declare `stdlib = { mb3d = 2 }`) adds animated glTF characters (skins, clips, morph targets, bones as nodes), instancing, freeing resources, fog, toon shading and outlines, 3D text, depth of field and speed effects (radial blur, motion blur, edge stretch). See ["mb3d 2"](#mb3d-2) below; everything before it describes v1, which games declaring `mb3d = 1` still get unchanged.
 
 ## Decisions
 
@@ -197,9 +197,10 @@ mb3d_fog(ptr)                               # Fog
 mb3d_material_style(material, ptr) -> i32   # MaterialStyle (kept by mb3d_material_set)
 mb3d_text(node, desc_ptr, text_ptr, len) -> i32   # TextDesc + UTF-8; empty text removes it
 mb3d_dof(ptr)                               # DepthOfField
+mb3d_speed(ptr)                             # SpeedBlur: radial blur, motion blur, edge stretch
 ```
 
-Struct layouts are in SPEC §5.4 ("mb3d 2"); the SDK structs (`Instance`, `Fog`, `MaterialStyle`, `TextDesc`, `DepthOfField`) are the reference bindings and have size tests.
+Struct layouts are in SPEC §5.4 ("mb3d 2"); the SDK structs (`Instance`, `Fog`, `MaterialStyle`, `TextDesc`, `DepthOfField`, `SpeedBlur`) are the reference bindings and have size tests.
 
 ### Animation, as built
 
@@ -248,3 +249,13 @@ GPU (no timestamp queries in WebGPU by default, so estimated): Mistwood's main p
 - Per-instance culling and sorting; GPU-driven instance animation.
 - Bundled `.ttf` fonts for 3D text (and mb2d), when `mb2d_font` lands.
 - Text and particles don't cast shadows; outlines don't apply to transparent materials.
+
+### Speed effects (`mb3d_speed`, added after Mistwood)
+
+Racers and chases need speed to *feel* fast, which the post chain couldn't do. `mb3d_speed(SpeedBlur)` adds three effects to the final composite pass, so they need no extra render targets and cost nothing while off:
+
+- **Radial blur**: 10 jittered taps toward `center`, the reach growing with distance from it (none within ~4% of the screen). Put `center` on what the camera chases (project it with `Camera::project`): the world streaks outward from it, which reads as forward motion blur.
+- **Motion blur**: the same taps spread along `motion` (logical pixels, clamped to 48): the game passes how far a far point moved on screen since the last frame, so bends and camera swings smear sideways.
+- **Edge stretch**: the left and right edges sample from nearer the middle (`stretch` 0–1), a wide-lens rush at the borders.
+
+Chromatic aberration is applied on top of the blurred scene, so fringes stay crisp. The call is part of the draw hash like every other.

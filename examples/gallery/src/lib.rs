@@ -67,12 +67,15 @@ struct Gallery {
 
 impl Gallery {
     fn set_theme(&mut self, i: usize) {
-        self.theme_i = i % Theme::presets().len();
-        self.theme = Theme::presets()[self.theme_i].1;
+        let all = themes();
+        self.theme_i = i % all.len();
+        self.theme = all[self.theme_i].1;
         self.title.theme = self.theme;
-        self.results.theme = self.theme;
         self.hud.theme = self.theme;
-        self.theme_btn.label = Theme::presets()[self.theme_i].0.to_uppercase();
+        self.theme_btn.label = all[self.theme_i].0.to_uppercase();
+        // The results layout decides where its buttons go: build it again.
+        self.results_round = self.results_round.saturating_sub(1);
+        self.new_results();
     }
 
     fn go(&mut self, page: usize) {
@@ -214,12 +217,20 @@ impl Gallery {
     }
 }
 
+/// The 17 identities first, then the five original presets (fonts load
+/// only where this gallery bakes them; the rest draw in Inter).
+fn themes() -> Vec<(&'static str, Theme)> {
+    let mut v = Theme::identities();
+    v.extend(Theme::presets());
+    v
+}
+
 impl Game for Gallery {
     fn init() -> Self {
         sys::round(Round::Idle);
         let layout = Layout::new();
         let mut rng = Rng::from_host();
-        let theme = Theme::candy();
+        let theme = themes()[0].1;
         let foot = layout.screen.bottom() - 46.0;
         let mut buttons = Vec::new();
         buttons.push(Button::new(Rect::centered(180.0, 132.0, 220.0, 58.0), "PLAY").with_icon(Icon::PLAY));
@@ -239,7 +250,7 @@ impl Game for Gallery {
             page_t: 0.0,
             prev: Button::icon(54.0, foot, 48.0, Icon::ARROW_LEFT).kind(ButtonKind::Secondary),
             next: Button::icon(306.0, foot, 48.0, Icon::ARROW_RIGHT).kind(ButtonKind::Secondary),
-            theme_btn: Button::new(Rect::new(250.0, layout.safe.y + 10.0, 96.0, 32.0), "CANDY").kind(ButtonKind::Secondary),
+            theme_btn: Button::new(Rect::new(236.0, layout.safe.y + 10.0, 110.0, 32.0), themes()[0].0).kind(ButtonKind::Secondary),
             buttons,
             title: TitleCard::new("BUBBLE POP", theme).tagline("don't let it pop").best(1240),
             springs: [Spring::critical(0.0, 1.6), Spring::bouncy(0.0, 1.6), Spring::wobbly(0.0, 1.6)],
@@ -322,7 +333,7 @@ impl Game for Gallery {
     fn render(&self) {
         let th = &self.theme;
         let l = &self.layout;
-        shape::gradient(l.screen, th.bg_top, th.bg_bottom);
+        th.backdrop(l.screen, self.t);
         match self.page {
             0 => self.draw_title(),
             1 => self.draw_widgets(),

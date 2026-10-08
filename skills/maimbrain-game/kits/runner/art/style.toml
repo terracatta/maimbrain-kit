@@ -1,0 +1,79 @@
+# Bun Run's style guide. `mb art` applies it to every image (sprites, sheets,
+# layers, tiles, the icon) so they look like one set. To restyle the kit,
+# edit this file and run tools/regen.sh (see DESIGN.md "Make it yours").
+
+name = "Bun Run"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors"
+
+# Short style words added to every prompt.
+keywords = ["readable silhouettes", "chunky proportions", "high contrast", "cheerful", "clean pixel clusters"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "smooth gradients", "blurry or soft edges", "anti-aliasing", "dithering noise", "3D rendering", "thin lines", "busy detail"]
+
+# Hex colors, darkest first. palette_lock snaps every pixel to them.
+palette = [
+  "#1a1230", # outline ink
+  "#3d2416", # dark brown
+  "#7a4122", # brown
+  "#b8642a", # crust shade
+  "#ec9a3c", # crust
+  "#ffcf6b", # gold
+  "#fff1c2", # crumb / cream
+  "#ffffff",
+  "#a3202c", # dark red
+  "#ec3b35", # sneaker red
+  "#ff8fb0", # cheek pink
+  "#24418f", # deep blue
+  "#3d7be0", # blue
+  "#6fc3ff", # sky
+  "#c4ecff", # pale sky
+  "#1c5a3a", # dark green
+  "#2f9a3e", # green
+  "#6bd04a", # grass
+  "#b6f075", # light grass
+  "#5a4a9c", # dusk purple
+  "#9a8fd0", # far hill lilac
+  "#7e8aa0", # grey
+  "#c8d0dc", # light grey
+  "#ffe23a", # coin yellow
+  "#d58a12", # coin shade
+]
+palette_lock = true
+
+# Pixel art: generate, then reduce to a grid of art pixels stored `pixel_scale`
+# texels wide. This kit stores 3 texels per art pixel and draws each art pixel
+# 1.5 units wide: exactly 3 canvas pixels (the canvas is 2 px per unit), so
+# the screen is a classic 240 art pixels across and nothing is resampled.
+pixel_art = true
+pixel_scale = 3
+
+# Quantize every asset to at most this many colors (0: off). Smaller PNGs.
+colors = 0
+
+# Up to 3 images whose style every generation should match.
+references = ["assets/hero_run.png"]
+
+# Background color asked for on assets that get a transparent background.
+key = "#ff00ff"
+
+[sprite]
+prompt = "side view, facing right"
+
+[frames]
+prompt = "side view, facing right"
+
+[layer]
+prompt = "side-scrolling platformer scenery on a sunny day"
+
+[icon]
+prompt = "the hero bread bun mid-leap, big and cheerful, filling the frame, a sunny sky behind"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "upbeat 16-bit console chiptune: square-wave lead, punchy triangle bass, bright arpeggios, snappy noise drums, catchy and sunny"
+
+[sfx]
+prompt = "classic 16-bit console game sound, crisp and short, no reverb tail"

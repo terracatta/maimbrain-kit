@@ -9,7 +9,7 @@ logical_size = [360, 640]
 inputs = ["touch"]
 perf_tier = "full"
 
-stdlib = { mb3d = 2, mb2d = 1 }
+stdlib = { mb3d = 2, mb2d = 2 }
 capabilities = ["store", "score"]
 
 [[scores]]

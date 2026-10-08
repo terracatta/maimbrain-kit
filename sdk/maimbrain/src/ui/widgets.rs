@@ -7,14 +7,15 @@ use super::icon::Icon;
 use super::layout::{MIN_TOUCH, Rect};
 use super::shape::{arc, poly, ring, rrect, rrect_gradient, rrect_stroke, shadow};
 use super::text::{Align, VAlign, text};
+use super::style::{Border, Shadow, Shape, fill, stroke};
 use super::theme::Theme;
 use crate::gfx2d::{self, Font};
 use crate::input::{Event, Kind};
 use crate::motion::{Punch, Spring};
 
-/// A card: soft shadow, gradient body, hairline highlight and border.
+/// A card in the theme's style: its shape, shadow, body, texture and border.
 pub fn panel(r: Rect, theme: &Theme) {
-    panel_colored(r, theme.radius, theme.panel_top, theme.panel_bottom, theme.panel_border, theme.shadow);
+    super::style::frame(&theme.style, r, theme.radius, theme.panel_top, theme.panel_bottom, theme.panel_border, theme.shadow, theme.accent);
 }
 
 /// A panel in any colors (`border` alpha 0 = none, `shadow_color` alpha 0 = flat).
@@ -48,8 +49,29 @@ pub fn pill(s: &str, cx: f32, cy: f32, h: f32, bg: u32, fg: u32, font: Font, ico
     r
 }
 
+/// [`pill`] in a theme's shape and fonts (square for sharp themes, stepped
+/// for pixel ones, and so on).
+#[allow(clippy::too_many_arguments)]
+pub fn pill_in(theme: &Theme, s: &str, cx: f32, cy: f32, h: f32, bg: u32, fg: u32, icon: Option<Icon>) -> Rect {
+    let font = theme.body_font;
+    let r = Rect::centered(cx, cy, pill_width(s, h, font, icon.is_some()), h);
+    let shape = match theme.style.shape {
+        super::style::Shape::Rounded => super::style::Shape::Pill,
+        other => other,
+    };
+    super::style::fill(shape, r, h * 0.3, bg, bg);
+    let icon_w = if icon.is_some() { h * 0.62 } else { 0.0 };
+    let mut x = r.x + h * 0.5;
+    if let Some(i) = icon {
+        i.draw(x + icon_w * 0.4, cy, h * 0.55, fg);
+        x += icon_w;
+    }
+    text(s).font(font).size(pill_text_size(h, font)).color(fg).valign(VAlign::Middle).draw(x, cy);
+    r
+}
+
 fn pill_text_size(h: f32, font: Font) -> f32 {
-    if font == Font::Pixel { ((h * 0.5 / 8.0).round() * 8.0).max(8.0) } else { h * 0.5 }
+    if font.is_bitmap() { super::theme::fit(font, h * 0.5) } else { h * 0.5 }
 }
 
 /// How wide [`pill`] draws `s` (to lay several out with `stack_h`).
@@ -94,7 +116,7 @@ pub fn ring_meter(cx: f32, cy: f32, r: f32, width: f32, frac: f32, color: u32, t
 /// A banner with folded tails ("NEW BEST!"), turned by `angle`.
 #[allow(clippy::too_many_arguments)]
 pub fn ribbon(s: &str, cx: f32, cy: f32, h: f32, color: u32, fg: u32, font: Font, angle: f32) {
-    let size = if font == Font::Pixel { ((h * 0.5 / 8.0).round() * 8.0).max(8.0) } else { h * 0.52 };
+    let size = if font.is_bitmap() { super::theme::fit(font, h * 0.5) } else { h * 0.52 };
     let t = text(s).font(font).size(size).color(fg).align(Align::Center).valign(VAlign::Middle);
     let w = t.measure().0 + h * 1.2;
     gfx2d::push();
@@ -286,7 +308,17 @@ impl Button {
         let p = self.press.value.clamp(-0.3, 1.0);
         let s = (1.0 - 0.04 * p) * self.pop.scale();
         let r = self.rect;
-        let radius = if self.round { r.h.min(r.w) / 2.0 } else { (theme.radius * 0.6).min(r.h / 2.0) };
+        let st = &theme.style;
+        let classic = matches!(st.shape, Shape::Rounded | Shape::Pill);
+        let radius = if self.round && classic {
+            r.h.min(r.w) / 2.0
+        } else if st.shape == Shape::Pill {
+            r.h / 2.0
+        } else if classic {
+            (theme.radius * 0.6).min(r.h / 2.0)
+        } else {
+            theme.radius.max(6.0) * 0.6
+        };
         let dim = if self.enabled { 1.0 } else { 0.45 };
         let f = |c: u32| fade(c, a * dim);
         gfx2d::push();
@@ -294,6 +326,33 @@ impl Button {
         gfx2d::scale(s, s);
         let local = Rect::centered(0.0, 0.0, r.w, r.h);
         let (fg, lift) = match self.kind {
+            ButtonKind::Primary if !classic || matches!(st.shadow, Shadow::Hard(..)) => {
+                // Square-ish faces: a solid block under the face (the hard
+                // shadow, or a darker edge) that the face sinks into.
+                let (dx, dy) = match st.shadow {
+                    Shadow::Hard(dx, dy) => (dx.clamp(-5.0, 5.0), dy.clamp(-5.0, 5.0)),
+                    _ => (0.0, 4.0),
+                };
+                let under = if matches!(st.shadow, Shadow::Hard(..)) { theme.shadow } else { darken(theme.accent, 0.4) };
+                if st.shadow == Shadow::Glow {
+                    super::shape::glow(local, radius.max(6.0), 22.0, f(with_alpha(theme.accent, 0.5)));
+                }
+                fill(st.shape, local.offset(dx, dy), radius, f(under), f(under));
+                let k = p.max(0.0);
+                let face = local.offset(dx * k, dy * k);
+                fill(st.shape, face, radius, f(lighten(theme.accent, 0.08)), f(darken(theme.accent, 0.06)));
+                if st.shape == Shape::Bevel {
+                    let w = 2.5;
+                    gfx2d::rect(face.x, face.y, face.w, w, f(lighten(theme.accent, 0.5)));
+                    gfx2d::rect(face.x, face.y, w, face.h, f(lighten(theme.accent, 0.4)));
+                    gfx2d::rect(face.x, face.bottom() - w, face.w, w, f(darken(theme.accent, 0.5)));
+                    gfx2d::rect(face.right() - w, face.y, w, face.h, f(darken(theme.accent, 0.45)));
+                }
+                if let Border::Line(w) | Border::Double(w) | Border::Dashed(w) = st.border {
+                    stroke(st.shape, face, radius, w.min(3.0), f(theme.panel_border));
+                }
+                (theme.on_accent, dy * k)
+            }
             ButtonKind::Primary => {
                 let edge = 5.0;
                 let down = edge * p.max(0.0);
@@ -313,16 +372,16 @@ impl Button {
                 (theme.on_accent, down)
             }
             ButtonKind::Secondary => {
-                rrect(local, radius, f(theme.secondary));
-                rrect_stroke(local, radius, 2.0, f(with_alpha(theme.text, 0.35)));
+                fill(st.shape, local, radius, f(theme.secondary), f(theme.secondary));
+                stroke(st.shape, local, radius, 2.0, f(with_alpha(theme.text, 0.35)));
                 if p > 0.0 {
-                    rrect(local, radius, f(with_alpha(0xffffffff, 0.12 * p)));
+                    fill(st.shape, local, radius, f(with_alpha(0xffffffff, 0.12 * p)), f(with_alpha(0xffffffff, 0.12 * p)));
                 }
                 (theme.on_secondary, 0.0)
             }
             ButtonKind::Ghost => {
                 if p > 0.0 {
-                    rrect(local, radius, f(with_alpha(theme.text, 0.12 * p)));
+                    fill(st.shape, local, radius, f(with_alpha(theme.text, 0.12 * p)), f(with_alpha(theme.text, 0.12 * p)));
                 }
                 (theme.text, 0.0)
             }

@@ -4,18 +4,27 @@
 //!
 //! The title card, HUD and game-over card come from the SDK's UI kit
 //! (`maimbrain::ui`, docs/UI.md), the pops' juice from `maimbrain::juice`.
-//! Restyle them all with one `Theme`.
+//! Everything takes its look from one `Theme`, composed from IDENTITY below:
+//! don't ship the identity `mb new` picked at random. Choose the game's own
+//! (the skill's art-direction step), bake its fonts with `mb font add`, and
+//! draw the scene in its palette.
 
 mod sim;
 
 use maimbrain::juice::{Particles, Popups};
 use maimbrain::motion::Shake;
 use maimbrain::sys::{self, Round};
-use maimbrain::ui::{Hud, Layout, ResultsCard, ResultsAction, Theme, TitleCard, shape};
+use maimbrain::ui::{Hud, Layout, ResultsAction, ResultsCard, Theme, TitleCard, shape, with_alpha};
 use maimbrain::{Game, Rng, export_game, gfx2d, input, store};
 
 use sim::Sim;
 
+/// The game's identity: a kit identity (`riso`, `crt`, `neon`, `storybook`,
+/// `saloon`, `swiss`, `brutalist`, `comic`, `gothic`, `bubblegum`, `terminal`,
+/// `field`, `orbital`, `gala`, `notebook`, `stadium`, `cozy-pixel`) or a few
+/// words ("1970s diner menu, mustard and teal, snappy") that compose one
+/// (`Theme::from_identity`, docs/UI.md). Its fonts come from `mb font add`.
+const IDENTITY: &str = "__IDENTITY__";
 const BOARD: u32 = 0;
 /// Taps right after a round ends don't restart it (a frantic tap during the failure).
 const RETRY_GUARD: f32 = 0.35;
@@ -71,7 +80,10 @@ impl Game for Bubble {
         let mut rng = Rng::from_host();
         let sim = Sim::new(rng.next_u32() as u64);
         let best = store::get_u64("best").unwrap_or(0) as u32;
-        let theme = Theme::candy(); // or night(), arcade(), paper(), jungle(), or your own colors
+        // The identity's look, in its library fonts (baked into assets/fonts/ by
+        // `mb new` or `mb font add --identity`; until they load it draws in Inter).
+        // Adjust any field after: theme.accent, theme.style.motion, theme.title_font…
+        let theme = Theme::from_identity(IDENTITY).load_fonts();
         Bubble {
             mode: Mode::Title,
             sim,
@@ -154,12 +166,14 @@ impl Game for Bubble {
         let l = &self.layout;
         gfx2d::push();
         self.shake.apply(l.screen.cx(), l.screen.cy());
-        shape::gradient(l.screen, self.theme.bg_top, self.theme.bg_bottom);
+        let th = &self.theme;
+        th.backdrop(l.screen, self.time);
         let s = &self.sim;
         let pulse = if self.mode == Mode::Title { 1.0 + 0.06 * (self.time * 6.0).sin() } else { 1.0 };
         if !s.over {
-            shape::soft_disc(s.x, s.y, s.r * pulse + 6.0, 14.0, 0x6fd3ff50);
-            shape::disc(s.x, s.y, s.r * pulse, 0x6fd3ffd0);
+            // The scene in the identity's palette (draw your own world here).
+            shape::soft_disc(s.x, s.y, s.r * pulse + 6.0, 14.0, with_alpha(th.accent, 0.3));
+            shape::disc(s.x, s.y, s.r * pulse, th.accent);
             shape::soft_disc(s.x - s.r * 0.35, s.y - s.r * 0.35, s.r * 0.16, s.r * 0.12, 0xffffffb0);
         }
         self.fx.draw();
@@ -172,7 +186,7 @@ impl Game for Bubble {
                 // Play teaches: an animated hint on the bubble until the first pop.
                 if s.score == 0 {
                     let bob = (self.time * 5.0).sin() * 6.0;
-                    maimbrain::ui::text("POP IT!").size(20.0).outline(0.1, self.theme.outline).middle().draw(s.x, s.y + s.r + 24.0 + bob);
+                    maimbrain::ui::text(&th.case("Pop it!")).font(th.body_font).size(th.fit(th.body_font, 20.0)).color(th.text).outline(0.1, th.outline).middle().draw(s.x, s.y + s.r + 24.0 + bob);
                 }
             }
             Mode::Over(_) => {

@@ -10,7 +10,7 @@ The title screen isn't a menu. It's the feed card: an advertisement playing live
 - **Motion from frame one.** Something on the card is always moving (idle animation, swaying object, blinking eyes). A static card reads as a picture and gets swiped past.
 - **A clear hook.** One funny or intriguing thing a stranger gets in one glance: a character with a face and a problem.
 - **Stakes and drama, not steps.** Loop the most tempting moment: a near-miss, the wobble before the tower falls, the candle that almost relights, the face just before disaster. Tease the payoff without resolving it.
-- **One line of desire, if any**: a tagline or challenge rather than an instruction. "90 CANDLES. ONE GRANDMA." / "DON'T LET BRIAN GO THIRSTY." / "HOW HIGH?" Add the player's best ("BEST 42") once they have one: it's a reason to come back.
+- **One line of desire, if any**: a tagline or challenge rather than an instruction. "90 CANDLES. ONE GRANDMA." / "DON'T LET BRIAN GO THIRSTY." / "HOW HIGH?" (these show the shape; write your own in the game's voice: copies of them are all over the feed) Add the player's best ("BEST 42") once they have one: it's a reason to come back.
 - **How to play waits for play.** Every "how to" (BLOW, TILT TO POUR, the phone icon, arrows, ghost fingers) appears in the first seconds after the tap, when the action actually works (§2).
 
 ## 2. Instant, obvious interactivity
@@ -49,7 +49,7 @@ Juice is the feedback layered on an action so it feels physical. It's the differ
 - **Escalate fast.** Every ~10–15 s something gets faster, narrower or new. A new element (obstacle, shape, enemy, rule) every 15–30 s keeps people watching *and* players playing.
 - **Failure is the punchline.** Make the fail animation funny, gross, spectacular or satisfying, 1–2 s long. It's the most-shared moment and the game-over card.
 - **One-tap retry.** The game-over screen's tap target is the whole screen (minus a small separate button like SCORES), and retry starts play instantly.
-- **Progress pull**: show the score big, the best, and the gap ("3 MORE TO BEAT YOUR BEST"). Flash "NEW BEST!" with a burst.
+- **Progress pull**: show the score big, the best, and the gap ("3 MORE TO BEAT YOUR BEST"). Celebrate a new best in the game's own style (a ribbon, a stamp, a lamp, a line on a receipt).
 
 ## 6. Cards: three screens strangers see
 

@@ -364,7 +364,7 @@ impl Popups {
             let pop = Ease::BackOut.at((p.age / 0.22).min(1.0));
             let y = p.y - p.rise * Ease::ExpoOut.at(t);
             let a = if t > 0.6 { 1.0 - (t - 0.6) / 0.4 } else { 1.0 };
-            let size = if font == Font::Pixel { ((p.size / 8.0).round() * 8.0).max(8.0) } else { p.size };
+            let size = crate::ui::theme::fit(font, p.size);
             gfx2d::push();
             gfx2d::translate(p.x, y);
             gfx2d::scale(pop.max(0.01), pop.max(0.01));

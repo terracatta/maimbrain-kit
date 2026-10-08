@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:58:13Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a round two-layer strawberry sponge cake with pink frosting drips, rainbow sprinkles and a red cherry on top, sitting on a white plate, with a cute face on the front of the sponge. Frames left to right: 1 happy, a content smile and rosy cheeks; 2 nervous, worried raised eyebrows and a wobbly flat mouth; 3 panicking, wide eyes, an open screaming mouth and a sweat drop; 4 wincing, eyes squeezed shut and teeth clenched as if just bitten; 5 the same white plate now empty except for a few crumbs and a lonely cherry with X eyes",
+  "full_prompt": "An animation sprite sheet: 5 frames of a round two-layer strawberry sponge cake with pink frosting drips, rainbow sprinkles and a red cherry on top, sitting on a white plate, with a cute face on the front of the sponge. Frames left to right: 1 happy, a content smile and rosy cheeks; 2 nervous, worried raised eyebrows and a wobbly flat mouth; 3 panicking, wide eyes, an open screaming mouth and a sweat drop; 4 wincing, eyes squeezed shut and teeth clenched as if just bitten; 5 the same white plate now empty except for a few crumbs and a lonely cherry with X eyes, in a grid of 3 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. The same clay model in every frame, same size, same camera angle, seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1568959540,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "afb6ee6adc17922bc0266740b583b2fdadf73d88034cbfe47bff7bf7eb53ad06"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/cake-1568959540.jpg",
+  "raw_sha256": "1d7bbcad86817106f6c732cecfef4145e62b3e8ef23a39ff77fa0fb79dd04a72",
+  "output_sha256": "1921a1f3bbaa999cc5ce8348801a0f35750fa7410b5f8fab43ebfe9d53a1ec4d",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 5,
+    "frames": 5,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 11,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "cake",
+    "no_style": false,
+    "out": "assets/cake.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1568959540,
+    "size": [
+      176,
+      176
+    ],
+    "subject": "a round two-layer strawberry sponge cake with pink frosting drips, rainbow sprinkles and a red cherry on top, sitting on a white plate, with a cute face on the front of the sponge. Frames left to right: 1 happy, a content smile and rosy cheeks; 2 nervous, worried raised eyebrows and a wobbly flat mouth; 3 panicking, wide eyes, an open screaming mouth and a sweat drop; 4 wincing, eyes squeezed shut and teeth clenched as if just bitten; 5 the same white plate now empty except for a few crumbs and a lonely cherry with X eyes",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      176,
+      176
+    ],
+    "cols": 5,
+    "frames": 5,
+    "keyed_background": "#0af108",
+    "rust": "frame i's source rect: [(i % 5) × 176, (i / 5) × 176, 176, 176] (e.g. 5 frames at 8–12 fps)",
+    "size": [
+      880,
+      176
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

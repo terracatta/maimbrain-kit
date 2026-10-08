@@ -1,0 +1,27 @@
+abi = 0
+id = "com.maimbrain.terracatta.poppets"
+name = "Poppets"
+version = "0.1.0"
+creator = "@terracatta"
+
+orientation = "portrait"
+logical_size = [360, 640]
+inputs = ["touch"]
+perf_tier = "lite"
+
+stdlib = { mb2d = 1 }
+sensors = ["haptics"]
+capabilities = ["store", "score"]
+startup_assets = ["assets/cast.png", "assets/bg.png", "assets/paper.png", "assets/start.ogg", "assets/select.ogg", "assets/swap.ogg", "assets/bounce.ogg", "assets/pop.ogg", "assets/chime.ogg", "assets/music.ogg", "assets/tension.ogg"]
+
+[[scores]]
+board = 0
+label = "Points"
+order = "higher"
+format = "integer"
+
+[[scores]]
+board = 1
+label = "Daily points"
+order = "higher"
+format = "integer"

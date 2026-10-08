@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-08T03:13:35Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "47b42b7ddb7a46fa319a1fba7fe428366b9b02b9cb11d68a1b491029c8900b31",
+  "packed_from": [
+    {
+      "date": "2026-10-08T02:59:30Z",
+      "file": "assets/hero_run.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the round bread bun hero running fast: a golden-brown bun with sesame seeds, big white eyes with black pupils looking ahead, a determined little smile, pink cheeks, cream underside, short dark legs in red sneakers with white soles. A 4-frame run cycle, one bun per frame, with clearly different leg positions: 1 front leg reaching far forward and back leg pushing off behind, 2 legs passing under the body with the body bobbed up, 3 the opposite leg reaching forward, 4 both feet off the ground mid-stride. The body leans forward slightly",
+      "provider": "gemini",
+      "seed": 991762802
+    },
+    {
+      "date": "2026-10-08T03:00:46Z",
+      "file": "assets/hero_air.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the same round bread bun hero (golden-brown bun, sesame seeds, big white eyes, pink cheeks, cream underside, short dark legs, red sneakers) in four separate poses, one bun per frame: 1 jumping upward, legs tucked up under the body, eyes looking up, mouth open in a happy O; 2 falling, legs stretched straight down, eyes wide and worried, small frown; 3 curled into a tight round ball mid-somersault, sneakers tucked against the bun, eyes squeezed shut in happy arcs; 4 bonked and dazed, dizzy X-shaped eyes, wobbly zigzag mouth, legs splayed out",
+      "provider": "gemini",
+      "seed": 132333738
+    },
+    {
+      "date": "2026-10-08T03:03:16Z",
+      "file": "assets/crate.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a sturdy wooden crate seen straight from the front: a thick dark-brown wooden frame around all four edges with grey metal corner brackets and rivets; inside, three horizontal light orange-brown planks separated by dark lines, with wood grain streaks and a bright highlight along the top edge of each plank; square",
+      "provider": "gemini",
+      "seed": 677450869
+    },
+    {
+      "date": "2026-10-08T03:02:10Z",
+      "file": "assets/log.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a long fallen tree log lying horizontally, seen from the side: rough brown bark with a few knots running the whole length, the left end a pale cut face with growth rings, the right end also cut flat, perfectly straight and even thickness",
+      "provider": "gemini",
+      "seed": 1335438743
+    },
+    {
+      "date": "2026-10-08T03:02:11Z",
+      "file": "assets/gull.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump white seagull with grey wings, an orange beak and an angry brow, flying toward the left (facing left), a 4-frame wing flap: wings up, wings level, wings down, wings level",
+      "provider": "gemini",
+      "seed": 1351812757
+    },
+    {
+      "date": "2026-10-08T03:03:07Z",
+      "file": "assets/skimmer.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a sleek dark purple-grey swift bird with long sharp swept-back wings, a white belly and a fierce red eye, flying perfectly level and horizontal, fast and low toward the left (facing left), body horizontal, a 4-frame quick wing beat: wings up, wings level, wings down, wings level",
+      "provider": "gemini",
+      "seed": 1197183683
+    },
+    {
+      "date": "2026-10-08T03:02:09Z",
+      "file": "assets/bee.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round fuzzy bumblebee with bold yellow and black stripes, an angry face and little stinger, facing left, translucent white wings buzzing, 2 frames: wings up, wings down",
+      "provider": "gemini",
+      "seed": 109051400
+    },
+    {
+      "date": "2026-10-08T03:02:25Z",
+      "file": "assets/coin.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a shiny gold coin with a raised star in the middle and a darker rim, spinning: 6 frames from face-on to edge-on and back",
+      "provider": "gemini",
+      "seed": 1579987781
+    },
+    {
+      "date": "2026-10-08T03:08:51Z",
+      "file": "assets/sun.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round bright yellow cartoon sun with a soft pale-yellow rim and short chunky rays, a simple happy closed-eye smile",
+      "provider": "gemini",
+      "seed": 41296247
+    },
+    {
+      "date": "2026-10-08T03:08:34Z",
+      "file": "assets/moon.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a pale cream crescent moon with two small craters, glowing softly, a sleepy closed-eye face",
+      "provider": "gemini",
+      "seed": 1527242750
+    },
+    {
+      "date": "2026-10-08T03:07:26Z",
+      "file": "assets/cloud.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "three different fluffy white cumulus clouds with flat bottoms and a light blue-grey shaded underside, wide and puffy",
+      "provider": "gemini",
+      "seed": 1061074408
+    },
+    {
+      "date": "2026-10-08T03:07:50Z",
+      "file": "assets/dirt.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "rich brown soil seen from the side, with small rounded pebbles, a few buried stones and tiny roots, two shades of brown with dark specks",
+      "provider": "gemini",
+      "seed": 1255270596
+    },
+    {
+      "date": "2026-10-08T03:08:10Z",
+      "file": "assets/grass.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "dense bright green grass turf seen from the side, short blades and lighter highlight tufts, evenly spread",
+      "provider": "gemini",
+      "seed": 1221915431
+    }
+  ]
+}

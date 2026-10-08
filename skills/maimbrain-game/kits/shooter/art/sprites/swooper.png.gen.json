@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:56:26Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a small bat-like swooping creature with angular swept wings, orange neon outline, a round body in the middle, flapping its wings (wings up, level, down, level), no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+  "full_prompt": "An animation sprite sheet: 4 frames of a small bat-like swooping creature with angular swept wings, orange neon outline, a round body in the middle, flapping its wings (wings up, level, down, level), no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later, in a grid of 2 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Seen straight on, centered, the same creature in every frame. Art style: neon synthwave vector art: bold glowing magenta and cyan tube outlines around dark indigo glass bodies, clean geometric shapes, a bright white-hot core inside every neon line, retro 1980s arcade night. Readable silhouettes, symmetrical geometric shapes, thick glowing outlines, dark filled interiors, high contrast. Use only these colors: #0a0820, #1c1450, #4a2aa0, #ff2fb4, #22e6ff, #ff5a8a, #ffc23a, #f4f0ff. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, busy detail, soft outer haze or bloom bleeding past the outline, drop shadows, gradients outside the subject, faces or eyes unless asked. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1910910147,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/pip.jpg",
+      "sha256": "d4d41f48bceba7ef93ce87d01377f4134d1cced5dd83ef8a1e35815a2312af68"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "c92e22602b4864ba989ccbc9463bcc4423db0da5bfe477d932664388878f048f"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/swooper-1910910147.jpg",
+  "raw_sha256": "72c3445350abc0e85468485e63dd53dacd079222fb579d0f6b602efee51f0e08",
+  "output_sha256": "2b6779a3819aab44ed1b8e3e5897dcc99e84d9994903aee72030c616302d5042",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 4,
+    "frames": 4,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 7,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "swooper",
+    "no_style": false,
+    "out": "art/sprites/swooper.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1910910147,
+    "size": [
+      112,
+      112
+    ],
+    "subject": "a small bat-like swooping creature with angular swept wings, orange neon outline, a round body in the middle, flapping its wings (wings up, level, down, level), no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      112,
+      112
+    ],
+    "cols": 4,
+    "frames": 4,
+    "keyed_background": "#09d906",
+    "rust": "frame i's source rect: [(i % 4) × 112, (i / 4) × 112, 112, 112] (e.g. 4 frames at 8–12 fps)",
+    "size": [
+      448,
+      112
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

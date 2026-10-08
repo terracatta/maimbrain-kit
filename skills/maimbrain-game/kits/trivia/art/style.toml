@@ -1,0 +1,57 @@
+# The style guide for Bright Spark's generated art. `mb art` applies it to
+# every image (sprites, sheets, backgrounds, UI, the icon) so they look like
+# one set. To restyle the kit: edit this file, then run tools/regen.sh (it
+# regenerates every asset with the same names and sizes the code expects).
+
+name = "Bright Spark"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism"
+
+# Short style words added to every prompt.
+keywords = ["readable silhouettes", "flat poster color", "halftone dot shading", "thick ink line", "big simple shapes"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "3D render", "glossy gradients", "neon", "busy detail", "thin scratchy lines", "letters or numbers"]
+
+# Hex colors, darkest first: ink, teal, tomato red, warm grey (metal, dead glass), mustard, cream highlight, paper.
+palette = ["#2a1e1a", "#1f7a7a", "#e2412f", "#968a80", "#f2a922", "#ffe9a8", "#f6ecd6"]
+palette_lock = false
+
+pixel_art = false
+pixel_scale = 4
+
+# Quantize every asset to at most this many colors (0: off). Poster print
+# needs few colors, and it keeps halftone PNGs small.
+colors = 48
+
+# Up to 3 images whose style every generation should match. Watt's sheet is
+# the reference once it looks right.
+references = ["assets/host.png"]
+
+# Background color asked for on transparent assets (far from the palette).
+key = "#ff00ff"
+
+# Per-kind additions and default sizes (PNG pixels; the canvas is 2 px per logical unit).
+[sprite]
+prompt = "front view, centered"
+size = [192, 192]
+
+[frames]
+prompt = "the same character drawn identically in every frame, same size and position, only the face and small details change"
+
+[ui]
+prompt = "flat front view, symmetrical"
+
+[background]
+prompt = "a flat stage backdrop seen straight on"
+
+[icon]
+prompt = "the lightbulb quiz host's face, beaming, on a mustard starburst over a tomato-red ground"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "1950s big band swing: brass section, walking upright bass, brushed drums, piano comping, bright and bouncy game-show energy"
+
+[sfx]
+prompt = "1950s television game show, bright and punchy, dry, no reverb tail"

@@ -1,0 +1,70 @@
+{
+  "generator": "mb 0.4.1 art tile",
+  "date": "2026-10-08T03:08:10Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "dense bright green grass turf seen from the side, short blades and lighter highlight tufts, evenly spread",
+  "full_prompt": "A seamless, tileable square texture for a 2D game: dense bright green grass turf seen from the side, short blades and lighter highlight tufts, evenly spread. Evenly lit, no vignette, no border; the pattern continues across all four edges. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 16×16 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1221915431,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/grass-1221915431.jpg",
+  "raw_sha256": "09fd9d50bb2f316040725d07820177435b5160dcb789f3858ee26407ff0f483a",
+  "output_sha256": "c12ff711d1f00fa5f9ed1e2cd3986e1b7059dd0aa91299040ab4b517913e6208",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": [
+      16,
+      16
+    ],
+    "grid_explicit": true,
+    "keyed": false,
+    "kind": "tile",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "grass",
+    "no_style": false,
+    "out": "assets/grass.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1221915431,
+    "size": [
+      48,
+      48
+    ],
+    "subject": "dense bright green grass turf seen from the side, short blades and lighter highlight tufts, evenly spread",
+    "tolerance": 0.09
+  },
+  "result": {
+    "pixel_scale": 3,
+    "size": [
+      48,
+      48
+    ],
+    "warnings": [],
+    "wraps": "xy"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

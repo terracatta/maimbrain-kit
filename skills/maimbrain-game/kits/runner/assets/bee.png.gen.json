@@ -1,0 +1,77 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T03:02:09Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a round fuzzy bumblebee with bold yellow and black stripes, an angry face and little stinger, facing left, translucent white wings buzzing, 2 frames: wings up, wings down",
+  "full_prompt": "An animation sprite sheet: 2 frames of a round fuzzy bumblebee with bold yellow and black stripes, an angry face and little stinger, facing left, translucent white wings buzzing, 2 frames: wings up, wings down, in one horizontal row, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Side view, facing right. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 32×30 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 109051400,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/bee-109051400.jpg",
+  "raw_sha256": "ecfb868837ddd90f3cd524e0f164b74c56041f6bf8c970438a9e5a85ce1d42fa",
+  "output_sha256": "dbff762b97ddeb08cddce62caefa34b52d45c8f9e2c78e17794f8f6ef221a755",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "21:9",
+    "colors": null,
+    "cols": 2,
+    "frames": 2,
+    "grid": [
+      32,
+      30
+    ],
+    "grid_explicit": true,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "bee",
+    "no_style": false,
+    "out": "assets/bee.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 109051400,
+    "size": [
+      96,
+      90
+    ],
+    "subject": "a round fuzzy bumblebee with bold yellow and black stripes, an angry face and little stinger, facing left, translucent white wings buzzing, 2 frames: wings up, wings down",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      96,
+      90
+    ],
+    "cols": 2,
+    "frames": 2,
+    "keyed_background": "#fe14f9",
+    "pixel_scale": 3,
+    "rust": "frame i's source rect: [(i % 2) × 96, (i / 2) × 90, 96, 90] (e.g. 2 frames at 8–12 fps)",
+    "size": [
+      192,
+      90
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

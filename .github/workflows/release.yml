@@ -24,6 +24,8 @@ jobs:
       - run: cargo test --workspace
       # The SDK's physics features (Rapier) are off by default; test them too.
       - run: cargo test -p maimbrain --features physics2d,physics3d
+      # The font library parses and lists (fonts themselves download on demand; mb new below bakes some).
+      - run: cargo run -q -p mb-cli -- fonts --category pixel
       # A fresh game from each template must build and validate (needs the wasm
       # target), created outside this workspace and pointed at this checkout's SDK.
       - name: New games from both templates build and validate
@@ -39,6 +41,24 @@ jobs:
           for g in ci2d ci3d; do
             printf '\n[patch."https://github.com/terracatta/maimbrain-kit"]\nmaimbrain = { path = "%s/sdk/maimbrain" }\n' "$kit" >> "$RUNNER_TEMP/$g/Cargo.toml"
             cargo run -q -p mb-cli -- build "$RUNNER_TEMP/$g"
+          done
+      # Every genre starter kit (`mb new --kit`) must scaffold into a game that passes
+      # its own tests (rules and bot sanity checks) and builds and validates.
+      - name: New games from every kit test, build and validate
+        shell: bash
+        run: |
+          set -eux
+          kit="$(pwd -W 2>/dev/null || pwd)"
+          cargo build -q -p mb-cli
+          target/debug/mb kits
+          # One target dir for all of them, so the SDK (and Rapier) compile once.
+          shared="$RUNNER_TEMP/kit-target"
+          for k in runner stacker shooter match3 racer tower-defense trivia; do
+            g="kit_$(echo "$k" | tr - _)"
+            target/debug/mb new --kit "$k" "$RUNNER_TEMP/$g" --id "com.example.$(echo "$k" | tr -d -)" --creator @ci
+            printf '\n[patch."https://github.com/terracatta/maimbrain-kit"]\nmaimbrain = { path = "%s/sdk/maimbrain" }\n' "$kit" >> "$RUNNER_TEMP/$g/Cargo.toml"
+            CARGO_TARGET_DIR="$shared" cargo test -q --manifest-path "$RUNNER_TEMP/$g/Cargo.toml"
+            CARGO_TARGET_DIR="$shared" target/debug/mb build "$RUNNER_TEMP/$g"
           done
       # mb serve --watch builds, serves, and rebuilds after an edit (no browser: the
       # status endpoints say what was built).

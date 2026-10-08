@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art tile",
+  "date": "2026-10-08T03:04:31Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a pale cream sheet of hand-made art paper with soft speckled fibers and a few faint lavender watercolor blooms, gentle and even",
+  "full_prompt": "A seamless, tileable square texture for a 2D game: a pale cream sheet of hand-made art paper with soft speckled fibers and a few faint lavender watercolor blooms, gentle and even. Evenly lit, no vignette, no border; the pattern continues across all four edges. Seamless texture, even lighting, no objects. Art style: soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood. Children's picture book, soft round shapes, readable silhouette, gentle glow, hand-made. Use only these colors: #1f1d3d, #3d3566, #5a6aa8, #e2706f, #f0a65a, #f2d37a, #86c08f, #7fb0e0, #b394dc, #f6eedd. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, vector flat color, hard black outlines, busy detail, drop shadows on the background. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1720963084,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/poppet.png",
+      "sha256": "63572d45bd57ef74327e32ea75903bb423e79163fe5a5b658e069886c4a576be"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/paper-1720963084.jpg",
+  "raw_sha256": "ea17a05da9af119585e14fa7a39a497d2da2169ef453c8bef36764353208a3c6",
+  "output_sha256": "65281ad7865b5d04b6c0ccab562090cface9d0e9418cd262a4e4580f97391968",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "tile",
+    "layer": null,
+    "margin": 8,
+    "max_kb": 24,
+    "model": "gemini-nano-banana-2.1",
+    "name": "paper",
+    "no_style": false,
+    "out": "assets/paper.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1720963084,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a pale cream sheet of hand-made art paper with soft speckled fibers and a few faint lavender watercolor blooms, gentle and even",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      128,
+      128
+    ],
+    "warnings": [],
+    "wraps": "xy"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

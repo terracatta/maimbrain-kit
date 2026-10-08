@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art background",
+  "date": "2026-10-08T03:11:21Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a retro synthwave night: a deep indigo sky fading to violet near the horizon, a faint scattering of tiny stars and a soft purple nebula high up; the horizon is a straight level line exactly halfway down the image; on the horizon a big setting neon sun, half sunk below the line, cut by horizontal dark stripes, glowing magenta at the bottom to warm gold at the top, softly dimmed; low wireframe mountain silhouettes in magenta neon lines either side of the sun along the horizon; below the horizon the ground is an empty, plain, very dark indigo floor with no lines, no grid and no detail",
+  "full_prompt": "A full-screen 2D game background, tall portrait composition: a retro synthwave night: a deep indigo sky fading to violet near the horizon, a faint scattering of tiny stars and a soft purple nebula high up; the horizon is a straight level line exactly halfway down the image; on the horizon a big setting neon sun, half sunk below the line, cut by horizontal dark stripes, glowing magenta at the bottom to warm gold at the top, softly dimmed; low wireframe mountain silhouettes in magenta neon lines either side of the sun along the horizon; below the horizon the ground is an empty, plain, very dark indigo floor with no lines, no grid and no detail. No characters, no text; keep the middle calm and lower in contrast so game objects read on top. A vertical phone game backdrop, calm and dark in the middle so bright bullets read on it. Art style: neon synthwave vector art: bold glowing magenta and cyan tube outlines around dark indigo glass bodies, clean geometric shapes, a bright white-hot core inside every neon line, retro 1980s arcade night. Readable silhouettes, symmetrical geometric shapes, thick glowing outlines, dark filled interiors, high contrast. Use only these colors: #0a0820, #1c1450, #4a2aa0, #ff2fb4, #22e6ff, #ff5a8a, #ffc23a, #f4f0ff. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, busy detail, soft outer haze or bloom bleeding past the outline, drop shadows, gradients outside the subject, faces or eyes unless asked. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 738460221,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/pip.jpg",
+      "sha256": "d4d41f48bceba7ef93ce87d01377f4134d1cced5dd83ef8a1e35815a2312af68"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "c92e22602b4864ba989ccbc9463bcc4423db0da5bfe477d932664388878f048f"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/backdrop-738460221.jpg",
+  "raw_sha256": "d81259c713f9fa393b35e418dcf768ec51f5bad286e52d106429c6edb209d60c",
+  "output_sha256": "762819b7df4d1461dd8cbbef021e66f397bc8c9bb3ccd8c9b19cdec725332026",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "9:16",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "background",
+    "layer": null,
+    "margin": 33,
+    "max_kb": 80,
+    "model": "gemini-nano-banana-2.1",
+    "name": "backdrop",
+    "no_style": false,
+    "out": "assets/backdrop.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 738460221,
+    "size": [
+      540,
+      960
+    ],
+    "subject": "a retro synthwave night: a deep indigo sky fading to violet near the horizon, a faint scattering of tiny stars and a soft purple nebula high up; the horizon is a straight level line exactly halfway down the image; on the horizon a big setting neon sun, half sunk below the line, cut by horizontal dark stripes, glowing magenta at the bottom to warm gold at the top, softly dimmed; low wireframe mountain silhouettes in magenta neon lines either side of the sun along the horizon; below the horizon the ground is an empty, plain, very dark indigo floor with no lines, no grid and no detail",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      540,
+      960
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

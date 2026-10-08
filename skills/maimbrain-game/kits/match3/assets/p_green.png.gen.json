@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:58:25Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a plump rounded hexagon-shaped creature with six soft corners, sage green, a small two-leaf sprout growing from the top, two little stubby feet",
+  "full_prompt": "A single 2D game sprite of a plump rounded hexagon-shaped creature with six soft corners, sage green, a small two-leaf sprout growing from the top, two little stubby feet. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. A single small creature body seen from the front, centered, filling most of the frame, no face, no eyes, no mouth, soft watercolor wash with a slightly darker pooled rim and a pale highlight on the upper left, thin warm pencil outline. Art style: soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood. Children's picture book, soft round shapes, readable silhouette, gentle glow, hand-made. Use only these colors: #1f1d3d, #3d3566, #5a6aa8, #e2706f, #f0a65a, #f2d37a, #86c08f, #7fb0e0, #b394dc, #f6eedd. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, vector flat color, hard black outlines, busy detail, drop shadows on the background. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1841002157,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/poppet.png",
+      "sha256": "63572d45bd57ef74327e32ea75903bb423e79163fe5a5b658e069886c4a576be"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/p_green-1841002157.jpg",
+  "raw_sha256": "45ea90b0cef14719a136696169919a0d32d560cd0a1a89a7fbafb37a6849f544",
+  "output_sha256": "923bf405199221e342dd8fad3fafdf2cc9c2b98c32e316ff17e5cfe3c9b31bf0",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "p_green",
+    "no_style": false,
+    "out": "assets/p_green.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1841002157,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a plump rounded hexagon-shaped creature with six soft corners, sage green, a small two-leaf sprout growing from the top, two little stubby feet",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0014ff",
+    "size": [
+      128,
+      128
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

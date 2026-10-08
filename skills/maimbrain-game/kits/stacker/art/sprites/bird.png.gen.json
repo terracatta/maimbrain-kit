@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T03:01:27Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a flapping cycle of a small round cream-white paper bird facing right: plump round body, a darker cream belly patch, one dot eye, a rosy cheek, a small orange triangle beak, two short orange legs hanging straight down below its belly. Frame 1 wings raised high above its back, frame 2 wings level, frame 3 wings swept down (never lower than its feet), frame 4 wings level again. The body, head and legs stay in exactly the same place in every frame; only the wings move",
+  "full_prompt": "An animation sprite sheet: 4 frames of a flapping cycle of a small round cream-white paper bird facing right: plump round body, a darker cream belly patch, one dot eye, a rosy cheek, a small orange triangle beak, two short orange legs hanging straight down below its belly. Frame 1 wings raised high above its back, frame 2 wings level, frame 3 wings swept down (never lower than its feet), frame 4 wings level again. The body, head and legs stay in exactly the same place in every frame; only the wings move, in a grid of 2 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Seen straight from the side, every frame the same character at the same size, no outer drop shadow. Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 769217090,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/bird-769217090.jpg",
+  "raw_sha256": "77a08d39b5e4b65620afc1e7318c528bbaa606dbfc2d85a9de337b26ea565a34",
+  "output_sha256": "37d35565022c7be6de2de8fd80cbfcf8a2e485b8b2ee475d49490a9b45e4f57b",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 4,
+    "frames": 4,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "bird",
+    "no_style": false,
+    "out": "assets/bird.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 769217090,
+    "size": [
+      200,
+      140
+    ],
+    "subject": "a flapping cycle of a small round cream-white paper bird facing right: plump round body, a darker cream belly patch, one dot eye, a rosy cheek, a small orange triangle beak, two short orange legs hanging straight down below its belly. Frame 1 wings raised high above its back, frame 2 wings level, frame 3 wings swept down (never lower than its feet), frame 4 wings level again. The body, head and legs stay in exactly the same place in every frame; only the wings move",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      200,
+      140
+    ],
+    "cols": 4,
+    "frames": 4,
+    "keyed_background": "#0534ff",
+    "rust": "frame i's source rect: [(i % 4) × 200, (i / 4) × 140, 200, 140] (e.g. 4 frames at 8–12 fps)",
+    "size": [
+      800,
+      140
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

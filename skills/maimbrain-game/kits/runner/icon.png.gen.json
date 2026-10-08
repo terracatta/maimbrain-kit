@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:28:37Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "the bread bun hero in red sneakers leaping joyfully toward the viewer over a wooden crate, a gold coin flying beside it, rolling green hills and a bright blue sky with a puffy cloud behind",
+  "full_prompt": "A square app icon for a mobile game: the bread bun hero in red sneakers leaping joyfully toward the viewer over a wooden crate, a gold coin flying beside it, rolling green hills and a bright blue sky with a puffy cloud behind. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. The hero bread bun mid-leap, big and cheerful, filling the frame, a sunny sky behind. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels, no anti-aliasing, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 679315207,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-679315207.jpg",
+  "raw_sha256": "e8d5f78a7b3135022880720088846a5256812bba7fb8244149c4524920a628c6",
+  "output_sha256": "02642f8c6bd9ea3f874a485ef9fd2963a9f149cc69eb58c0e147d0d18ff4fe47",
+  "allowed_names": [],
+  "model_text": "Here is the mobile game app icon for the bread bun hero, featuring its joyful leap over a crate with a gold coin flying beside it, fully crafted in the chunky 16-bit console platformer pixel art style matching the character and aesthetic from `image_0.png`. Let me know if you would like any adjustments!",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 679315207,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "the bread bun hero in red sneakers leaping joyfully toward the viewer over a wooden crate, a gold coin flying beside it, rolling green hills and a bright blue sky with a puffy cloud behind",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

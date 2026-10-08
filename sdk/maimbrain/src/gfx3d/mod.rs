@@ -644,7 +644,9 @@ impl Node {
     /// score. Empty text removes it. False past the limits (256 nodes with
     /// text, 512 characters each).
     pub fn set_text(self, desc: &TextDesc, text: &str) -> bool {
-        unsafe { ffi::mb3d_text(self.0.get(), ptr(desc), text.as_ptr(), text.len() as u32) == 0 }
+        // A game font is sent as the host font it draws with now (set text after `font.ready()`).
+        let desc = TextDesc { font: crate::gfx2d::Font::from_id(desc.font.id()), ..*desc };
+        unsafe { ffi::mb3d_text(self.0.get(), ptr(&desc), text.as_ptr(), text.len() as u32) == 0 }
     }
     pub fn clear_text(self) {
         self.set_text(&TextDesc::default(), "");
@@ -723,9 +725,10 @@ impl Default for MaterialStyle {
     }
 }
 
-/// How a node's 3D text looks (64 bytes, mb3d 2). The host fonts: Inter
-/// (signed distance fields, crisp at any size, with optional outline) and the
-/// pixel font.
+/// How a node's 3D text looks (64 bytes, mb3d 2). Any font: the host fonts
+/// (Inter, signed distance fields, crisp at any size, with optional outline;
+/// the pixel font) or a game font (`Font::asset`, mb2d 2: set the text once
+/// `font.ready()`, since it's laid out when set).
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct TextDesc {
@@ -806,6 +809,30 @@ pub fn depth_of_field(d: &DepthOfField) {
     unsafe { ffi::mb3d_dof(ptr(d)) }
 }
 
+/// Post effects that sell speed (32 bytes, mb3d 2). All zero (the default) is off.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[repr(C)]
+pub struct SpeedBlur {
+    /// 0–1: a zoom blur toward `center`, stronger farther from it (motion blur
+    /// for flying forward: put `center` on what you're chasing, or where the
+    /// road vanishes).
+    pub radial: f32,
+    /// Logical screen coordinates (mb2d's space), e.g. from [`project`].
+    pub center: [f32; 2],
+    /// A directional blur along this vector, logical pixels (≤ 48): the
+    /// camera's sideways swing, a dash.
+    pub motion: [f32; 2],
+    /// 0–1: horizontal stretching toward the left and right edges.
+    pub stretch: f32,
+    pub _reserved: [u32; 2],
+}
+
+/// Sets the speed effects until changed (mb3d 2). Cheap: it only changes the
+/// final composite pass (10 extra samples per pixel while any is on).
+pub fn speed_blur(s: &SpeedBlur) {
+    unsafe { ffi::mb3d_speed(ptr(s)) }
+}
+
 /// A camera orbiting a target: yaw around +y, pitch up from the horizon.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct OrbitCamera {
@@ -857,6 +884,7 @@ mod tests {
         assert_eq!(size_of::<Post>(), 32);
         assert_eq!(size_of::<EmitterDesc>(), 128);
         assert_eq!(size_of::<TrailDesc>(), 64);
+        assert_eq!(size_of::<SpeedBlur>(), 32);
         assert_eq!(size_of::<Option<Texture>>(), 4);
         // mb3d 2
         assert_eq!(size_of::<Instance>(), 44);

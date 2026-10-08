@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-08T03:37:14Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "801c0e0ddde5ab36f33daedfcbd5d2ca30097449ccc0fb258277b13f44cf2a2e",
+  "packed_from": [
+    {
+      "date": "2026-10-08T02:57:00Z",
+      "file": "assets/p_coral.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round plump puffball creature, a soft coral-red ball with two tiny rounded ears on top and two little stubby feet at the bottom",
+      "provider": "gemini",
+      "seed": 817551115
+    },
+    {
+      "date": "2026-10-08T02:58:40Z",
+      "file": "assets/p_orange.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump square creature shaped like a soft rounded cube of marshmallow, warm apricot orange, two tiny rounded ears on top and two little stubby feet at the bottom",
+      "provider": "gemini",
+      "seed": 759044431
+    },
+    {
+      "date": "2026-10-08T02:58:31Z",
+      "file": "assets/p_yellow.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump rounded triangle creature shaped like a soft rice ball with a gently rounded point on top and a wide flat bottom, butter yellow, two little stubby feet",
+      "provider": "gemini",
+      "seed": 1030509046
+    },
+    {
+      "date": "2026-10-08T02:58:25Z",
+      "file": "assets/p_green.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump rounded hexagon-shaped creature with six soft corners, sage green, a small two-leaf sprout growing from the top, two little stubby feet",
+      "provider": "gemini",
+      "seed": 1841002157
+    },
+    {
+      "date": "2026-10-08T02:58:28Z",
+      "file": "assets/p_blue.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump cloud-shaped creature with a bumpy scalloped cloud outline, soft powder blue, two little stubby feet",
+      "provider": "gemini",
+      "seed": 1099046220
+    },
+    {
+      "date": "2026-10-08T02:59:09Z",
+      "file": "assets/p_purple.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump five-pointed star creature with very rounded soft points, lavender purple, two little stubby feet",
+      "provider": "gemini",
+      "seed": 768191115
+    },
+    {
+      "date": "2026-10-08T02:59:52Z",
+      "file": "assets/p_pink.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump heart-shaped creature, bright bubblegum pink with a magenta tint (#f08cc8), clearly pinker than coral or red, two little stubby feet",
+      "provider": "gemini",
+      "seed": 172482001
+    },
+    {
+      "date": "2026-10-08T02:59:51Z",
+      "file": "assets/rock.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a grumpy lumpy pebble, a smooth rounded river stone with two hairline cracks, warm neutral stone grey with a hint of brown (#9a9088), not blue, no feet",
+      "provider": "gemini",
+      "seed": 1257254345
+    },
+    {
+      "date": "2026-10-08T02:59:01Z",
+      "file": "assets/rainbow.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round plump puffball creature painted in soft swirling rainbow watercolor bands of coral, orange, yellow, green, blue and lavender around a pale cream middle, two tiny rounded ears on top and two little stubby feet",
+      "provider": "gemini",
+      "seed": 148339174
+    }
+  ]
+}

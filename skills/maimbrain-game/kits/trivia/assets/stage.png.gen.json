@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art background",
+  "date": "2026-10-08T03:10:44Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a 1950s television quiz-show stage, seen straight on: heavy tomato-red theater curtains with a scalloped valance across the top and drawn back in folds at both sides, between them a deep teal back wall shaded with a coarse halftone dot pattern, a few big mustard and cream atomic-age starbursts and boomerang shapes high on the wall, a curved mustard stage edge at the very bottom; the middle of the wall is plain calm teal with nothing in it",
+  "full_prompt": "A full-screen 2D game background, tall portrait composition: a 1950s television quiz-show stage, seen straight on: heavy tomato-red theater curtains with a scalloped valance across the top and drawn back in folds at both sides, between them a deep teal back wall shaded with a coarse halftone dot pattern, a few big mustard and cream atomic-age starbursts and boomerang shapes high on the wall, a curved mustard stage edge at the very bottom; the middle of the wall is plain calm teal with nothing in it. No characters, no text; keep the middle calm and lower in contrast so game objects read on top. A flat stage backdrop seen straight on. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 38682749,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/host.png",
+      "sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "26fffcad89b4b13ca635ceeefd7b1004a0d46dcf491fb437aaecc6775ce72572"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/stage-38682749.jpg",
+  "raw_sha256": "bbbd45d4a7060311a4d71d67080a5647bdfc98e02e6a267b1a26d0e295bc5497",
+  "output_sha256": "f3cf170a34650f25b14a994f401141a24638c0d417666c8b5785041fc2d418bb",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "9:16",
+    "colors": 24,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "background",
+    "layer": null,
+    "margin": 45,
+    "max_kb": 150,
+    "model": "gemini-nano-banana-2.1",
+    "name": "stage",
+    "no_style": false,
+    "out": "assets/stage.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "2K",
+    "seed": 38682749,
+    "size": [
+      720,
+      1280
+    ],
+    "subject": "a 1950s television quiz-show stage, seen straight on: heavy tomato-red theater curtains with a scalloped valance across the top and drawn back in folds at both sides, between them a deep teal back wall shaded with a coarse halftone dot pattern, a few big mustard and cream atomic-age starbursts and boomerang shapes high on the wall, a curved mustard stage edge at the very bottom; the middle of the wall is plain calm teal with nothing in it",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      720,
+      1280
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

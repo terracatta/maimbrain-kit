@@ -1,6 +1,7 @@
 //! `mb`: make, build, validate and publish Maimbrain games.
 //!
 //!     mb new frogger                  # a new game crate from the skill's template (--3d for mb3d)
+//!     mb new --kit runner frogger     # …or from a genre starter kit (mb kits lists them)
 //!     mb build frogger                # cargo build → wasm-opt → pack → validate
 //!     mb login                        # sign in to maimbrain.com (device code)
 //!     mb publish frogger              # build, upload a private draft, wait for validation
@@ -13,6 +14,8 @@
 //!     mb music frogger music "bouncy marimba and claps" --bars 8      # a seamless loop
 //!     mb sfx frogger croak "a short wet croak"                        # a sound effect
 //!     mb regen frogger/assets/hero.png --seed 42                      # again, from its .gen.json
+//!     mb fonts                        # the font library (--preview draws a specimen sheet)
+//!     mb font add frogger bungee      # bake a library font (or a .ttf) into assets/fonts/
 
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
@@ -24,6 +27,7 @@ use mb_format::manifest::PerfTier;
 use mb_format::{Manifest, Report};
 
 mod devbuild;
+mod fonts;
 mod generate;
 mod live;
 mod remote;
@@ -40,21 +44,35 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Cmd {
-    /// Create a new game crate from the maimbrain-game skill's template (id com.maimbrain.<you>.<name>).
+    /// Create a new game crate from the maimbrain-game skill's template, or from a genre starter
+    /// kit with --kit (id com.maimbrain.<you>.<name>).
     /// Works signed out: without --id the id and creator are placeholders until you sign in.
     New {
         /// Directory to create; its name becomes the crate name.
-        dir: PathBuf,
+        #[arg(required_unless_present = "kit")]
+        dir: Option<PathBuf>,
         /// Start from the 3D template (mb3d scene with an mb2d HUD) instead of the 2D one.
         #[arg(long = "3d")]
         three_d: bool,
+        /// Start from a genre starter kit: a complete, polished game to reskin and twist
+        /// (runner, stacker, shooter, match3, racer, tower-defense, trivia). `--kit list` lists them.
+        #[arg(long)]
+        kit: Option<String>,
         /// Bundle id to use (reverse-DNS, e.g. dev.example.frogger) instead of your account's namespace.
         #[arg(long)]
         id: Option<String>,
         /// Creator handle to use (e.g. @ada) instead of your account's.
         #[arg(long)]
         creator: Option<String>,
+        /// The kit identity to start from (default: one at random, so new games don't start alike).
+        #[arg(long)]
+        identity: Option<String>,
+        /// Don't download and bake the identity's fonts.
+        #[arg(long)]
+        no_fonts: bool,
     },
+    /// List the genre starter kits for `mb new --kit` (same as `mb new --kit list`).
+    Kits,
     /// Sign in to the Maimbrain server (opens a browser to confirm a code).
     Login {
         /// Server URL (default https://maimbrain.com, or MB_SERVER).
@@ -168,6 +186,32 @@ enum Cmd {
     /// The server runs this on prompts sent to Maimbrain's generation keys.
     #[command(hide = true)]
     IpCheck,
+    /// Bake a font into a game: a library font (`mb fonts`) or a .ttf/.otf of your own becomes
+    /// assets/fonts/<name>.mbf (a subset glyph atlas with metrics and kerning) plus its license,
+    /// recorded in the game's fonts.toml so `mb build` re-bakes it when the entry changes.
+    Font {
+        #[command(subcommand)]
+        cmd: FontCmd,
+    },
+    /// List the font library (OFL/Apache fonts from github.com/google/fonts) with tags, or draw a
+    /// specimen sheet of them (--preview).
+    Fonts {
+        /// Only this category (e.g. pixel, display, condensed, slab, handwritten, mono).
+        #[arg(long)]
+        category: Option<String>,
+        /// Only fonts whose id, family, description, mood, era or uses mention this.
+        #[arg(long)]
+        search: Option<String>,
+        /// Print JSON.
+        #[arg(long)]
+        json: bool,
+        /// Render a specimen sheet PNG (downloads the fonts it draws).
+        #[arg(long)]
+        preview: bool,
+        /// Where --preview writes the sheet.
+        #[arg(long, default_value = "fonts.png")]
+        out: PathBuf,
+    },
     /// Check a .mbx against the spec.
     Validate {
         bundle: PathBuf,
@@ -180,13 +224,61 @@ enum Cmd {
     },
 }
 
+#[derive(Subcommand)]
+enum FontCmd {
+    /// Bake a font into <game>/assets/fonts/<name>.mbf (re-running replaces it).
+    Add {
+        /// Game directory.
+        game: PathBuf,
+        /// A library font id (`mb fonts`) or a path to a .ttf/.otf inside the game directory.
+        #[arg(required_unless_present = "identity")]
+        font: Option<String>,
+        /// Instead of one font: all the fonts a kit identity (Theme::preset) was designed with.
+        #[arg(long, conflicts_with = "font")]
+        identity: Option<String>,
+        /// Weight (e.g. 700); variable fonts take any value in their range.
+        #[arg(long)]
+        weight: Option<u32>,
+        /// Characters to bake: ascii (default), latin1, caps (lowercase drawn as capitals),
+        /// digits, or literal characters; join with + (e.g. caps+ÄÖÜ). Fewer = smaller.
+        #[arg(long)]
+        chars: Option<String>,
+        /// Atlas pixels per em (SDF: 16–64, default 32; 48 keeps big titles' corners sharper).
+        /// For --bitmap: the font's pixel grid.
+        #[arg(long)]
+        em: Option<u32>,
+        /// File name under assets/fonts/ (default: the font id, plus -<weight> if not 400).
+        #[arg(long = "as")]
+        name: Option<String>,
+        /// Bake 1-bit glyphs on a pixel grid (the default for library pixel fonts).
+        #[arg(long)]
+        bitmap: bool,
+        /// Bake a distance field even for a pixel font (smooth scaling, host outlines).
+        #[arg(long, conflicts_with = "bitmap")]
+        sdf: bool,
+        /// For a font file of your own: its license file (copied next to the atlas).
+        #[arg(long)]
+        license: Option<String>,
+    },
+}
+
 fn main() -> ExitCode {
     let result = match Cli::parse().cmd {
-        Cmd::New { dir, three_d, id, creator } => {
+        Cmd::Kits => {
+            print!("{}", scaffold::kit_list());
+            Ok(())
+        }
+        Cmd::New { kit: Some(k), .. } if k == "list" => {
+            print!("{}", scaffold::kit_list());
+            Ok(())
+        }
+        Cmd::New { dir: None, .. } => Err("give the game a directory, e.g. mb new --kit runner games/hopper".into()),
+        Cmd::New { dir: Some(dir), three_d, kit, id, creator, identity, no_fonts } => {
             // Signed out (no saved credentials) this makes no network request.
             let who = if id.is_some() && creator.is_some() { None } else { remote::whoami().ok() };
             let pair = who.as_ref().and_then(|w| Some((w["username"].as_str()?, w["namespace"].as_str()?)));
-            scaffold::new_game(&dir, &scaffold::Options { three_d, id: id.as_deref(), creator: creator.as_deref(), who: pair })
+            let opts = scaffold::Options { three_d, kit: kit.as_deref(), id: id.as_deref(), creator: creator.as_deref(), who: pair, identity: identity.as_deref(), bake_fonts: !no_fonts };
+            scaffold::new_game(&dir, &opts)
         }
         Cmd::Login { server } => remote::login(server.as_deref()),
         Cmd::Whoami => remote::whoami().map(|w| println!("@{} ({})", w["username"].as_str().unwrap_or("?"), remote::server(None))),
@@ -223,6 +315,12 @@ fn main() -> ExitCode {
         Cmd::Keys { cmd } => generate::keys::run(cmd),
         Cmd::Models => generate::models(),
         Cmd::IpCheck => generate::ip::check_stdin(),
+        Cmd::Font { cmd: FontCmd::Add { game, identity: Some(id), .. } } => fonts::add_identity(&game, &id),
+        Cmd::Font { cmd: FontCmd::Add { game, font, weight, chars, em, name, bitmap, sdf, license, .. } } => {
+            fonts::add(&game, font.as_deref().unwrap_or_default(), weight, chars, em, name, bitmap, sdf, license)
+        }
+        Cmd::Fonts { category, search, json, preview: false, .. } => fonts::list(category.as_deref(), search.as_deref(), json),
+        Cmd::Fonts { category, search, preview: true, out, .. } => fonts::preview(category.as_deref(), search.as_deref(), &out),
         Cmd::Abi => {
             println!("{}", abi_json());
             Ok(())
@@ -274,6 +372,11 @@ fn package_name(dir: &Path) -> Result<String, String> {
 fn build(dir: &Path) -> Result<PathBuf, String> {
     let manifest = read_manifest(dir)?;
     let name = package_name(dir)?;
+    // Fonts first: they're assets the pack step picks up.
+    fonts::rebake(dir)?;
+    for w in sameness_warnings(dir) {
+        eprintln!("warning: {w}");
+    }
     let max_memory = manifest.perf_tier.max_memory_pages() * 65536;
     eprintln!("building {name} ({:?}, max memory {} MiB)", manifest.perf_tier, max_memory >> 20);
     let status = Command::new("cargo")
@@ -306,6 +409,35 @@ fn build(dir: &Path) -> Result<PathBuf, String> {
             Ok(raw)
         }
     }
+}
+
+/// A nudge away from the house look (docs/IDENTITY.md): only the built-in
+/// fonts, or a stock kit theme used as-is.
+fn sameness_warnings(dir: &Path) -> Vec<String> {
+    let mut src = String::new();
+    let mut stack = vec![dir.join("src")];
+    while let Some(d) = stack.pop() {
+        for e in std::fs::read_dir(&d).into_iter().flatten().flatten() {
+            let p = e.path();
+            if p.is_dir() {
+                stack.push(p);
+            } else if p.extension().is_some_and(|x| x == "rs") {
+                src.push_str(&std::fs::read_to_string(&p).unwrap_or_default());
+            }
+        }
+    }
+    let mut out = Vec::new();
+    if !fonts::game_has_fonts(dir) && !src.contains("Font::asset(") {
+        out.push("this game draws only with the built-in fonts (Inter and the 5×7 pixel font), like most Maimbrain games: pick a library font that fits its identity (`mb fonts`, `mb font add`; docs/IDENTITY.md)".into());
+    }
+    let stock = ["Theme::candy()", "Theme::night()", "Theme::arcade()", "Theme::paper()", "Theme::jungle()", "Theme::default()"];
+    let identity = src.contains("Theme::preset(") || src.contains("Identity::") || src.contains("Theme::from_identity(") || src.contains("Theme {");
+    if let Some(t) = stock.iter().find(|t| src.contains(**t))
+        && !identity
+    {
+        out.push(format!("this game uses the stock {t} as-is, the house look: compose an identity instead (Theme::from_identity, the identity presets in docs/UI.md)"));
+    }
+    out
 }
 
 /// wasm-opt flags matching the features mb-format allows (Wasm 2.0).

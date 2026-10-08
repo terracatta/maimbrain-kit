@@ -1,0 +1,2244 @@
+# Maimbrain font library: OFL/Apache fonts from github.com/google/fonts, pinned to one commit.
+# `mb font add <game> <id>` downloads a font from `base` + path, checks its sha256, and bakes it.
+# Sorted by category, then id. Licenses were fetched and checked at this commit (SIL OFL 1.1 or Apache 2.0).
+[source]
+repo = "https://github.com/google/fonts"
+commit = "5e8a3ba899557829a76cfdac30fa512bda91d7ca"
+base = "https://raw.githubusercontent.com/google/fonts/5e8a3ba899557829a76cfdac30fa512bda91d7ca/"
+
+# ======================================================================
+# blackletter
+# ======================================================================
+
+[[font]]
+id = "grenze-gotisch"
+family = "Grenze Gotisch"
+category = "blackletter"
+license = "OFL-1.1"
+license_path = "ofl/grenzegotisch/OFL.txt"
+license_sha256 = "bca29af2c3c9e142d11f523f414902ab8fb9ab8ffa3c34c63b6b72aa4e7d6acc"
+designer = "Omnibus-Type"
+copyright = "Copyright 2020 The Grenze Gotisch Project Authors (https://github.com/Omnibus-Type/Grenze-Gotisch)"
+description = "Blackletter-roman hybrid with a full weight axis; gothic texture that still reads in sentences."
+mood = ["gothic", "sharp", "dark"]
+era = "late-medieval hybrid textura"
+best_for = ["titles", "dialogue", "labels"]
+pairs_with = ["eb-garamond", "spectral"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/grenzegotisch/GrenzeGotisch[wght].ttf"
+sha256 = "701b299d8dc002a2b4bea2ff0f1272c0e4081a2835914354804565c410d0c637"
+size = 193492
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "new-rocker"
+family = "New Rocker"
+category = "blackletter"
+license = "OFL-1.1"
+license_path = "ofl/newrocker/OFL.txt"
+license_sha256 = "942d51cf079299e83e9dd7a9a37eb92260524e8d1d576b2f0b3f7ca207c53f8e"
+designer = "Impallari Type"
+copyright = "Copyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com), Copyright (c) 2011, Brenda Gallo (gbrenda1987@gmail.com), Copyright (c) 2011, Rodrigo Fuenzalida (www.rfuenzalida.com|hello@rfuenzalida.com), with Reserved Font Name 'New Rocker'"
+reserved_name = "New Rocker"
+description = "Gothic blackletter with tattoo-parlour and heavy-metal swagger."
+mood = ["metal", "dark", "rebellious"]
+era = "1980s heavy-metal album art"
+best_for = ["titles"]
+pairs_with = ["oswald", "barlow-condensed", "grenze-gotisch"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/newrocker/NewRocker-Regular.ttf"
+sha256 = "28a499ce5b8bcf0652f8b2e25135183eaddf0c3c8c3e251259b075c71d1ef14c"
+size = 173224
+
+[[font]]
+id = "pirata-one"
+family = "Pirata One"
+category = "blackletter"
+license = "OFL-1.1"
+license_path = "ofl/pirataone/OFL.txt"
+license_sha256 = "e8ad3f3de5baeff6bac6e711d8c406e0a6b8a61d2944741532d8965d893a2681"
+designer = "Rodrigo Fuenzalida, Nicolas Massi"
+copyright = "Copyright (c) 2012, Rodrigo Fuenzalida, Nicolas Massi (www.taip.com.ar / abc.taip.com.ar), with Reserved Font Name 'Pirata'"
+reserved_name = "Pirata"
+description = "Condensed, informal blackletter with pirate-flag flair; easier to read than fraktur."
+mood = ["piratical", "rough", "adventurous"]
+era = "Age of Sail broadsheet"
+best_for = ["titles", "labels"]
+pairs_with = ["eb-garamond", "courier-prime", "rye"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/pirataone/PirataOne-Regular.ttf"
+sha256 = "5347a2e155589ecf667d4b766613c8ee003edde9f83717fd24c09599a4b1ecc0"
+size = 56316
+
+[[font]]
+id = "unifrakturmaguntia"
+family = "UnifrakturMaguntia"
+category = "blackletter"
+license = "OFL-1.1"
+license_path = "ofl/unifrakturmaguntia/OFL.txt"
+license_sha256 = "96199bf9ff12dd471a66911dee95440737b437e7f5a6fd30e9e950c16d66e8df"
+designer = "j. 'mach' wust"
+copyright = "Copyright (c) 2010, j. 'mach' wust, with Reserved Font Name UnifrakturMaguntia. Copyright (c) 2009, Peter Wiegel."
+reserved_name = "UnifrakturMaguntia"
+description = "Traditional fraktur blackletter, readable by modern eyes; Gothic manuscripts and old German print."
+mood = ["gothic", "medieval", "solemn"]
+era = "18th-century German fraktur"
+best_for = ["titles"]
+pairs_with = ["eb-garamond", "cinzel", "spectral"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/unifrakturmaguntia/UnifrakturMaguntia-Book.ttf"
+sha256 = "d64afc0547059dd2e4a78da48bda0aba0a9901be58c7f8c201a8b2b6b4492cc8"
+size = 88508
+
+# ======================================================================
+# brush
+# ======================================================================
+
+[[font]]
+id = "kaushan-script"
+family = "Kaushan Script"
+category = "brush"
+license = "OFL-1.1"
+license_path = "ofl/kaushanscript/OFL.txt"
+license_sha256 = "3336bf5d4e7eedba48ecb831f37bf676e901c39f2e6a422cceadd9d2ffa55be8"
+designer = "Impallari Type"
+copyright = "Copyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com), Copyright (c) 2011, Igino Marini. (www.ikern.com|mail@iginomarini.com), with Reserved Font Name Kaushan Script."
+reserved_name = "Kaushan Script"
+description = "Fast, slanted brush script with dry-brush texture; sporty and energetic."
+mood = ["energetic", "sporty", "dynamic"]
+era = "surf/skate branding"
+best_for = ["titles", "buttons"]
+pairs_with = ["oswald", "barlow-condensed", "work-sans"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/kaushanscript/KaushanScript-Regular.ttf"
+sha256 = "6d8d379d9bba98178bee476d68114c8f83812c18005ecccf679e70f60e03d8f6"
+size = 210672
+
+[[font]]
+id = "knewave"
+family = "Knewave"
+category = "brush"
+license = "OFL-1.1"
+license_path = "ofl/knewave/OFL.txt"
+license_sha256 = "14b3fbd06078a869cf2ba96e6dacb852d373703c86ca7ad54a4cdd6e20fbab19"
+designer = "Tyler Finck"
+copyright = "Copyright (c) 2010, Tyler Finck <hello@sursly.com>, with Reserved Font Name: \"Knewave\"."
+reserved_name = "Knewave"
+description = "Fat, wet brush lettering with rough edges; loud and street-level."
+mood = ["loud", "street", "bold"]
+era = "skate/streetwear"
+best_for = ["titles", "scores"]
+pairs_with = ["barlow-condensed", "space-mono", "work-sans"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/knewave/Knewave-Regular.ttf"
+sha256 = "ed3bac761d755b89ab3082c844d4a623d63c7d6eef85d22ba1fb6c680e6a4436"
+size = 32460
+
+[[font]]
+id = "permanent-marker"
+family = "Permanent Marker"
+category = "brush"
+license = "Apache-2.0"
+license_path = "apache/permanentmarker/LICENSE.txt"
+license_sha256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+designer = "Font Diner"
+copyright = "Copyright (c) 2010 by Font Diner, Inc. All rights reserved."
+description = "Thick chisel-tip marker caps; looks hand-lettered on cardboard or a whiteboard."
+mood = ["raw", "energetic", "handmade"]
+era = "Sharpie on cardboard"
+best_for = ["titles", "labels", "scores"]
+pairs_with = ["zilla-slab", "patrick-hand", "courier-prime"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "apache/permanentmarker/PermanentMarker-Regular.ttf"
+sha256 = "28f82c8a7943cb8e9d599f8554da1d4fc75dbcf69b9885ad6c0611d20c6946c5"
+size = 74632
+
+[[font]]
+id = "rock-salt"
+family = "Rock Salt"
+category = "brush"
+license = "Apache-2.0"
+license_path = "apache/rocksalt/LICENSE.txt"
+license_sha256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+designer = "Sideshow"
+copyright = "Copyright (c) 2010 by Font Diner, Inc DBA Sideshow. All rights reserved."
+description = "Scratchy, rough marker hand with jittery strokes; road-trip, grunge or punk-flyer feel."
+mood = ["rough", "punk", "restless"]
+era = "1990s grunge flyer"
+best_for = ["titles", "labels"]
+pairs_with = ["courier-prime", "barlow-condensed"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "apache/rocksalt/RockSalt-Regular.ttf"
+sha256 = "c5421d1ced1949488f29d11b75b7ef967abe2d870f816246bf18fdc0f3e29c96"
+size = 124372
+
+[[font]]
+id = "sedgwick-ave-display"
+family = "Sedgwick Ave Display"
+category = "brush"
+license = "OFL-1.1"
+license_path = "ofl/sedgwickavedisplay/OFL.txt"
+license_sha256 = "f323edc1e5a6d8fa16120aa15367cdfb15468474cc621f9bda1a2f73c5d08d73"
+designer = "Pedro Vergani, Kevin Burke"
+copyright = "Copyright 2017 The Sedgwick Ave Project Authors (https://github.com/googlefonts/sedgwickave)"
+description = "Graffiti handstyle lettering by a Bronx writer; spiky, tagged, uneven caps."
+mood = ["street", "edgy", "raw"]
+era = "1980s NYC graffiti"
+best_for = ["titles", "labels"]
+pairs_with = ["bungee", "barlow-condensed", "space-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sedgwickavedisplay/SedgwickAveDisplay-Regular.ttf"
+sha256 = "3b9c295a146bafb93c8a12c1dde38a2fe47512777daf1458825e291752469a38"
+size = 140148
+
+# ======================================================================
+# comic
+# ======================================================================
+
+[[font]]
+id = "bangers"
+family = "Bangers"
+category = "comic"
+license = "OFL-1.1"
+license_path = "ofl/bangers/OFL.txt"
+license_sha256 = "630dd5a307c0657b094d324e069b390edf90182fe5003639e06c02a0e5769af7"
+designer = "Vernon Adams"
+copyright = "Copyright 2010 The Bangers Project Authors (https://github.com/googlefonts/bangers)"
+description = "Condensed, slanted all-caps comic-book lettering; sound effects and splash panels."
+mood = ["action", "comic", "energetic"]
+era = "1940s-60s comic books"
+best_for = ["titles", "scores", "dialogue"]
+pairs_with = ["comic-neue", "patrick-hand"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/bangers/Bangers-Regular.ttf"
+sha256 = "4160a7311de9342674cce9160cde9fcbb30f48190397d86ff1b70b455af65824"
+size = 93148
+
+[[font]]
+id = "chewy"
+family = "Chewy"
+category = "comic"
+license = "Apache-2.0"
+license_path = "apache/chewy/LICENSE.txt"
+license_sha256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+designer = "Sideshow"
+copyright = "Copyright (c) 2010 by Font Diner, Inc DBA Sideshow. All rights reserved."
+description = "Fat, wobbly, gummy display lettering; candy and cartoon packaging."
+mood = ["gummy", "silly", "cartoony"]
+era = "cartoon candy packaging"
+best_for = ["titles", "buttons"]
+pairs_with = ["nunito", "gochi-hand"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "apache/chewy/Chewy-Regular.ttf"
+sha256 = "7cf75ea288f82fd20badea8ab4da7a656a96a7277c170811e813b3d3d6294147"
+size = 41248
+
+[[font]]
+id = "comic-neue"
+family = "Comic Neue"
+category = "comic"
+license = "OFL-1.1"
+license_path = "ofl/comicneue/OFL.txt"
+license_sha256 = "7c38a22e5878e60fe423360553e63dd7be23d29f1f60336034935dbfc96e8320"
+designer = "Craig Rozynski, Hrant Papazian"
+copyright = "Copyright 2014 The Comic Neue Project Authors (https://github.com/crozynski/comicneue)"
+description = "Comic Sans rethought: casual handwritten-sans with tidier forms; good for speech bubbles."
+mood = ["casual", "friendly", "comic"]
+era = "comic speech bubbles"
+best_for = ["dialogue", "body", "labels"]
+pairs_with = ["bangers", "luckiest-guy", "sigmar"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/comicneue/ComicNeue-Regular.ttf"
+sha256 = "a0ee5a37c8b27c4db0700137d928598b1e23b0089e1546a8961909176b779360"
+size = 57248
+[[font.files]]
+weight = 700
+path = "ofl/comicneue/ComicNeue-Bold.ttf"
+sha256 = "3e7e5fccfd7e0788f317b43312151c1bd5cf058c9697a8d83eac3939050bd61e"
+size = 55716
+
+[[font]]
+id = "luckiest-guy"
+family = "Luckiest Guy"
+category = "comic"
+license = "Apache-2.0"
+license_path = "apache/luckiestguy/LICENSE.txt"
+license_sha256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+designer = "Astigmatic"
+copyright = "Copyright (c) 2010 by Brian J. Bonislawsky DBA Astigmatic (AOETI). All rights reserved."
+description = "Heavy, bouncy all-caps cartoon lettering; Saturday-morning-cartoon titles."
+mood = ["bouncy", "cartoony", "loud"]
+era = "1950s cartoon titles"
+best_for = ["titles", "scores", "buttons"]
+pairs_with = ["nunito", "comic-neue", "fredoka"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "apache/luckiestguy/LuckiestGuy-Regular.ttf"
+sha256 = "cfbdd68a039f92df51cf3721506af6242e64594c6325fe0bedbeff3fe385d980"
+size = 73320
+
+[[font]]
+id = "sigmar"
+family = "Sigmar"
+category = "comic"
+license = "OFL-1.1"
+license_path = "ofl/sigmar/OFL.txt"
+license_sha256 = "75ff072c71b85d17c237e06104b5ff6648095cd62229a321b3bb5750f18df49d"
+designer = "Vernon Adams"
+copyright = "Copyright 2011 The Sigmar One Project Authors (https://github.com/googlefonts/sigmarone)"
+description = "Ultra-fat cartoon display with bulging curves; balloons, toys and arcade marquees."
+mood = ["fat", "jolly", "loud"]
+era = "1960s cartoon marquee"
+best_for = ["titles", "scores"]
+pairs_with = ["comic-neue", "nunito", "fredoka"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sigmar/Sigmar-Regular.ttf"
+sha256 = "0597d733ed4722af36157f1e72d2415e123a9052655d67410c9ab8a0b223f54d"
+size = 209084
+
+# ======================================================================
+# condensed
+# ======================================================================
+
+[[font]]
+id = "anton"
+family = "Anton"
+category = "condensed"
+license = "OFL-1.1"
+license_path = "ofl/anton/OFL.txt"
+license_sha256 = "ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4"
+designer = "Vernon Adams"
+copyright = "Copyright 2020 The Anton Project Authors (https://github.com/googlefonts/AntonFont.git)"
+description = "Very heavy, very narrow grotesque with tight counters; fits huge words into small widths."
+mood = ["loud", "dense", "urgent"]
+era = "tabloid headline"
+best_for = ["titles", "scores", "numbers"]
+pairs_with = ["atkinson-hyperlegible-next", "fira-sans", "roboto-slab"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/anton/Anton-Regular.ttf"
+sha256 = "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab"
+size = 170812
+
+[[font]]
+id = "barlow-condensed"
+family = "Barlow Condensed"
+category = "condensed"
+license = "OFL-1.1"
+license_path = "ofl/barlowcondensed/OFL.txt"
+license_sha256 = "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f"
+designer = "Jeremy Tribby"
+copyright = "Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)"
+description = "Slightly rounded condensed grotesk modeled on California highway signs and plates; good for dense stat lines."
+mood = ["practical", "roadside", "compact"]
+era = "California road signage"
+best_for = ["hud", "labels", "numbers", "scores"]
+pairs_with = ["bungee", "chakra-petch"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/barlowcondensed/BarlowCondensed-Regular.ttf"
+sha256 = "583cec5da3b84bc4dc7c9c72e2a565c94d34e431518b19d7e250b7830ad5f996"
+size = 102480
+[[font.files]]
+weight = 700
+path = "ofl/barlowcondensed/BarlowCondensed-Bold.ttf"
+sha256 = "e476562ec9c1e16cf16475895b511f08c804f438cc9a9f80a44ea50a0eeb5b65"
+size = 109912
+
+[[font]]
+id = "bebas-neue"
+family = "Bebas Neue"
+category = "condensed"
+license = "OFL-1.1"
+license_path = "ofl/bebasneue/OFL.txt"
+license_sha256 = "72082f6cb4d04be2ecf7cc7d9e1e7d73787f0af8a5a278a47cade70c16b78341"
+designer = "Ryoichi Tsunekawa"
+copyright = "Copyright © 2010 by Dharma Type."
+description = "All-caps condensed display sans, tall and uniform; the poster/movie-trailer default."
+mood = ["bold", "cinematic", "clean"]
+era = "2010s poster design"
+best_for = ["titles", "scores", "hud", "numbers"]
+pairs_with = ["fira-sans", "work-sans", "lexend"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/bebasneue/BebasNeue-Regular.ttf"
+sha256 = "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+size = 61400
+
+[[font]]
+id = "big-shoulders-display"
+family = "Big Shoulders Display"
+category = "condensed"
+license = "OFL-1.1"
+license_path = "ofl/bigshouldersdisplay/OFL.txt"
+license_sha256 = "338f9c050f19daeda1d597243faf79f3a3d437c338af58cb7047617d0ce08771"
+designer = "Patric King"
+copyright = "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)"
+description = "Condensed, squared-off sans inspired by Chicago signage; thin weights are elegant, heavy weights industrial."
+mood = ["industrial", "civic", "tall"]
+era = "Chicago municipal signage"
+best_for = ["titles", "scores", "hud", "numbers"]
+pairs_with = ["archivo", "space-mono", "work-sans"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/bigshouldersdisplay/BigShouldersDisplay[wght].ttf"
+sha256 = "60e208dc276a1c35fc5b62e94f9fb959c40c11783a9eb7548175c14b1fbeb720"
+size = 219532
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "oswald"
+family = "Oswald"
+category = "condensed"
+license = "OFL-1.1"
+license_path = "ofl/oswald/OFL.txt"
+license_sha256 = "0fd731a904b729a4e02eaf5e8ebd06783edd9abe400e8882760160230675b652"
+designer = "Vernon Adams, Kalapi Gajjar, Cyreal"
+copyright = "Copyright 2016 The Oswald Project Authors (https://github.com/googlefonts/OswaldFont)"
+description = "Reworked 'Alternate Gothic' condensed sans; tall, narrow, readable in all caps or mixed case."
+mood = ["bold", "compact", "sporty"]
+era = "early 20th-century American gothic"
+best_for = ["titles", "scores", "hud", "labels"]
+pairs_with = ["source-sans-3", "roboto-slab", "lexend"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/oswald/Oswald[wght].ttf"
+sha256 = "5b38c246e255a12f5712d640d56bcced0472466fc68983d2d0410ec0457c2817"
+size = 172088
+axes = { wght = [200, 700] }
+
+# ======================================================================
+# didone
+# ======================================================================
+
+[[font]]
+id = "abril-fatface"
+family = "Abril Fatface"
+category = "didone"
+license = "OFL-1.1"
+license_path = "ofl/abrilfatface/OFL.txt"
+license_sha256 = "aba8997e16b1e3888c6e855ba883c70d96bd4375bff8cb9c7ce0f097200f74b8"
+designer = "TypeTogether"
+copyright = "Copyright (c) 2011, TypeTogether (www.type-together.com), with Reserved Font Names \"Abril\" and \"Abril Fatface\""
+reserved_name = "Abril, Abril Fatface"
+description = "Ultra-heavy Didone with extreme contrast; bold headline weight for posters and title cards."
+mood = ["dramatic", "bold", "fashionable"]
+era = "19th-century British/French poster"
+best_for = ["titles", "scores"]
+pairs_with = ["work-sans", "source-sans-3"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/abrilfatface/AbrilFatface-Regular.ttf"
+sha256 = "5971d4a3758a922a9fedc7f6fb825a96341a2e718c45a4b2c9a6b417c8c4dbe9"
+size = 67364
+
+[[font]]
+id = "bodoni-moda"
+family = "Bodoni Moda"
+category = "didone"
+license = "OFL-1.1"
+license_path = "ofl/bodonimoda/OFL.txt"
+license_sha256 = "931dfe2e0cd3c9443295f5c1d754b8a8403bf060df50c1d5900267ade83d0046"
+designer = "Owen Earl"
+copyright = "Copyright 2020 The Bodoni Moda Project Authors (https://github.com/indestructible-type/Bodoni)"
+description = "Bodoni revival with an optical-size axis; razor hairlines and vertical stress for high-fashion titles."
+mood = ["sharp", "luxurious", "formal"]
+era = "late-18th-century Parma"
+best_for = ["titles", "numbers"]
+pairs_with = ["spectral", "work-sans", "great-vibes"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/bodonimoda/BodoniModa[opsz,wght].ttf"
+sha256 = "550f5e34ee0a828d7941b1fe9bc58b34e5260d3f33a61532e6d0a0114e79a5cf"
+size = 162104
+axes = { opsz = [6, 96], wght = [400, 900] }
+
+[[font]]
+id = "gloock"
+family = "Gloock"
+category = "didone"
+license = "OFL-1.1"
+license_path = "ofl/gloock/OFL.txt"
+license_sha256 = "321e28d45a430e017d9d1d6a47ef1fd261aad354723b014cf1933a765036c311"
+designer = "Duarte Pinto"
+copyright = "Copyright 2022 The Gloock Project Authors (https://github.com/duartp/gloock)"
+description = "High-contrast serif with soft, rounded Didone details; striking display serif that stays friendly."
+mood = ["striking", "soft", "editorial"]
+era = "contemporary editorial"
+best_for = ["titles", "dialogue"]
+pairs_with = ["schibsted-grotesk", "outfit", "space-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/gloock/Gloock-Regular.ttf"
+sha256 = "c3a67e0212f7da01764796ae721cb9bab3e122d142354f97cf9c63fb763e6d77"
+size = 98096
+
+[[font]]
+id = "playfair-display"
+family = "Playfair Display"
+category = "didone"
+license = "OFL-1.1"
+license_path = "ofl/playfairdisplay/OFL.txt"
+license_sha256 = "566be814f8e96e93dfa16101331557eb6b5467e9e03f627c0910fe93ca12300e"
+designer = "Claus Eggers Sørensen"
+copyright = "Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display), with Reserved Font Name \"Playfair Display\""
+reserved_name = "Playfair Display"
+description = "High-contrast transitional/Didone display serif with ball terminals; magazine-cover elegance."
+mood = ["elegant", "dramatic", "luxurious"]
+era = "18th-century Europe via fashion magazines"
+best_for = ["titles", "dialogue"]
+pairs_with = ["source-sans-3", "josefin-slab", "spectral"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/playfairdisplay/PlayfairDisplay[wght].ttf"
+sha256 = "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6"
+size = 300724
+axes = { wght = [400, 900] }
+
+# ======================================================================
+# display
+# ======================================================================
+
+[[font]]
+id = "bowlby-one"
+family = "Bowlby One"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/bowlbyone/OFL.txt"
+license_sha256 = "f3ee3eb20a9d565bee2bbc0d616de382a113327d7506565b2f3d3bee5f489375"
+designer = "Vernon Adams"
+copyright = "Copyright (c) 2011 by vernon adams (vern@newtypography.co.uk), with Reserved Font Names \"Bowlby\" \"Bowlby One\" and \"Bowlby One SC\""
+reserved_name = "Bowlby, Bowlby One, Bowlby One SC"
+description = "Squat, heavy grotesque with tiny counters; feels like a 1960s grocery or sports poster."
+mood = ["heavy", "retro", "punchy"]
+era = "1960s American advertising"
+best_for = ["titles", "scores", "buttons"]
+pairs_with = ["courier-prime", "work-sans", "lexend"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/bowlbyone/BowlbyOne-Regular.ttf"
+sha256 = "c46a806d7b51fd4987e5f0be449fe40a944cb407e43290ce1cdeed029a8cdc1d"
+size = 59856
+
+[[font]]
+id = "bungee"
+family = "Bungee"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/bungee/OFL.txt"
+license_sha256 = "d5787a50dde5be6c6daecab9ed459939b1bc37cff0d0e00257eaf1ec2cf4c16c"
+designer = "David Jonathan Ross"
+copyright = "Copyright 2023 The Bungee Project Authors (https://github.com/djrrb/Bungee)"
+description = "Chunky all-caps signage face built for vertical and horizontal stacking; urban storefront energy."
+mood = ["loud", "urban", "blocky"]
+era = "city signage"
+best_for = ["titles", "scores", "buttons"]
+pairs_with = ["outfit", "barlow-condensed", "atkinson-hyperlegible-next"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/bungee/Bungee-Regular.ttf"
+sha256 = "c4f5361ce120af3e6b9156d0bf379fa19cda2ea0cd18ac01fd99596c6bf66e3f"
+size = 118996
+
+[[font]]
+id = "lilita-one"
+family = "Lilita One"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/lilitaone/OFL.txt"
+license_sha256 = "255d5debbb80eb2ea762644311f266a279e8778f00156655a516e2b7781a63e1"
+designer = "Juan Montoreano"
+copyright = "Copyright (c) 2011 Juan Montoreano (juan@remolacha.biz), with Reserved Font Name Lilita"
+reserved_name = "Lilita"
+description = "Heavy, slightly condensed rounded sans; reads like casual mobile-game buttons and level titles."
+mood = ["chunky", "casual", "cheerful"]
+era = "2010s mobile games"
+best_for = ["titles", "buttons", "scores"]
+pairs_with = ["nunito", "lexend", "fredoka"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/lilitaone/LilitaOne-Regular.ttf"
+sha256 = "f5b641c45c69d772ee4eda687bc9fda411d5cad6b0b45371491da4580cbc8d59"
+size = 28092
+
+[[font]]
+id = "monoton"
+family = "Monoton"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/monoton/OFL.txt"
+license_sha256 = "585c6d2da8bcd8ffa651e0016f2e992a6891b625143a46a1dacf00699a817d9a"
+designer = "Vernon Adams"
+copyright = "Copyright (c) 2011 by vernon adams (vern@newtypography.co.uk), with Reserved Font Names \"Monoton\""
+reserved_name = "Monoton"
+description = "Multi-line inline caps built from parallel strokes, like bent neon tubes; needs size to read."
+mood = ["neon", "retro", "nightlife"]
+era = "1950s neon signage"
+best_for = ["titles"]
+pairs_with = ["sora", "righteous", "share-tech-mono"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/monoton/Monoton-Regular.ttf"
+sha256 = "951c4cea65ffede784a7c9672feec5d329a7e1e12216c42d53ecf36c90d04dea"
+size = 51604
+
+[[font]]
+id = "righteous"
+family = "Righteous"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/righteous/OFL.txt"
+license_sha256 = "1c5bc055869d5e9151ec7774082727db720ec4293c65be67f91a4bdcaeb02998"
+designer = "Astigmatic"
+copyright = "Copyright (c) 2011 by Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names \"Righteous\""
+reserved_name = "Righteous"
+description = "Rounded geometric caps-and-lowercase with streamline-modern loops; drive-in and lounge signage."
+mood = ["groovy", "retro", "smooth"]
+era = "1930s streamline / 1970s revival"
+best_for = ["titles", "buttons", "labels"]
+pairs_with = ["monoton", "quicksand", "lexend"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/righteous/Righteous-Regular.ttf"
+sha256 = "2ffb3fe5c27d7e6571210b800448c4e234e651b46c6b4426c1bb567e5341348a"
+size = 43104
+
+[[font]]
+id = "rubik-mono-one"
+family = "Rubik Mono One"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/rubikmonoone/OFL.txt"
+license_sha256 = "43d530580461a574f6dfed9e15af6a74e95f7c04d9bfa1174a63ff036e8eee07"
+designer = "Hubert and Fischer"
+copyright = "Copyright 2015 The Rubik Project Authors (mail@hubertfischer.com)"
+description = "Heavy all-caps monospaced sans with rounded corners; every letter the same width, like stamped blocks."
+mood = ["heavy", "playful", "blocky"]
+era = "2010s flat design"
+best_for = ["titles", "scores", "numbers"]
+pairs_with = ["space-grotesk", "work-sans", "fredoka"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/rubikmonoone/RubikMonoOne-Regular.ttf"
+sha256 = "b22624b6a36e543e942106edfccd198c50b57b65b924bfe02a6f0a5699429e6b"
+size = 141088
+
+[[font]]
+id = "shrikhand"
+family = "Shrikhand"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/shrikhand/OFL.txt"
+license_sha256 = "325e890b8b26fe0a683c3ba24c506d902bdd7034d9c47bd7fa2bb72b5433b9c9"
+designer = "Jonny Pinhorn"
+copyright = "Copyright (c) 2015 Jonny Pinhorn (jonpinhorn.typedesign@gmail.com)"
+description = "Fat italic display with bouncy, ball-terminal curves drawn from Gujarati lettering; sweet and loud at once."
+mood = ["sweet", "bouncy", "retro"]
+era = "1970s dessert-menu lettering"
+best_for = ["titles", "buttons"]
+pairs_with = ["lexend", "nunito", "outfit"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/shrikhand/Shrikhand-Regular.ttf"
+sha256 = "8ba32f6d6a96fb8dbc92fc1acfbc4d2123d5348063d89b2c3dd784e7afcb81af"
+size = 220804
+
+[[font]]
+id = "titan-one"
+family = "Titan One"
+category = "display"
+license = "OFL-1.1"
+license_path = "ofl/titanone/OFL.txt"
+license_sha256 = "61be7c29f4835e2be7243db12213d75d53ff028f29f4b493212a1688b1d3a1ba"
+designer = "Rodrigo Fuenzalida"
+copyright = "Copyright (c) 2011, Rodrigo Fuenzalida (www.rfuenzalida.com|hello@rfuenzalida.com), with Reserved Font Name Titan."
+reserved_name = "Titan"
+description = "Fat, rounded, cartoony display with soft corners and tight spacing; toy-box headlines."
+mood = ["bubbly", "playful", "chunky"]
+era = "toy packaging"
+best_for = ["titles", "buttons", "scores"]
+pairs_with = ["nunito", "outfit", "atkinson-hyperlegible-next"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/titanone/TitanOne-Regular.ttf"
+sha256 = "563ff6de179bbd44bcd7d2a6c448d6dc3bf935834237cf1250e506e65cd86ff1"
+size = 55712
+
+# ======================================================================
+# geometric-sans
+# ======================================================================
+
+[[font]]
+id = "lexend"
+family = "Lexend"
+category = "geometric-sans"
+license = "OFL-1.1"
+license_path = "ofl/lexend/OFL.txt"
+license_sha256 = "5da8505887d0fa7fe963445fd58852707fda34adfeb65af25c99d152bab285bd"
+designer = "Bonnie Shaver-Troup, Thomas Jockin, Santiago Orozco, Héctor Gómez, Superunion"
+copyright = "Copyright 2018 The Lexend Project Authors (https://github.com/googlefonts/lexend), with Reserved Font Name “RevReading Lexend”."
+reserved_name = "RevReading Lexend"
+description = "Wide-spaced geometric sans tuned for reading speed; very open letterforms that stay clear at small sizes."
+mood = ["calm", "clear", "open"]
+era = "2010s accessibility research"
+best_for = ["body", "dialogue", "labels", "buttons"]
+pairs_with = ["shrikhand", "young-serif", "lilita-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/lexend/Lexend[wght].ttf"
+sha256 = "3add53e641fbc81da64da4bb254285e2831b52b029527bc0714e2b9610832ee6"
+size = 175756
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "outfit"
+family = "Outfit"
+category = "geometric-sans"
+license = "OFL-1.1"
+license_path = "ofl/outfit/OFL.txt"
+license_sha256 = "c676351bf8576b9aba743cd5eaa8c0e7ee0d51f805d720447b4df4ddb6a2e416"
+designer = "Smartsheet Inc, Rodrigo Fuenzalida"
+copyright = "Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts)"
+description = "Clean circles-and-lines sans with short, friendly terminals; neutral but warmer than Inter."
+mood = ["clean", "modern", "friendly"]
+era = "2020s app UI"
+best_for = ["body", "buttons", "labels", "hud"]
+pairs_with = ["bungee", "fraunces", "titan-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/outfit/Outfit[wght].ttf"
+sha256 = "fc7287273e66929776e2ba54f144fe699080bec29f61bf649d70d871468aeade"
+size = 110884
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "sora"
+family = "Sora"
+category = "geometric-sans"
+license = "OFL-1.1"
+license_path = "ofl/sora/OFL.txt"
+license_sha256 = "ba0b9729c9428ba79a0459ab8ec575791b51509dbec213e383d0316d37fec299"
+designer = "Jonathan Barnbrook, Julián Moncada"
+copyright = "Copyright 2019 The Sora Project Authors (https://github.com/sora-xor/sora-font)"
+description = "Slightly squared geometric sans with tall x-height and crisp numerals; reads like a fintech dashboard."
+mood = ["crisp", "modern", "precise"]
+era = "2020s crypto/fintech UI"
+best_for = ["hud", "numbers", "buttons", "body"]
+pairs_with = ["orbitron", "monoton", "space-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sora/Sora[wght].ttf"
+sha256 = "84ff7096ae3ec6c8be47d906d1a0ba4de7f2ce78c615275c77301964a316e16c"
+size = 111400
+axes = { wght = [100, 800] }
+
+[[font]]
+id = "space-grotesk"
+family = "Space Grotesk"
+category = "geometric-sans"
+license = "OFL-1.1"
+license_path = "ofl/spacegrotesk/OFL.txt"
+license_sha256 = "564ce565c371c5e5bbf286006565a7c9aa55a9f56e7ca58d56e05d649dd61a72"
+designer = "Florian Karsten"
+copyright = "Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)"
+description = "Geometric grotesk with quirky details from Space Mono (odd 'a', 'G', 'y'); techy without being sci-fi."
+mood = ["techy", "quirky", "editorial"]
+era = "2010s indie web"
+best_for = ["titles", "hud", "labels", "numbers"]
+pairs_with = ["space-mono", "fraunces", "rubik-mono-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/spacegrotesk/SpaceGrotesk[wght].ttf"
+sha256 = "acad6de1fc93436f5c0f1f4137751ef04f1aea3063e7036535970ffcfbd79f72"
+size = 136676
+axes = { wght = [300, 700] }
+
+# ======================================================================
+# grotesque
+# ======================================================================
+
+[[font]]
+id = "archivo"
+family = "Archivo"
+category = "grotesque"
+license = "OFL-1.1"
+license_path = "ofl/archivo/OFL.txt"
+license_sha256 = "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b"
+designer = "Omnibus-Type"
+copyright = "Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)"
+description = "Sturdy grotesque with a width axis from very condensed to expanded; a single file covers tight HUDs and wide titles."
+mood = ["sturdy", "versatile", "industrial"]
+era = "19th-century American grotesque, modernized"
+best_for = ["titles", "hud", "labels", "numbers"]
+pairs_with = ["spectral", "big-shoulders-display"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/archivo/Archivo[wdth,wght].ttf"
+sha256 = "0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053"
+size = 658596
+axes = { wdth = [62, 125], wght = [100, 900] }
+
+[[font]]
+id = "bricolage-grotesque"
+family = "Bricolage Grotesque"
+category = "grotesque"
+license = "OFL-1.1"
+license_path = "ofl/bricolagegrotesque/OFL.txt"
+license_sha256 = "4b5a7d8f37f5602621c8a8d7358a6a2e71317e6c231c661e15aef0275d3e07ba"
+designer = "Mathieu Triay"
+copyright = "Copyright 2022 The Bricolage Grotesque Project Authors (https://github.com/ateliertriay/bricolage)"
+description = "Grotesque with ink-trap quirks and an optical-size axis; tight and characterful when large, calm when small."
+mood = ["quirky", "punchy", "contemporary"]
+era = "French grotesque, 2020s revival"
+best_for = ["titles", "buttons", "body"]
+pairs_with = ["fraunces", "space-mono", "caveat"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf"
+sha256 = "413e7357809ddd12fd80a96a8a396de0e401638d4acd3cb3e37532f0472ac682"
+size = 408496
+axes = { opsz = [12, 96], wdth = [75, 100], wght = [200, 800] }
+
+[[font]]
+id = "schibsted-grotesk"
+family = "Schibsted Grotesk"
+category = "grotesque"
+license = "OFL-1.1"
+license_path = "ofl/schibstedgrotesk/OFL.txt"
+license_sha256 = "3b4f3063b6ac7c1e403e2c4a5e8ef3a58190ff83ed7b15af66511858699139ce"
+designer = "Bakken & Bæck, Henrik Kongsvoll"
+copyright = "Copyright 2023 The Schibsted-Grotesk Project Authors (https://github.com/schibsted/schibsted-grotesk)"
+description = "Newspaper grotesk with compact proportions and confident heavy weights; built for headlines and dense text."
+mood = ["editorial", "confident", "compact"]
+era = "Scandinavian newspaper design"
+best_for = ["titles", "body", "labels", "scores"]
+pairs_with = ["gloock", "young-serif", "jetbrains-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/schibstedgrotesk/SchibstedGrotesk[wght].ttf"
+sha256 = "6ceeadf6be8e1fd7687011c7fa38ed0edd1abe967a0b73d97caec183552e823d"
+size = 176068
+axes = { wght = [400, 900] }
+
+[[font]]
+id = "work-sans"
+family = "Work Sans"
+category = "grotesque"
+license = "OFL-1.1"
+license_path = "ofl/worksans/OFL.txt"
+license_sha256 = "749aca05078664ce682dce1b1b10096ac397cb088c1a6df4e1bb56f0092a9272"
+designer = "Wei Huang"
+copyright = "Copyright 2019 The Work Sans Project Authors (https://github.com/weiweihuanghuang/Work-Sans)"
+description = "Grotesque with slightly wide proportions and early-grotesque quirks; looser and warmer at heavy weights."
+mood = ["friendly", "plain", "approachable"]
+era = "early 20th-century grotesque"
+best_for = ["body", "buttons", "labels"]
+pairs_with = ["alfa-slab-one", "abril-fatface", "space-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/worksans/WorkSans[wght].ttf"
+sha256 = "f50f61f2ba738e239442d40bf1069adb195c224b6a5a73a581fc2f3ed62a9f63"
+size = 361072
+axes = { wght = [100, 900] }
+
+# ======================================================================
+# handwritten
+# ======================================================================
+
+[[font]]
+id = "caveat"
+family = "Caveat"
+category = "handwritten"
+license = "OFL-1.1"
+license_path = "ofl/caveat/OFL.txt"
+license_sha256 = "1f9d81d094273d82f3898a1ee8b598a717d050ecbf5ff7bede105b704880157b"
+designer = "Impallari Type"
+copyright = "Copyright 2014 The Caveat Project Authors (https://github.com/googlefonts/caveat)"
+description = "Quick, natural handwriting with a slight slant; reads like notes scribbled in a margin."
+mood = ["casual", "personal", "quick"]
+era = "ballpoint notes"
+best_for = ["dialogue", "labels", "titles"]
+pairs_with = ["bricolage-grotesque", "courier-prime"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/caveat/Caveat[wght].ttf"
+sha256 = "0bdb6b660482d31531b3945849fba5916b3ef8695da7024a9e6b9ee3c4157988"
+size = 403648
+axes = { wght = [400, 700] }
+
+[[font]]
+id = "gochi-hand"
+family = "Gochi Hand"
+category = "handwritten"
+license = "OFL-1.1"
+license_path = "ofl/gochihand/OFL.txt"
+license_sha256 = "b36cb03d6ddc163452d9935ce6f325741434272d3889acf42cc23584f31a85bf"
+designer = "HT Fonts"
+copyright = "Copyright (c) 2011, Juan Pablo del Peral (juandelperal@htfonts.com), with Reserved Font Names \"Gochi\" and \"Gochi Hand\""
+reserved_name = "Gochi, Gochi Hand"
+description = "Bouncy, slightly messy felt-tip print; lively and childlike."
+mood = ["lively", "childlike", "messy"]
+era = "felt-tip doodles"
+best_for = ["dialogue", "titles", "labels"]
+pairs_with = ["chewy", "nunito", "bangers"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/gochihand/GochiHand-Regular.ttf"
+sha256 = "c46b029ab4846b2935e301af0b2cf85a1d74d2858e6a33636a3e64cf3cc4696b"
+size = 37352
+
+[[font]]
+id = "indie-flower"
+family = "Indie Flower"
+category = "handwritten"
+license = "OFL-1.1"
+license_path = "ofl/indieflower/OFL.txt"
+license_sha256 = "d9cdb075679d15a99bab2a8541b9c4fdc71347502111fbe9affd1d462219d96b"
+designer = "Kimberly Geswein"
+copyright = "Copyright 2010 The Indie Flower Authors (kimberlygeswein.com)"
+description = "Rounded, airy handwriting with loose spacing; sweet, diary-like."
+mood = ["sweet", "airy", "gentle"]
+era = "teen diary"
+best_for = ["dialogue", "labels"]
+pairs_with = ["quicksand", "comfortaa", "pacifico"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/indieflower/IndieFlower-Regular.ttf"
+sha256 = "ccc94b22b156e9c5dfe50fd051f01b097600b252c24473e624bb43a143140a94"
+size = 108196
+
+[[font]]
+id = "patrick-hand"
+family = "Patrick Hand"
+category = "handwritten"
+license = "OFL-1.1"
+license_path = "ofl/patrickhand/OFL.txt"
+license_sha256 = "377f4f9c19e935228552478eb68cc2ed82910988a60ba60e2ac73b09f32d02d1"
+designer = "Patrick Wagesreiter"
+copyright = "Copyright (c) 2010-2012 Patrick Wagesreiter (mail@patrickwagesreiter.at)"
+description = "Neat, upright print handwriting with even strokes; legible enough for dialogue boxes."
+mood = ["friendly", "neat", "casual"]
+era = "school notebook"
+best_for = ["dialogue", "body", "labels"]
+pairs_with = ["young-serif", "titan-one", "permanent-marker"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/patrickhand/PatrickHand-Regular.ttf"
+sha256 = "0f173b3e6cb6d1af25babf7f0057c5ac4ee11f9992b0469bb817e967ef4ad0fc"
+size = 214772
+
+# ======================================================================
+# horror
+# ======================================================================
+
+[[font]]
+id = "creepster"
+family = "Creepster"
+category = "horror"
+license = "OFL-1.1"
+license_path = "ofl/creepster/OFL.txt"
+license_sha256 = "c09e3b81d9cfeec46bc29a3374000e8ad013d694bdf24a288088491dd4cd5c69"
+designer = "Sideshow"
+copyright = "Copyright (c) 2011, Font Diner, Inc (diner@fontdiner.com), with Reserved Font Names \"Creepster\""
+reserved_name = "Creepster"
+description = "Dripping, clawed all-caps horror lettering; B-movie posters and Halloween."
+mood = ["spooky", "campy", "b-movie"]
+era = "1950s horror B-movie poster"
+best_for = ["titles"]
+pairs_with = ["courier-prime", "eb-garamond"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/creepster/Creepster-Regular.ttf"
+sha256 = "402aeb734586c74aecd3dbdc454589b1fb12e2e1c71f782fd019ae68066d9f44"
+size = 62724
+
+[[font]]
+id = "nosifer"
+family = "Nosifer"
+category = "horror"
+license = "OFL-1.1"
+license_path = "ofl/nosifer/OFL.txt"
+license_sha256 = "b41b99f35b507564e54f6b2f5162ad1c21f94a16837c632da6632b376a341f42"
+designer = "Typomondo"
+copyright = "Copyright (c) 2011, Typomondo, with Reserved Font Name \"Nosifer\"."
+reserved_name = "Nosifer"
+description = "Wide caps oozing blood drips from every stroke; maximum gore, use only for short titles."
+mood = ["gory", "loud", "grim"]
+era = "1980s slasher film"
+best_for = ["titles"]
+pairs_with = ["oswald", "courier-prime"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/nosifer/Nosifer-Regular.ttf"
+sha256 = "09c5ac35e34dc7a397d5f698b703c5640b59cf93d4d343ebae4f16f3859d09b8"
+size = 43272
+
+[[font]]
+id = "rubik-wet-paint"
+family = "Rubik Wet Paint"
+category = "horror"
+license = "OFL-1.1"
+license_path = "ofl/rubikwetpaint/OFL.txt"
+license_sha256 = "f9e2d4498ea80d38bac7b8841d68af68c132fa67e1552e7c05717e6987de1d74"
+designer = "NaN, Luke Prowse"
+copyright = "Copyright 2020 The Rubik Filtered Project Authors (https://https://github.com/NaN-xyz/Rubik-Filtered)"
+description = "Rubik sans with wet paint running down each letter; messy, drippy, grafitti-horror."
+mood = ["drippy", "messy", "eerie"]
+era = "spray-paint graffiti"
+best_for = ["titles"]
+pairs_with = ["barlow-condensed", "sedgwick-ave-display"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/rubikwetpaint/RubikWetPaint-Regular.ttf"
+sha256 = "3f35d1c77219c5219826b23c2f0c72dd0eed46425a0d4fff21b8827cdce61693"
+size = 442628
+
+# ======================================================================
+# humanist-sans
+# ======================================================================
+
+[[font]]
+id = "atkinson-hyperlegible-next"
+family = "Atkinson Hyperlegible Next"
+category = "humanist-sans"
+license = "OFL-1.1"
+license_path = "ofl/atkinsonhyperlegiblenext/OFL.txt"
+license_sha256 = "aca6a428580965d2297d1b718042dd427c2a9443ece3b0d02d758e161e0c4030"
+designer = "Braille Institute, Applied Design Works, Elliott Scott, Megan Eiswerth, Letters From Sweden"
+copyright = "Copyright 2020-2024 The Atkinson Hyperlegible Next Project Authors (https://github.com/googlefonts/atkinson-hyperlegible-next)"
+description = "Legibility-first sans with exaggerated letter differences (I/l/1, 0/O) built for low-vision readers."
+mood = ["clear", "plain", "inclusive"]
+era = "2020s accessibility design"
+best_for = ["body", "dialogue", "labels", "numbers"]
+pairs_with = ["anton", "titan-one", "bungee"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/atkinsonhyperlegiblenext/AtkinsonHyperlegibleNext[wght].ttf"
+sha256 = "5a455d1cfa099b601ab70751bb9673e8fe1854dc4500c80e1a220d0d75e31745"
+size = 114552
+axes = { wght = [200, 800] }
+
+[[font]]
+id = "fira-sans"
+family = "Fira Sans"
+category = "humanist-sans"
+license = "OFL-1.1"
+license_path = "ofl/firasans/OFL.txt"
+license_sha256 = "8f24842e9174beda18a556c2ae7d54f5dc444340c19a3a9ef77e23bca366adbd"
+designer = "Carrois Apostrophe"
+copyright = "Copyright (c) 2012-2015, The Mozilla Foundation and Telefonica S.A."
+description = "Humanist sans from Firefox OS with a calligraphic skeleton and wide weight range; highly legible on screens."
+mood = ["warm", "legible", "practical"]
+era = "2010s mobile OS"
+best_for = ["body", "dialogue", "labels", "hud"]
+pairs_with = ["zilla-slab", "bebas-neue"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/firasans/FiraSans-Regular.ttf"
+sha256 = "c29556a2719bf613ef3d5e070e40d903a8965d9c081beca1375dc1e6e0f93c23"
+size = 456996
+[[font.files]]
+weight = 700
+path = "ofl/firasans/FiraSans-Bold.ttf"
+sha256 = "a4d8e149ecdd4874a0726eb0af894488b3b31c423d6b0017c8f415ed1b795b45"
+size = 489720
+
+[[font]]
+id = "source-sans-3"
+family = "Source Sans 3"
+category = "humanist-sans"
+license = "OFL-1.1"
+license_path = "ofl/sourcesans3/OFL.txt"
+license_sha256 = "09746787287a289323b0ec3cff4d1a4a801331b82b7207c1e186f5d26619a392"
+designer = "Paul D. Hunt"
+copyright = "Copyright 2010-2020 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'. All Rights Reserved. Source is a trademark of Adobe in the United States and/or other countries."
+reserved_name = "Source"
+description = "Adobe's workhorse humanist sans with plain, open shapes; disappears behind the content."
+mood = ["neutral", "legible", "quiet"]
+era = "2010s software UI"
+best_for = ["body", "dialogue", "labels"]
+pairs_with = ["playfair-display", "oswald", "eb-garamond"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sourcesans3/SourceSans3[wght].ttf"
+sha256 = "042fe2cc0b933e328410d7acbd0aa6a1873dca5aef81875f4bc214b08825c7b9"
+size = 646340
+axes = { wght = [200, 900] }
+
+# ======================================================================
+# inscriptional
+# ======================================================================
+
+[[font]]
+id = "cinzel"
+family = "Cinzel"
+category = "inscriptional"
+license = "OFL-1.1"
+license_path = "ofl/cinzel/OFL.txt"
+license_sha256 = "f2b3029aba64c378bf0963b62945eee15e564fe4330b934c8f2eb058282b5e83"
+designer = "Natanael Gama"
+copyright = "Copyright 2020 The Cinzel Project Authors (https://github.com/NDISCOVER/Cinzel)"
+description = "Classical Roman inscriptional capitals (lowercase is small caps); temples, epics and fantasy title screens."
+mood = ["classical", "epic", "noble"]
+era = "Imperial Roman inscriptions"
+best_for = ["titles", "labels"]
+pairs_with = ["eb-garamond", "spectral"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/cinzel/Cinzel[wght].ttf"
+sha256 = "f4d83d34d1f6c741193e4acf4b3dff9531e5a67b6aa65228d00a7db72a4e0f34"
+size = 125468
+axes = { wght = [400, 900] }
+
+# ======================================================================
+# mono
+# ======================================================================
+
+[[font]]
+id = "courier-prime"
+family = "Courier Prime"
+category = "mono"
+license = "OFL-1.1"
+license_path = "ofl/courierprime/OFL.txt"
+license_sha256 = "9a755af092b494944c99f471be6fddd19b006a448fefdc4717e4ee0aa09a97b0"
+designer = "Alan Dague-Greene"
+copyright = "Copyright 2015 The Courier Prime Project Authors (https://github.com/quoteunquoteapps/CourierPrime)."
+description = "Typewriter monospace (Courier, but better-drawn) for screenplays, case files and notes."
+mood = ["typewritten", "documentary", "noir"]
+era = "mid-century typewriter"
+best_for = ["dialogue", "body", "labels"]
+pairs_with = ["alfa-slab-one", "permanent-marker", "bowlby-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/courierprime/CourierPrime-Regular.ttf"
+sha256 = "72f793376f8e2841656bf21d77a5de010f2929bd6956a22ee848ad0c7eb978af"
+size = 71188
+[[font.files]]
+weight = 700
+path = "ofl/courierprime/CourierPrime-Bold.ttf"
+sha256 = "ff1f38786c849d1c41fa8e447960abdb2bd75fdfb0cfcdeb524fad65a5af3638"
+size = 72856
+
+[[font]]
+id = "jetbrains-mono"
+family = "JetBrains Mono"
+category = "mono"
+license = "OFL-1.1"
+license_path = "ofl/jetbrainsmono/OFL.txt"
+license_sha256 = "b2fe5e8987594e9ffd1d2ca52a2f5d73eb8335243893c5d6254b5ad69269591d"
+designer = "JetBrains, Philipp Nurullin, Konstantin Bulenkov"
+copyright = "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)"
+description = "Code font with tall x-height and unambiguous characters; clean terminals and stat readouts."
+mood = ["technical", "clean", "precise"]
+era = "2020s developer tools"
+best_for = ["hud", "numbers", "labels", "body"]
+pairs_with = ["schibsted-grotesk", "orbitron", "space-grotesk"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/jetbrainsmono/JetBrainsMono[wght].ttf"
+sha256 = "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda"
+size = 187208
+axes = { wght = [100, 800] }
+
+[[font]]
+id = "major-mono-display"
+family = "Major Mono Display"
+category = "mono"
+license = "OFL-1.1"
+license_path = "ofl/majormonodisplay/OFL.txt"
+license_sha256 = "616e75d879831bedfa7725c078e09bb56f8a17f40b194e16691b12251bb42b3e"
+designer = "Emre Parlak"
+copyright = "Copyright 2018 The Major Mono Project Authors (https://github.com/googlefonts/majormono)"
+description = "Geometric monospaced display mixing upper and lowercase forms in one alphabet; puzzle-like and cold."
+mood = ["cryptic", "geometric", "cold"]
+era = "1970s experimental modernism"
+best_for = ["titles", "labels"]
+pairs_with = ["space-mono", "jetbrains-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/majormonodisplay/MajorMonoDisplay-Regular.ttf"
+sha256 = "3f2ee71c2b8464f065bf960a148be81d68fcc13385df87737928f948208dffc6"
+size = 126788
+
+[[font]]
+id = "share-tech-mono"
+family = "Share Tech Mono"
+category = "mono"
+license = "OFL-1.1"
+license_path = "ofl/sharetechmono/OFL.txt"
+license_sha256 = "9d96f445b6e9c701428811d0177f894874f8d6f07ecc30d568c506542368f3ff"
+designer = "Carrois Apostrophe"
+copyright = "Copyright (c) 2012, Carrois Type Design, Ralph du Carrois (post@carrois.com www.carrois.com), with Reserved Font Name 'Share'"
+reserved_name = "Share"
+description = "Narrow, squared monospace with technical cut corners; mission-control and military readouts."
+mood = ["technical", "terse", "military"]
+era = "1990s sci-fi console"
+best_for = ["hud", "numbers", "labels"]
+pairs_with = ["orbitron", "black-ops-one", "monoton"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sharetechmono/ShareTechMono-Regular.ttf"
+sha256 = "9ceab1f87414829af259c0f537573ae03ef7dd3147c0b27a36a1a0beb6732677"
+size = 43272
+
+[[font]]
+id = "space-mono"
+family = "Space Mono"
+category = "mono"
+license = "OFL-1.1"
+license_path = "ofl/spacemono/OFL.txt"
+license_sha256 = "8e4ee42b2553e1e01504e61cb0d46d148cd8c9e5eacaa3622a7df2d4f2955b9f"
+designer = "Colophon Foundry"
+copyright = "Copyright 2016 The Space Mono Project Authors (https://github.com/googlefonts/spacemono)"
+description = "Retro-futuristic monospace with geometric, slightly odd forms; 1960s/70s spec-sheet feel."
+mood = ["retro-futuristic", "quirky", "technical"]
+era = "1970s NASA/print terminals"
+best_for = ["hud", "numbers", "labels", "body"]
+pairs_with = ["space-grotesk", "bricolage-grotesque", "big-shoulders-display"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/spacemono/SpaceMono-Regular.ttf"
+sha256 = "95837e182baeeada83368f7748db28357f0a1b75c6b84ff7065b5edf933c8e18"
+size = 99356
+[[font.files]]
+weight = 700
+path = "ofl/spacemono/SpaceMono-Bold.ttf"
+sha256 = "405e73d41afb7e5906efce206a326af5c956f38e255f35421c260e861e599c59"
+size = 98232
+
+# ======================================================================
+# novelty
+# ======================================================================
+
+[[font]]
+id = "faster-one"
+family = "Faster One"
+category = "novelty"
+license = "OFL-1.1"
+license_path = "ofl/fasterone/OFL.txt"
+license_sha256 = "4da248dc81a7ea4cf5b23f9cf7a0f8cad900875b3f52a928befb5c51e82e9438"
+designer = "Eduardo Tunni"
+copyright = "Copyright 2012 The Faster Project Authors (https://github.com/etunni/faster), with Reserved Font Name 'Faster'"
+reserved_name = "Faster"
+description = "Italic caps with speed-line stripes cut through each letter; racing games and arcade speed."
+mood = ["fast", "retro", "sporty"]
+era = "1980s racing decals"
+best_for = ["titles", "scores"]
+pairs_with = ["barlow-condensed", "chakra-petch"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/fasterone/FasterOne-Regular.ttf"
+sha256 = "382877a3a497c42bfeadfbb6e1b939d5b0f3f5cfd6c1a566c0c0d3d1f9b4bcb5"
+size = 94044
+
+[[font]]
+id = "rubik-glitch"
+family = "Rubik Glitch"
+category = "novelty"
+license = "OFL-1.1"
+license_path = "ofl/rubikglitch/OFL.txt"
+license_sha256 = "f9e2d4498ea80d38bac7b8841d68af68c132fa67e1552e7c05717e6987de1d74"
+designer = "NaN, Luke Prowse"
+copyright = "Copyright 2020 The Rubik Filtered Project Authors (https://https://github.com/NaN-xyz/Rubik-Filtered)"
+description = "Rubik sans sliced by horizontal glitch offsets; corrupted-signal, hacker and VHS-error looks."
+mood = ["glitchy", "digital", "unstable"]
+era = "VHS/digital glitch art"
+best_for = ["titles"]
+pairs_with = ["jetbrains-mono", "vt323"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/rubikglitch/RubikGlitch-Regular.ttf"
+sha256 = "260245012483d56956269100ebece747aa95b4b67e5a9411a81a36e91f55e653"
+size = 407304
+
+[[font]]
+id = "shojumaru"
+family = "Shojumaru"
+category = "novelty"
+license = "OFL-1.1"
+license_path = "ofl/shojumaru/OFL.txt"
+license_sha256 = "ee81f11dd1970e9749afd2a572256f8eefce65532872762a4d7a3d5daa0812c8"
+designer = "Astigmatic"
+copyright = "Copyright (c) 2012 by Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names \"Shojumaru\""
+reserved_name = "Shojumaru"
+description = "Brush-stroke Latin caps styled after Japanese calligraphy; samurai and martial-arts titles."
+mood = ["martial", "bold", "eastern"]
+era = "samurai film poster"
+best_for = ["titles"]
+pairs_with = ["barlow-condensed", "source-sans-3"]
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/shojumaru/Shojumaru-Regular.ttf"
+sha256 = "8607110ef45da664861c72d95fb804c3609169ebfd2a380cb47b353a7b241c75"
+size = 71672
+
+# ======================================================================
+# old-style-serif
+# ======================================================================
+
+[[font]]
+id = "eb-garamond"
+family = "EB Garamond"
+category = "old-style-serif"
+license = "OFL-1.1"
+license_path = "ofl/ebgaramond/OFL.txt"
+license_sha256 = "0985066662eb755ed3683ae5482a81a9195b49ce3f7e165cc2388b3dbece7dd7"
+designer = "Georg Duffner, Octavio Pardo"
+copyright = "Copyright 2017 The EB Garamond Project Authors (https://github.com/octaviopardo/EBGaramond12)"
+description = "Faithful Garamond revival with classic Renaissance proportions; literary, quiet, book-like."
+mood = ["literary", "classic", "graceful"]
+era = "16th-century French printing"
+best_for = ["body", "dialogue", "titles"]
+pairs_with = ["cinzel", "unifrakturmaguntia", "source-sans-3"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/ebgaramond/EBGaramond[wght].ttf"
+sha256 = "ef9512f92f6d579e5dc75af59a5a4b1b8b47d2eda89e00b954d44520e5369027"
+size = 851176
+axes = { wght = [400, 800] }
+
+[[font]]
+id = "fraunces"
+family = "Fraunces"
+category = "old-style-serif"
+license = "OFL-1.1"
+license_path = "ofl/fraunces/OFL.txt"
+license_sha256 = "bdf4c22802eaf804f998195871c6b8938aac2ac14b2d78a8bd66a6f1eced833b"
+designer = "Undercase Type, Phaedra Charles, Flavia Zimbardi"
+copyright = "Copyright 2018 The Fraunces Project Authors (https://github.com/undercasetype/Fraunces)"
+description = "'Old Style soft' serif with wobbly, chunky forms and SOFT/WONK axes; Cooper-Black warmth when heavy."
+mood = ["warm", "quirky", "retro"]
+era = "1970s Cooper/Windsor revival"
+best_for = ["titles", "body", "dialogue"]
+pairs_with = ["outfit", "space-grotesk", "bricolage-grotesque"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/fraunces/Fraunces[SOFT,WONK,opsz,wght].ttf"
+sha256 = "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb"
+size = 360440
+axes = { SOFT = [0, 100], WONK = [0, 1], opsz = [9, 144], wght = [100, 900] }
+
+[[font]]
+id = "spectral"
+family = "Spectral"
+category = "old-style-serif"
+license = "OFL-1.1"
+license_path = "ofl/spectral/OFL.txt"
+license_sha256 = "501d6ceca8e552630fe3aa9442b9a818565680a1a2f79f3fb8c13d6f309a9e98"
+designer = "Production Type"
+copyright = "Copyright 2017 The Spectral Project Authors (https://github.com/productiontype/Spectral)"
+description = "Screen-first serif with sharp, slightly condensed forms; elegant body text that holds up small."
+mood = ["refined", "literary", "crisp"]
+era = "21st-century screen typography"
+best_for = ["body", "dialogue"]
+pairs_with = ["archivo", "playfair-display", "bodoni-moda"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/spectral/Spectral-Regular.ttf"
+sha256 = "c89021dc20720c8d0dcf40b0b2f6e00c13665fa8041717f581396f51b8c78f5d"
+size = 261088
+[[font.files]]
+weight = 700
+path = "ofl/spectral/Spectral-Bold.ttf"
+sha256 = "70ddb1ec6ae3b0b8d0c79231f670de786978f19baeba2130757526e407aebf9b"
+size = 273220
+
+[[font]]
+id = "young-serif"
+family = "Young Serif"
+category = "old-style-serif"
+license = "OFL-1.1"
+license_path = "ofl/youngserif/OFL.txt"
+license_sha256 = "737d8d343b674c6894f373de71a044b6782c130f2aebf180933d63ddf7a3dc19"
+designer = "Bastien Sozeau"
+copyright = "Copyright 2023 The Young Serif Project Authors (https://github.com/noirblancrouge/YoungSerif)"
+description = "Heavy single-weight serif with soft, bulging bracketed serifs; storybook covers and menus."
+mood = ["warm", "storybook", "sturdy"]
+era = "early 20th-century book covers"
+best_for = ["titles", "dialogue"]
+pairs_with = ["lexend", "schibsted-grotesk", "patrick-hand"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/youngserif/YoungSerif-Regular.ttf"
+sha256 = "42bb2602364b28569fdce5eeb6ab3d81cf8090ba81b211f1229ed69f33155523"
+size = 106608
+
+# ======================================================================
+# pixel
+# ======================================================================
+
+[[font]]
+id = "jacquarda-bastarda-9"
+family = "Jacquarda Bastarda 9"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/jacquardabastarda9/OFL.txt"
+license_sha256 = "de769fdfdef9f647a840e14f8f3a1d60eaeb05cf646388cf4178bf824a7e4630"
+designer = "Sarah Cadigan-Fried"
+copyright = "Copyright 2023 The Soft Type Project Authors (https://github.com/scfried/soft-type-jacquarda-bastarda)"
+description = "Pixel blackletter on a 9-pixel grid, styled after woven jacquard patterns; medieval RPG on a CRT."
+mood = ["medieval", "pixel", "ornate"]
+era = "pixel-art RPG / jacquard weaving"
+best_for = ["titles", "dialogue"]
+pairs_with = ["pixelify-sans", "tiny5", "eb-garamond"]
+pixel_em = 13  # 1040 upem / 80-unit pixel
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/jacquardabastarda9/JacquardaBastarda9-Regular.ttf"
+sha256 = "7d8e5c30bd58598913fc5fd297bc875d1fab1c05fc407c2dfc406a0be9c5a22c"
+size = 100960
+
+[[font]]
+id = "jersey-10"
+family = "Jersey 10"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/jersey10/OFL.txt"
+license_sha256 = "436d5836064cec796c7ddde6fb4faeabdb6f2f17443a24a30d0c38b75d13f922"
+designer = "Sarah Cadigan-Fried"
+copyright = "Copyright 2023 The Soft Type Project Authors (https://github.com/scfried/soft-type-jersey)"
+description = "Condensed pixel face on a 10-pixel cap grid; sports-jersey numbers and scoreboard lettering."
+mood = ["sporty", "condensed", "pixel"]
+era = "1980s stadium scoreboard"
+best_for = ["scores", "numbers", "titles", "hud"]
+pairs_with = ["micro-5", "silkscreen", "barlow-condensed"]
+pixel_em = 56  # 1400 upem / 75-unit pixel = 18.67 px/em; 56 px/em puts each design pixel on exactly 3 px
+bitmap = false  # bake as a distance field by default (not a strict square grid, or rounded pixels)
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/jersey10/Jersey10-Regular.ttf"
+sha256 = "db9cbd091617048a145d249daa2b815fe7083be6ab66ac26626e21a4e01c3e82"
+size = 77732
+
+[[font]]
+id = "micro-5"
+family = "Micro 5"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/micro5/OFL.txt"
+license_sha256 = "b4c75058634d557a621406c8eb5e243fe02d5ac9c49e0a4567eee8d65295fad8"
+designer = "Sarah Cadigan-Fried"
+copyright = "Copyright 2023 The Soft Type Project Authors (https://github.com/scfried/soft-type-micro)"
+description = "Narrow 5-pixel micro font with a matrix-display look; calculators and dot-matrix tickers."
+mood = ["tiny", "mechanical", "narrow"]
+era = "LED ticker / calculator display"
+best_for = ["hud", "numbers", "labels"]
+pairs_with = ["jersey-10", "press-start-2p", "share-tech-mono"]
+pixel_em = 11  # 1650 upem / 150-unit pixel
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/micro5/Micro5-Regular.ttf"
+sha256 = "08a08c0d10129d2ecd869ff2f8914fcbf32487d3cbee3568b2a2957866dfdac8"
+size = 53936
+
+[[font]]
+id = "pixelify-sans"
+family = "Pixelify Sans"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/pixelifysans/OFL.txt"
+license_sha256 = "b66ba46f511a851ab09998b5a5a9fdbb102545a3864cb993095e1745996873a7"
+designer = "Stefie Justprince"
+copyright = "Copyright 2021 The Pixelify Sans Project Authors (https://github.com/eifetx/Pixelify-Sans)"
+description = "Pixel sans with a weight axis and softened, hand-placed pixels; reads like modern indie pixel art, not strict 8-bit."
+mood = ["cozy", "indie", "pixel"]
+era = "2020s indie pixel games"
+best_for = ["titles", "dialogue", "buttons", "hud"]
+pairs_with = ["silkscreen", "tiny5", "vt323"]
+pixel_em = 11  # hand-placed pixels of ~91 units at the default weight; not a strict grid
+pixel_em_estimated = true
+bitmap = false  # bake as a distance field by default (not a strict square grid, or rounded pixels)
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/pixelifysans/PixelifySans[wght].ttf"
+sha256 = "9ba86cd010a4de309d263ceff8e8044092c9db7efda869620cb9ff1c4389e8a5"
+size = 79160
+axes = { wght = [400, 700] }
+
+[[font]]
+id = "press-start-2p"
+family = "Press Start 2P"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/pressstart2p/OFL.txt"
+license_sha256 = "705960c3281a5765ecc0b59bd4ed7ca59eed165748076bc2fc3e8fdbfeb944b0"
+designer = "CodeMan38"
+copyright = "Copyright 2012 The Press Start 2P Project Authors (cody@zone38.net), with Reserved Font Name \"Press Start 2P\"."
+reserved_name = "Press Start 2P"
+description = "Chunky 8x8 all-pixel face from Namco-era arcade fonts; the arcade cabinet in one font."
+mood = ["retro", "arcade", "loud"]
+era = "1980s arcade"
+best_for = ["titles", "scores", "hud"]
+pairs_with = ["silkscreen", "space-mono", "vt323"]
+pixel_em = 8  # 1000 upem / 125-unit pixel
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/pressstart2p/PressStart2P-Regular.ttf"
+sha256 = "034c77f1f05ec89421e4a63f0e3a4ca1ecf852cc6d2bf611f126f275728e017d"
+size = 118204
+
+[[font]]
+id = "silkscreen"
+family = "Silkscreen"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/silkscreen/OFL.txt"
+license_sha256 = "86c5e9c9382cdcc5948704fdfe60f2aa164a719746931219a42736ecd9cefbd3"
+designer = "Jason Kottke"
+copyright = "Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)"
+description = "Tiny all-caps 5-pixel bitmap face with lots of spacing; built for small labels."
+mood = ["tiny", "tidy", "retro"]
+era = "early-2000s Flash/web pixel fonts"
+best_for = ["labels", "hud", "buttons", "scores"]
+pairs_with = ["press-start-2p", "pixelify-sans", "jersey-10"]
+pixel_em = 8  # 1000 upem / 125-unit pixel
+caps_only = true
+[[font.files]]
+weight = 400
+path = "ofl/silkscreen/Silkscreen-Regular.ttf"
+sha256 = "c845473330b94c2079ce9af01c51ac8ba2d99c24f4d14c039843bbb8e642ebd8"
+size = 32220
+[[font.files]]
+weight = 700
+path = "ofl/silkscreen/Silkscreen-Bold.ttf"
+sha256 = "768476aa712d4f5c3e18d3bce80f980a8bd3f72b7094d22ec5e768df3acfed61"
+size = 30632
+
+[[font]]
+id = "sixtyfour"
+family = "Sixtyfour"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/sixtyfour/OFL.txt"
+license_sha256 = "a5ef1337c7efa6a7dfb4f23ada5dc9319653b60acb34601ed734608608fee39d"
+designer = "Jens Kutílek"
+copyright = "Copyright 2021 The Sixtyfour Project Authors (https://github.com/jenskutilek/homecomputer-fonts)"
+description = "Commodore 64 system font rebuilt as wide scanline pixels with BLED/SCAN axes; READY. prompt nostalgia."
+mood = ["crt", "8-bit", "chunky"]
+era = "1982 Commodore 64"
+best_for = ["titles", "hud", "scores"]
+pairs_with = ["workbench", "tiny5", "share-tech-mono"]
+pixel_em = 8  # 1024 upem / 128-unit pixel; outlines are rounded scanline bars
+bitmap = false  # bake as a distance field by default (not a strict square grid, or rounded pixels)
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sixtyfour/Sixtyfour[BLED,SCAN].ttf"
+sha256 = "3d5a3bb3257a491124347bac83ca7f0c8c77a9961270f353b498f3153e751c68"
+size = 71536
+axes = { BLED = [0, 100], SCAN = [-53, 100] }
+
+[[font]]
+id = "tiny5"
+family = "Tiny5"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/tiny5/OFL.txt"
+license_sha256 = "6fe7d64407c69d187748206265977654747d3e2fe9e38e45a62cd03ec4770df6"
+designer = "Stefan Schmidt"
+copyright = "Copyright 2022-2024 The Tiny5 Project Authors (https://github.com/Gissio/font_tiny5)"
+description = "Minimal 5-pixel-tall bitmap font with true lowercase; reads at very small sizes."
+mood = ["minimal", "tiny", "clean"]
+era = "handheld LCD"
+best_for = ["hud", "labels", "dialogue"]
+pairs_with = ["press-start-2p", "pixelify-sans", "jersey-10"]
+pixel_em = 8  # 1024 upem / 128-unit pixel
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/tiny5/Tiny5-Regular.ttf"
+sha256 = "cb8168f80cfee2f47f6db59f2a7afbde31cdcdcdcf262e7a993e4d468a5bf4b0"
+size = 132124
+
+[[font]]
+id = "vt323"
+family = "VT323"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/vt323/OFL.txt"
+license_sha256 = "27d9af34210253e7ca1251fbace86c6f65b40031d6ce1a75493a1b2093631298"
+designer = "Peter Hull"
+copyright = "Copyright 2011, The VT323 Project Authors (peter.hull@oikoi.com)"
+description = "Glyphs from the DEC VT320 terminal, with half-row stepping; green-phosphor command-line feel."
+mood = ["terminal", "nerdy", "retro"]
+era = "1980s DEC terminal"
+best_for = ["hud", "dialogue", "labels", "numbers"]
+pairs_with = ["press-start-2p", "share-tech-mono", "space-mono"]
+pixel_em = 25  # 40-unit rows (half-dot stepping of a 7x9 VT320 matrix); x stems are 80 units
+pixel_em_estimated = true
+bitmap = false  # bake as a distance field by default (not a strict square grid, or rounded pixels)
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/vt323/VT323-Regular.ttf"
+sha256 = "cf4de751ada78ceac033dbe16a687742939995b77bc2a052ae17a4957958594d"
+size = 153116
+
+[[font]]
+id = "workbench"
+family = "Workbench"
+category = "pixel"
+license = "OFL-1.1"
+license_path = "ofl/workbench/OFL.txt"
+license_sha256 = "c46bda9181c8f01cf430e8b4d769a2fa8b19369f9f01b947c0d400939147e700"
+designer = "Jens Kutílek"
+copyright = "Copyright 2021 The Workbench Project Authors (https://github.com/jenskutilek/homecomputer-fonts)"
+description = "Amiga Topaz-style bitmap font rebuilt with rounded scanline pixels and BLED/SCAN axes; CRT texture built in."
+mood = ["crt", "retro", "computer"]
+era = "1985 Amiga Workbench"
+best_for = ["hud", "labels", "dialogue"]
+pairs_with = ["sixtyfour", "vt323", "press-start-2p"]
+pixel_em = 16  # non-square Amiga hires pixels: 64 units wide x 128 tall at 1024 upem
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/workbench/Workbench[BLED,SCAN].ttf"
+sha256 = "027940fb7aea63f260fb367957e419c08f904f357b384c819f99eb06e7af17d6"
+size = 32472
+axes = { BLED = [0, 100], SCAN = [-53, 100] }
+
+# ======================================================================
+# rounded
+# ======================================================================
+
+[[font]]
+id = "comfortaa"
+family = "Comfortaa"
+category = "rounded"
+license = "OFL-1.1"
+license_path = "ofl/comfortaa/OFL.txt"
+license_sha256 = "bc85bae0b512b799bbfb2b916e4d0a34cfd963d09778cd783e248b479e67760a"
+designer = "Johan Aakerlund"
+copyright = "Copyright 2011 The Comfortaa Project Authors (https://github.com/alexeiva/comfortaa), with Reserved Font Name \"Comfortaa\"."
+reserved_name = "Comfortaa"
+description = "Rounded geometric sans built from circles with very round terminals; soft, slightly futuristic."
+mood = ["soft", "smooth", "minimal"]
+era = "2000s web 2.0"
+best_for = ["titles", "body", "buttons"]
+pairs_with = ["indie-flower", "fredoka"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/comfortaa/Comfortaa[wght].ttf"
+sha256 = "0fc3f45dc48b614db9c39181502544b37217ecbf8bee2fb35886992bc96c5bd3"
+size = 201756
+axes = { wght = [300, 700] }
+
+[[font]]
+id = "fredoka"
+family = "Fredoka"
+category = "rounded"
+license = "OFL-1.1"
+license_path = "ofl/fredoka/OFL.txt"
+license_sha256 = "5c9e7eee5c6b25f4b05b8d53b2e470ea4962f9ced742d044a98f7d95d1375bab"
+designer = "Milena Brandão, Hafontia"
+copyright = "Copyright 2016 The Fredoka Project Authors (https://github.com/hafontia/Fredoka-One)"
+description = "Rounded sans with big, soft forms and a width axis; friendly and kid-safe."
+mood = ["friendly", "soft", "playful"]
+era = "2010s kids' apps"
+best_for = ["titles", "buttons", "body", "scores"]
+pairs_with = ["titan-one", "nunito", "rubik-mono-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/fredoka/Fredoka[wdth,wght].ttf"
+sha256 = "2ba02e68b152868aef9ba28e24b3648c7d457fe6f25c761f2c2c53fb61a73fc8"
+size = 159184
+axes = { wdth = [75, 125], wght = [300, 700] }
+
+[[font]]
+id = "grandstander"
+family = "Grandstander"
+category = "rounded"
+license = "OFL-1.1"
+license_path = "ofl/grandstander/OFL.txt"
+license_sha256 = "c98642ce049ee94f1868c47db44dbdc69e1800e2cf3edb539f030ac4abc22ceb"
+designer = "Tyler Finck, ETC"
+copyright = "Copyright 2020 The Grandstander Project Authors (https://github.com/Etcetera-Type-Co/Grandstander)"
+description = "Chunky, rounded display sans with a childlike bounce; designed for children's reading."
+mood = ["bouncy", "childlike", "warm"]
+era = "children's picture books"
+best_for = ["titles", "dialogue", "buttons"]
+pairs_with = ["nunito", "lexend", "chewy"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/grandstander/Grandstander[wght].ttf"
+sha256 = "fbc7d1d934e6aa7842f7e8420cd833eca9eb123d61880075eec68751369e2f13"
+size = 183056
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "nunito"
+family = "Nunito"
+category = "rounded"
+license = "OFL-1.1"
+license_path = "ofl/nunito/OFL.txt"
+license_sha256 = "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65"
+designer = "Vernon Adams, Cyreal, Jacques Le Bailly"
+copyright = "Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito)"
+description = "Balanced rounded sans with full weight range up to Black; rounded terminals but text-ready."
+mood = ["soft", "friendly", "balanced"]
+era = "2010s web UI"
+best_for = ["body", "dialogue", "buttons", "labels"]
+pairs_with = ["lilita-one", "titan-one", "pacifico"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/nunito/Nunito[wght].ttf"
+sha256 = "bb55a5ca5c2042335b3991af27c4d0705d0ef41cac6164ac737fd8f2a1e85207"
+size = 276932
+axes = { wght = [200, 1000] }
+
+[[font]]
+id = "quicksand"
+family = "Quicksand"
+category = "rounded"
+license = "OFL-1.1"
+license_path = "ofl/quicksand/OFL.txt"
+license_sha256 = "14d28541780d90f6577bb7abcc6f005bf6969614294e75c82abb8758a696ad46"
+designer = "Andrew Paglinawan"
+copyright = "Copyright 2011 The Quicksand Project Authors (https://github.com/andrew-paglinawan/QuicksandFamily), with Reserved Font Name “Quicksand”."
+reserved_name = "Quicksand"
+description = "Light, rounded geometric sans with circular bowls; airy and calm."
+mood = ["airy", "calm", "light"]
+era = "2010s minimal branding"
+best_for = ["body", "labels", "buttons"]
+pairs_with = ["righteous", "pacifico", "dancing-script"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/quicksand/Quicksand[wght].ttf"
+sha256 = "39c9b64223561f56aaff6062a6f04063c4fc86809ad6768722c06614d977e1cc"
+size = 124824
+axes = { wght = [300, 700] }
+
+# ======================================================================
+# script
+# ======================================================================
+
+[[font]]
+id = "dancing-script"
+family = "Dancing Script"
+category = "script"
+license = "OFL-1.1"
+license_path = "ofl/dancingscript/OFL.txt"
+license_sha256 = "6f090277c00af96651ce6dbcc38ff1591047a3bffef486e80b6a32e8276a8201"
+designer = "Impallari Type"
+copyright = "Copyright 2016 The Dancing Script Project Authors (https://github.com/googlefonts/DancingScript), with Reserved Font Name 'Dancing Script'."
+reserved_name = "Dancing Script"
+description = "Lively, bouncing casual script with a variable weight axis; light and celebratory."
+mood = ["lively", "cheerful", "light"]
+era = "greeting card"
+best_for = ["titles", "dialogue"]
+pairs_with = ["quicksand", "eb-garamond", "lexend"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/dancingscript/DancingScript[wght].ttf"
+sha256 = "21808625578fe8d8cd10cb684be546dca077b27cd03a53a2f1ec11dc743c924c"
+size = 133636
+axes = { wght = [400, 700] }
+
+[[font]]
+id = "great-vibes"
+family = "Great Vibes"
+category = "script"
+license = "OFL-1.1"
+license_path = "ofl/greatvibes/OFL.txt"
+license_sha256 = "61093a21f5e63dedf54222b3c09997e54c0fe43e3851d21386e02ddcbc246d49"
+designer = "Robert Leuschke"
+copyright = "Copyright 2015 The Great Vibes Pro Project Authors (https://github.com/googlefonts/great-vibes)"
+description = "Flowing formal copperplate-style script with long swashes; wedding invitations and royal decrees."
+mood = ["formal", "romantic", "ornate"]
+era = "19th-century copperplate"
+best_for = ["titles"]
+pairs_with = ["eb-garamond", "bodoni-moda", "josefin-slab"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/greatvibes/GreatVibes-Regular.ttf"
+sha256 = "8d509802186f1b51572531ecf313e8098f9a5bfdfaca93f0c9b34467f9982d15"
+size = 457588
+
+[[font]]
+id = "lobster"
+family = "Lobster"
+category = "script"
+license = "OFL-1.1"
+license_path = "ofl/lobster/OFL.txt"
+license_sha256 = "88aece7d90f2bb7049719f11619a560af22af3451af141f12aa4f46bb157a99b"
+designer = "Impallari Type"
+copyright = "Copyright 2010 The Lobster Project Authors (https://github.com/impallari/The-Lobster-Font), with Reserved Font Name \"Lobster\"."
+reserved_name = "Lobster"
+description = "Bold, connected script with many ligatures; diner-sign and vintage-label lettering."
+mood = ["vintage", "bold", "diner"]
+era = "1950s diner signage"
+best_for = ["titles"]
+pairs_with = ["oswald", "source-sans-3", "courier-prime"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/lobster/Lobster-Regular.ttf"
+sha256 = "d6568e697fd50cedc0be04d8aae4127fe95add607e7bff954ca88604be80c205"
+size = 406076
+
+[[font]]
+id = "pacifico"
+family = "Pacifico"
+category = "script"
+license = "OFL-1.1"
+license_path = "ofl/pacifico/OFL.txt"
+license_sha256 = "a47e5daeda73568969395c656823102678f2eefb0d7d7ecb47aac4cc17e42204"
+designer = "Vernon Adams, Jacques Le Bailly, Botjo Nikoltchev, Ani Petrova"
+copyright = "Copyright 2018 The Pacifico Project Authors (https://github.com/googlefonts/Pacifico)"
+description = "Fat, round, surf-shop brush script; casual and sunny."
+mood = ["sunny", "casual", "retro"]
+era = "1950s California surf culture"
+best_for = ["titles", "buttons"]
+pairs_with = ["nunito", "quicksand"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/pacifico/Pacifico-Regular.ttf"
+sha256 = "5b6c0d5334a7bf77dea52b975c5a0c408878c0f7115ed5b6fb151f634b7bf701"
+size = 329380
+
+# ======================================================================
+# slab
+# ======================================================================
+
+[[font]]
+id = "alfa-slab-one"
+family = "Alfa Slab One"
+category = "slab"
+license = "OFL-1.1"
+license_path = "ofl/alfaslabone/OFL.txt"
+license_sha256 = "e315abc82a78710c7242e2f2e6529651fd631d4d50e6ad98ea194f9b54c3d701"
+designer = "JM Solé"
+copyright = "Copyright 2016 The Alfa Slab One Project Authors (http://www.jmsole.cl | info@jmsole.cl), with Reserved Font Name \"Alfa Slab\"."
+reserved_name = "Alfa Slab"
+description = "Very heavy slab with sharp contrast and big wedge serifs; wanted-poster and circus bills."
+mood = ["heavy", "old-west", "brash"]
+era = "19th-century wood type"
+best_for = ["titles", "scores"]
+pairs_with = ["work-sans", "courier-prime", "rye"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/alfaslabone/AlfaSlabOne-Regular.ttf"
+sha256 = "28664afa698a3393bd5a29eec750230a0645c5301d62200e5f2d3a027fb2299d"
+size = 97376
+
+[[font]]
+id = "josefin-slab"
+family = "Josefin Slab"
+category = "slab"
+license = "OFL-1.1"
+license_path = "ofl/josefinslab/OFL.txt"
+license_sha256 = "40be94683ce097454926ce71af843ceebf8a5eb01dc196f58063d65951cc5dae"
+designer = "Santiago Orozco"
+copyright = "Copyright 2020 The Josefin Slab Project Authors (https://github.com/googlefonts/josefinslab/) Copyright (c) 2010, Santiago Orozco (hi@typemade.mx), with Reserved Font Name Josefin."
+reserved_name = "Josefin"
+description = "Thin, geometric slab with vintage, typewriter-meets-Bauhaus proportions and low x-height."
+mood = ["elegant", "vintage", "airy"]
+era = "1920s Bauhaus/typewriter"
+best_for = ["titles", "dialogue", "labels"]
+pairs_with = ["great-vibes", "playfair-display", "courier-prime"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/josefinslab/JosefinSlab[wght].ttf"
+sha256 = "52f8addf239848d129cfde96c3290b78e271ad657ef5645068d4f08046c2d1b8"
+size = 48792
+axes = { wght = [100, 700] }
+
+[[font]]
+id = "roboto-slab"
+family = "Roboto Slab"
+category = "slab"
+license = "Apache-2.0"
+license_path = "apache/robotoslab/LICENSE.txt"
+license_sha256 = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+designer = "Christian Robertson"
+copyright = "Copyright 2018 The Roboto Slab Project Authors (https://github.com/googlefonts/robotoslab)"
+description = "Mechanical slab serif companion to Roboto; neutral, sturdy, very readable at any size."
+mood = ["sturdy", "neutral", "mechanical"]
+era = "2010s Android"
+best_for = ["body", "dialogue", "labels"]
+pairs_with = ["oswald", "bebas-neue", "anton"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "apache/robotoslab/RobotoSlab[wght].ttf"
+sha256 = "786ae192477447d33c6672c3055fba7cbfe45184c9a79e77a14f15716ca05b16"
+size = 251880
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "zilla-slab"
+family = "Zilla Slab"
+category = "slab"
+license = "OFL-1.1"
+license_path = "ofl/zillaslab/OFL.txt"
+license_sha256 = "240b385d3ec8c8d5c1d4af2bbba6ac72bac0309a80c1a8ff112c168643cc6811"
+designer = "Typotheque"
+copyright = "Copyright 2017, The Mozilla Foundation"
+description = "Mozilla's slab with a slightly condensed, contemporary build; Bold is punchy and logo-like."
+mood = ["confident", "contemporary", "bookish"]
+era = "2010s web brand"
+best_for = ["titles", "body", "dialogue"]
+pairs_with = ["fira-sans", "space-mono", "permanent-marker"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/zillaslab/ZillaSlab-Regular.ttf"
+sha256 = "41a4626844da9216b031308d4423045c765fe4231d99862d85d7d74509d37703"
+size = 270104
+[[font.files]]
+weight = 700
+path = "ofl/zillaslab/ZillaSlab-Bold.ttf"
+sha256 = "4ec3a04a4eef37074b42ef542e4d874e13646668cfe65256e0bf100441cf8719"
+size = 273044
+
+# ======================================================================
+# stencil
+# ======================================================================
+
+[[font]]
+id = "allerta-stencil"
+family = "Allerta Stencil"
+category = "stencil"
+license = "OFL-1.1"
+license_path = "ofl/allertastencil/OFL.txt"
+license_sha256 = "08fba9df5c9890f3ab00ee63f63e005ad93a23746f7484f5fe9501a1ad32730e"
+designer = "Matt McInerney"
+copyright = "Copyright (c) 2010, Matt McInerney (matt@pixelspread.com), with Reserved Font Name Allerta."
+reserved_name = "Allerta"
+description = "Clean sans-serif stencil, light and legible; labels on equipment and lab gear."
+mood = ["clean", "technical", "utilitarian"]
+era = "lab/equipment labeling"
+best_for = ["labels", "hud", "titles"]
+pairs_with = ["jetbrains-mono", "source-sans-3", "black-ops-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/allertastencil/AllertaStencil-Regular.ttf"
+sha256 = "8c504d1be20768941ab04251a389ad82d5782d647fa1c4029c811dc5bc2abd59"
+size = 20260
+
+[[font]]
+id = "big-shoulders-stencil-display"
+family = "Big Shoulders Stencil Display"
+category = "stencil"
+license = "OFL-1.1"
+license_path = "ofl/bigshouldersstencildisplay/OFL.txt"
+license_sha256 = "338f9c050f19daeda1d597243faf79f3a3d437c338af58cb7047617d0ce08771"
+designer = "Patric King"
+copyright = "Copyright 2019 The Big Shoulders Project Authors (https://github.com/xotypeco/big_shoulders)"
+description = "Condensed stencil version of Big Shoulders with a weight axis; industrial spray-paint signage."
+mood = ["industrial", "utilitarian", "tall"]
+era = "warehouse/loading-dock signage"
+best_for = ["titles", "scores", "hud", "numbers"]
+pairs_with = ["archivo", "space-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/bigshouldersstencildisplay/BigShouldersStencilDisplay[wght].ttf"
+sha256 = "93bbefb9f3a497fcfeec5d1ac85c4a947a32b8e5bcaf3b7b5efff52f1b11b0e4"
+size = 226508
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "black-ops-one"
+family = "Black Ops One"
+category = "stencil"
+license = "OFL-1.1"
+license_path = "ofl/blackopsone/OFL.txt"
+license_sha256 = "f67ca4a200424868ee8fcd5464d7b35ac1cbf7723f6bfdbd19a8524689fab9a8"
+designer = "James Grieshaber, Eben Sorkin"
+copyright = "Copyright 2022 The Black-Ops Project Authors (https://github.com/googlefonts/googlefonts-project-template)"
+description = "Heavy, squared military stencil; spec-ops and tactical-shooter titles."
+mood = ["military", "tough", "heavy"]
+era = "2000s tactical shooters"
+best_for = ["titles", "scores", "hud"]
+pairs_with = ["share-tech-mono", "chakra-petch", "barlow-condensed"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/blackopsone/BlackOpsOne-Regular.ttf"
+sha256 = "282a825b5f294377387e3969f765408157dbea8da0f5d0aae68c6bc704b145b3"
+size = 166532
+
+[[font]]
+id = "stardos-stencil"
+family = "Stardos Stencil"
+category = "stencil"
+license = "OFL-1.1"
+license_path = "ofl/stardosstencil/OFL.txt"
+license_sha256 = "88d3abd47414e7912d0d2eb44ca89e0b1bd7c43cc2ebe58a8a75281ad75a0f60"
+designer = "Vernon Adams"
+copyright = "Copyright (c) 2011 by vernon adams (vern@newtypography.co.uk), with Reserved Font Names \"Stardos\" and \"Stardos Stencil\"."
+reserved_name = "Stardos, Stardos Stencil"
+description = "Stencilled serif with crate-stamp texture; military cargo, shipping crates and old documents."
+mood = ["rugged", "military", "vintage"]
+era = "WWII shipping crates"
+best_for = ["titles", "labels"]
+pairs_with = ["courier-prime", "barlow-condensed", "black-ops-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/stardosstencil/StardosStencil-Regular.ttf"
+sha256 = "208b13d15387c282a1c0c439a8e4c38809243d15c361b31da440b25a7e4f39ae"
+size = 42624
+[[font.files]]
+weight = 700
+path = "ofl/stardosstencil/StardosStencil-Bold.ttf"
+sha256 = "6b15f50b1b358512d922b5f11937af17e90704587e1d7fb009f1715d2d5dfa74"
+size = 33044
+
+# ======================================================================
+# techno
+# ======================================================================
+
+[[font]]
+id = "audiowide"
+family = "Audiowide"
+category = "techno"
+license = "OFL-1.1"
+license_path = "ofl/audiowide/OFL.txt"
+license_sha256 = "4fe01b13ffb41faa8f030d84843a95dab32792dfeeca7c072abbfd3f4d6896ad"
+designer = "Astigmatic"
+copyright = "Copyright (c) 2012, Brian J. Bonislawsky DBA Astigmatic (AOETI) (astigma@astigmatic.com), with Reserved Font Names \"Audiowide\""
+reserved_name = "Audiowide"
+description = "Wide, rounded-square techno with streamlined corners; racing liveries and audio gear."
+mood = ["sleek", "fast", "retro-futuristic"]
+era = "1990s audio hardware"
+best_for = ["titles", "scores", "buttons"]
+pairs_with = ["exo-2", "chakra-petch", "share-tech-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/audiowide/Audiowide-Regular.ttf"
+sha256 = "c7c0f2b0f6fad8c623e31772ce79f94a4edb9321ffce9fce978ea892d20ae730"
+size = 69916
+
+[[font]]
+id = "chakra-petch"
+family = "Chakra Petch"
+category = "techno"
+license = "OFL-1.1"
+license_path = "ofl/chakrapetch/OFL.txt"
+license_sha256 = "13831d02389d917d22fcfa6c79f98f8acbf61d230add0e73a4d4dc5f3bfb9e56"
+designer = "Cadson Demak"
+copyright = "Copyright 2018 The Chakra Petch Project Authors (https://github.com/m4rc1e/Chakra-Petch.git)"
+description = "Squarish sans with chamfered corners, drawn from Thai lettering traditions; mech and racing HUDs."
+mood = ["angular", "technical", "mechanical"]
+era = "mecha anime / motorsport"
+best_for = ["hud", "labels", "numbers", "titles"]
+pairs_with = ["audiowide", "black-ops-one", "barlow-condensed"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/chakrapetch/ChakraPetch-Regular.ttf"
+sha256 = "98fcd638baa5c81ff0316b7538ce330ee3b23b1302726de3526d5933a8ecf986"
+size = 78488
+[[font.files]]
+weight = 700
+path = "ofl/chakrapetch/ChakraPetch-Bold.ttf"
+sha256 = "65fbf76d95651697275e19db4d717c0e95a789ddd3476478b05292104db278a0"
+size = 78384
+
+[[font]]
+id = "exo-2"
+family = "Exo 2"
+category = "techno"
+license = "OFL-1.1"
+license_path = "ofl/exo2/OFL.txt"
+license_sha256 = "7f95a8eeecc6904ffc81cd10cc8ebc7fcee72a67922924bf45f02dff03b88127"
+designer = "Natanael Gama"
+copyright = "Copyright 2013 The Exo 2 Project Authors (https://github.com/googlefonts/Exo-2.0)"
+description = "Geometric sans with techy angled cuts and a full weight axis; futuristic but readable as text."
+mood = ["futuristic", "sleek", "versatile"]
+era = "2010s sci-fi games"
+best_for = ["body", "hud", "titles", "labels"]
+pairs_with = ["orbitron", "audiowide", "tektur"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/exo2/Exo2[wght].ttf"
+sha256 = "205a448676a2586f9c57c25f3d5c58ca8db7e6cf5edf7506783a010c6fe2bfb5"
+size = 303940
+axes = { wght = [100, 900] }
+
+[[font]]
+id = "orbitron"
+family = "Orbitron"
+category = "techno"
+license = "OFL-1.1"
+license_path = "ofl/orbitron/OFL.txt"
+license_sha256 = "ab609b0e110d622435ff337cdf233288556e011bbf9bd0550be98846c0630819"
+designer = "Matt McInerney"
+copyright = "Copyright 2018 The Orbitron Project Authors (https://github.com/theleagueof/orbitron), with Reserved Font Name: \"Orbitron\""
+reserved_name = "Orbitron"
+description = "Wide, geometric, squared display sans; the default 'futuristic' face for spaceships and dashboards."
+mood = ["futuristic", "wide", "clean"]
+era = "1990s sci-fi interfaces"
+best_for = ["titles", "hud", "scores", "numbers"]
+pairs_with = ["share-tech-mono", "jetbrains-mono", "exo-2"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/orbitron/Orbitron[wght].ttf"
+sha256 = "f42db2dd16e642258e35782916eceb1dcdbea06fb958d77ad71dc5963587e8fd"
+size = 38576
+axes = { wght = [400, 900] }
+
+[[font]]
+id = "tektur"
+family = "Tektur"
+category = "techno"
+license = "OFL-1.1"
+license_path = "ofl/tektur/OFL.txt"
+license_sha256 = "ff4bb37f716836feb5038e1bf5c47e5a1946717fcfabb175086ed49f85ea47fd"
+designer = "Adam Jagosz"
+copyright = "Copyright 2023 The Tektur Project Authors (https://www.github.com/hyvyys/Tektur)"
+description = "Angular, faceted techno sans with width and weight axes; armor-plated sci-fi titles that still set text."
+mood = ["armored", "angular", "futuristic"]
+era = "2020s sci-fi games"
+best_for = ["titles", "hud", "scores", "labels"]
+pairs_with = ["exo-2", "jetbrains-mono", "share-tech-mono"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/tektur/Tektur[wdth,wght].ttf"
+sha256 = "a4c451e5336874811267c2a514efa09bca7bc8cabf32a310f0b44e111eacb933"
+size = 163160
+axes = { wdth = [75, 100], wght = [400, 900] }
+
+# ======================================================================
+# western
+# ======================================================================
+
+[[font]]
+id = "rye"
+family = "Rye"
+category = "western"
+license = "OFL-1.1"
+license_path = "ofl/rye/OFL.txt"
+license_sha256 = "399b33eb38cdfc76b8665defa5f81d52e8193d630ad5858c893db6bc20031bc9"
+designer = "Nicole Fally"
+copyright = "Copyright (c) 2011 by Sorkin Type Co (www.sorkintype.com), with Reserved Font Name \"Rye\"."
+reserved_name = "Rye"
+description = "Ornate Tuscan-style wood type with split serifs; saloon signs and wanted posters."
+mood = ["western", "ornate", "rustic"]
+era = "1880s American frontier"
+best_for = ["titles", "labels"]
+pairs_with = ["courier-prime", "alfa-slab-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/rye/Rye-Regular.ttf"
+sha256 = "b7edee5e615ae1b6b07e9d030c1309152bf3672a0e8a2a46293e273730f5adba"
+size = 183244
+
+[[font]]
+id = "sancreek"
+family = "Sancreek"
+category = "western"
+license = "OFL-1.1"
+license_path = "ofl/sancreek/OFL.txt"
+license_sha256 = "69f01b79c1be37a734736a94a12c55cb28d09ee93e4febc9db109cec608f9ae7"
+designer = "Vernon Adams"
+copyright = "Copyright 2011 The Sancreek Project Authors (https://github.com/googlefonts/sancreek)"
+description = "Heavy, spurred Victorian display with a Tuscan middle; circus bills and frontier towns."
+mood = ["western", "flamboyant", "vintage"]
+era = "19th-century circus/Wild West"
+best_for = ["titles"]
+pairs_with = ["courier-prime", "alfa-slab-one"]
+caps_only = false
+[[font.files]]
+weight = 400
+path = "ofl/sancreek/Sancreek-Regular.ttf"
+sha256 = "8f87c42f6e6ba97125cd975c3d7d48902fc227d805948e678d5293a300e3fe55"
+size = 93252

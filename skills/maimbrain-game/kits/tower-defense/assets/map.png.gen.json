@@ -1,0 +1,71 @@
+{
+  "generator": "mb 0.4.1 art background",
+  "date": "2026-10-08T03:01:14Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a top-down candy garden diorama sculpted from plasticine: soft mint-green clay lawn with thumbprint texture, and a winding cream-colored clay road with slightly raised caramel-colored edges that follows the light road in the layout sketch exactly: the same position, the same width, the same right-angle turns, entering at the top and ending at a small round clearing near the bottom. Beside the road keep wide stretches of plain open lawn. Only small, low decorations, mostly near the screen edges and the bottom: tiny clay candy flowers, little gumdrops, a few lollipop bushes, sprinkles in the grass. No characters, no buildings, no towers, no cake",
+  "full_prompt": "A full-screen 2D game background, tall portrait composition: a top-down candy garden diorama sculpted from plasticine: soft mint-green clay lawn with thumbprint texture, and a winding cream-colored clay road with slightly raised caramel-colored edges that follows the light road in the layout sketch exactly: the same position, the same width, the same right-angle turns, entering at the top and ending at a small round clearing near the bottom. Beside the road keep wide stretches of plain open lawn. Only small, low decorations, mostly near the screen edges and the bottom: tiny clay candy flowers, little gumdrops, a few lollipop bushes, sprinkles in the grass. No characters, no buildings, no towers, no cake. No characters, no text; keep the middle calm and lower in contrast so game objects read on top. Seen straight from above, an even soft studio light, a plasticine diorama. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. The last attached image shows the subject: redraw it in this art style, keeping what makes it recognizable. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1190272222,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "afb6ee6adc17922bc0266740b583b2fdadf73d88034cbfe47bff7bf7eb53ad06"
+    },
+    {
+      "path": "art/ref/map_sketch.png",
+      "sha256": "3ca84b4f02c37e9499e9de936b7effe171796683fd9e69177e9785d05f1de2bf"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/map-1190272222.jpg",
+  "raw_sha256": "79370d1b385d8db92a11812569ddd661e4e7cedff8e6ac2e16687c8ab929d4dc",
+  "output_sha256": "769a2892f6501aeafdba35d8e7d0f3fd25e96f8f378fe95ed6a824209aa725ee",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "9:16",
+    "colors": 256,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "background",
+    "layer": null,
+    "margin": 45,
+    "max_kb": 200,
+    "model": "gemini-nano-banana-2.1",
+    "name": "map",
+    "no_style": false,
+    "out": "assets/map.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [
+      "art/ref/map_sketch.png"
+    ],
+    "resolution": "2K",
+    "seed": 1190272222,
+    "size": [
+      540,
+      960
+    ],
+    "subject": "a top-down candy garden diorama sculpted from plasticine: soft mint-green clay lawn with thumbprint texture, and a winding cream-colored clay road with slightly raised caramel-colored edges that follows the light road in the layout sketch exactly: the same position, the same width, the same right-angle turns, entering at the top and ending at a small round clearing near the bottom. Beside the road keep wide stretches of plain open lawn. Only small, low decorations, mostly near the screen edges and the bottom: tiny clay candy flowers, little gumdrops, a few lollipop bushes, sprinkles in the grass. No characters, no buildings, no towers, no cake",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      540,
+      960
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

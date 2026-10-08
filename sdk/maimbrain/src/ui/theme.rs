@@ -1,8 +1,23 @@
-//! Themes: one struct of colors, fonts and shape settings every widget and
-//! screen reads, so a game restyles the whole kit in one place.
+//! Themes: one struct of colors, fonts, shape and motion settings every
+//! widget and screen reads, so a game restyles the whole kit in one place.
+//! `Theme::preset` has 17 distinct identities and `Theme::from_identity`
+//! composes one from a few words (ui/identity.rs); the five original
+//! presets (`candy`, `night`, `arcade`, `paper`, `jungle`) are the house
+//! look docs/IDENTITY.md warns about, kept for existing games.
 
 use super::color::{darken, hex, lighten};
+use super::style::Style;
 use crate::gfx2d::Font;
+
+/// The game fonts a theme is designed around: names of `assets/fonts/<name>.mbf`
+/// files (what `mb font add <game> <library id> [--weight W]` writes: the id,
+/// plus `-W` for weights other than 400). Empty = keep the host font.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default)]
+pub struct FontNames {
+    pub title: &'static str,
+    pub body: &'static str,
+    pub number: &'static str,
+}
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Theme {
@@ -40,6 +55,10 @@ pub struct Theme {
     pub number_font: Font,
     /// Confetti colors.
     pub confetti: [u32; 5],
+    /// Shape language, borders, texture, layouts and motion (ui/style.rs).
+    pub style: Style,
+    /// The library fonts this theme was designed with (see [`Theme::load_fonts`]).
+    pub fonts: FontNames,
 }
 
 impl Default for Theme {
@@ -74,6 +93,8 @@ impl Theme {
             body_font: Font::SansBold,
             number_font: Font::SansBold,
             confetti: [hex(0xff4f9a), hex(0xffd23f), hex(0x4be3a0), hex(0x5ab8ff), hex(0xffffff)],
+            style: Style::default(),
+            fonts: FontNames::default(),
         }
     }
 
@@ -102,6 +123,8 @@ impl Theme {
             body_font: Font::Sans,
             number_font: Font::SansBold,
             confetti: [hex(0x2ee6d6), hex(0xffcf4a), hex(0xff5d73), hex(0x8f7bff), hex(0xeaf6ff)],
+            style: Style::default(),
+            fonts: FontNames::default(),
         }
     }
 
@@ -130,6 +153,8 @@ impl Theme {
             body_font: Font::Pixel,
             number_font: Font::Pixel,
             confetti: [hex(0x39ff88), hex(0xffe14a), hex(0xff3b5c), hex(0x3bc9ff), hex(0xffffff)],
+            style: Style::default(),
+            fonts: FontNames::default(),
         }
     }
 
@@ -158,6 +183,8 @@ impl Theme {
             body_font: Font::SansBold,
             number_font: Font::SansBold,
             confetti: [hex(0xf2542d), hex(0xf0a400), hex(0x2f9e5b), hex(0x3a86ff), hex(0x8338ec)],
+            style: Style::default(),
+            fonts: FontNames::default(),
         }
     }
 
@@ -186,10 +213,41 @@ impl Theme {
             body_font: Font::SansBold,
             number_font: Font::SansBold,
             confetti: [hex(0xc9ff3a), hex(0xffd84a), hex(0xff6b4a), hex(0x4ad8ff), hex(0xffffff)],
+            style: Style::default(),
+            fonts: FontNames::default(),
         }
     }
 
-    /// All presets with their names.
+    /// Same theme, another style (shape, borders, layouts, motion).
+    pub fn with_style(mut self, style: Style) -> Theme {
+        self.style = style;
+        self
+    }
+
+    /// Points the theme's fonts at its library fonts (`self.fonts`), baked into
+    /// `assets/fonts/` by `mb font add`. Each draws in the current font until
+    /// its asset is ready (or for good, if it isn't in the bundle). Needs
+    /// `stdlib = { mb2d = 2 }`.
+    pub fn load_fonts(mut self) -> Theme {
+        let f = |name: &str, current: Font| if name.is_empty() { current } else { Font::asset(&format!("assets/fonts/{name}.mbf"), current) };
+        self.title_font = f(self.fonts.title, self.title_font);
+        self.body_font = f(self.fonts.body, self.body_font);
+        self.number_font = f(self.fonts.number, self.number_font);
+        self
+    }
+
+    /// Paints the theme's backdrop over `r` (`t`: seconds, for moving ones).
+    pub fn backdrop(&self, r: super::Rect, t: f32) {
+        super::style::backdrop(&self.style, r, self.bg_top, self.bg_bottom, self.accent, t);
+    }
+
+    /// A title or heading in the theme's letter case.
+    pub fn case(&self, s: &str) -> String {
+        self.style.case.apply(s)
+    }
+
+    /// The five original presets with their names (the house look; see
+    /// [`Theme::identities`] for distinct ones).
     pub fn presets() -> [(&'static str, Theme); 5] {
         [("candy", Theme::candy()), ("night", Theme::night()), ("arcade", Theme::arcade()), ("paper", Theme::paper()), ("jungle", Theme::jungle())]
     }
@@ -218,15 +276,22 @@ impl Theme {
         self.title_font = f;
         self.body_font = f;
         self.number_font = f;
-        if f == crate::gfx2d::Font::Pixel {
-            self.outline_em = 0.125;
+        if f.is_bitmap() {
+            self.outline_em = 1.0 / f.pixel_em();
         }
         self
     }
 
-    /// A text size fitted to the font: the pixel font only looks crisp at
-    /// multiples of 8, so sizes round to those for it.
+    /// A text size fitted to the font: bitmap fonts only look crisp at
+    /// multiples of their pixel grid (8 for the pixel font), so sizes round to those.
     pub fn fit(&self, font: Font, size: f32) -> f32 {
-        if font == Font::Pixel { ((size / 8.0).round() * 8.0).max(8.0) } else { size }
+        fit(font, size)
     }
+}
+
+/// A text size fitted to the font: bitmap fonts round to multiples of their
+/// pixel grid (`font.pixel_em()`), other fonts keep `size`.
+pub fn fit(font: Font, size: f32) -> f32 {
+    let p = font.pixel_em();
+    if p > 0.0 { ((size / p).round() * p).max(p) } else { size }
 }

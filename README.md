@@ -33,12 +33,26 @@ Then ask: *"Use the maimbrain-game skill to make a game: …"*. Your agent will 
 
 ```sh
 mb new mygame        # a game crate from the template, with your id (--3d for a 3D one; works signed out too)
+mb new --kit runner mygame   # …or start from a complete genre game to reskin and twist (mb kits lists them)
 mb serve --watch mygame  # preview at http://127.0.0.1:8765; rebuilds and updates the page on every save
 mb publish mygame    # upload a private draft: play it in the Maimbrain app (Account → My games)
 mb submit mygame     # when it's right, send it for review; track it at maimbrain.com/create
 ```
 
 `mb publish` uploads a draft only you can see; publish again to replace it while you test. Once a moderator approves what you submit, it's in everyone's feed. `mb publish --submit` skips the draft and goes straight to review.
+
+### Fonts and identity
+
+Every game should look like itself, not like every other Maimbrain game (docs/IDENTITY.md shows how alike they had become). `mb new` starts each game from one of the kit's 17 identities at random; the skill's art-direction step replaces it with the game's own. Fonts come from a library of 96 OFL/Apache families (pixel, display, condensed, slab, didone, handwritten, brush, script, blackletter, mono, techno, stencil, comic…), downloaded on demand from github.com/google/fonts and checked against pinned checksums:
+
+```sh
+mb fonts                         # the library, with mood, era, uses and pairings (--category pixel, --search western)
+mb fonts --preview               # a specimen sheet, fonts.png
+mb font add mygame rye           # bake a font into mygame/assets/fonts/rye.mbf (+ its license)
+mb font add mygame --identity saloon   # every font a kit identity uses
+```
+
+Draw with `Font::asset("assets/fonts/rye.mbf", Font::SansBold)` or a theme's `.load_fonts()` (needs `stdlib = { mb2d = 2 }`); see docs/UI.md and docs/SPEC.md §5.3.
 
 ### Generated art and sound (optional)
 
@@ -62,7 +76,7 @@ No key of your own? If the Maimbrain team has given your account access to **Mai
 
 | Path | What |
 |---|---|
-| `skills/maimbrain-game/` | The skill: workflow, engagement guide, art and sound guide, 2D `template/` and 3D `template-3d/`, `pixel.py`, `sfx.py`, `check_audio.py`, `make_glb.py`, `make_rigged_glb.py` (a rigged, animated character) |
+| `skills/maimbrain-game/` | The skill: workflow, engagement guide, art and sound guide, 2D `template/` and 3D `template-3d/`, genre starter `kits/` (runner, stacker, shooter, match3, racer, tower-defense, trivia; `mb new --kit`), `pixel.py`, `sfx.py`, `check_audio.py`, `make_glb.py`, `make_rigged_glb.py` (a rigged, animated character) |
 | `docs/SPEC.md` | The game spec (manifest, host API, limits, determinism) |
 | `docs/MB3D.md` | The 3D engine: PBR, sky lighting, shadows, post effects, particles, trails, glTF; mb3d 2: animated characters, instancing, fog, toon and outlines, 3D text, depth of field |
 | `docs/GENERATE.md` | Generated art and sound: `mb art`, `mb music`, `mb sfx`, providers and keys, the style guide |

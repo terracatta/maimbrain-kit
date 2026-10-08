@@ -38,6 +38,8 @@ const fn f(name: &'static str, params: &'static [Ty], results: &'static [Ty], re
 
 const A: Requires = Requires::Always;
 const MB2D: Requires = Requires::Stdlib("mb2d", 1);
+/// Added in mb2d 2: game fonts (SPEC §5.3).
+const MB2D2: Requires = Requires::Stdlib("mb2d", 2);
 const MB3D: Requires = Requires::Stdlib("mb3d", 1);
 /// Added in mb3d 2: skinned and animated glTF, instancing, freeing resources, fog, toon and outlines, 3D text, depth of field.
 const MB3D2: Requires = Requires::Stdlib("mb3d", 2);
@@ -79,6 +81,9 @@ pub const IMPORTS: &[Import] = &[
     f("mb2d_rrect", &[F32, F32, F32, F32, F32, F32, F32, I32, I32], &[], MB2D),
     f("mb2d_text_style", &[F32, F32, I32, F32], &[], MB2D),
     f("mb2d_antialias", &[I32], &[], MB2D),
+    // 5.3 mb2d 2: game fonts
+    f("mb2d_font_load", &[I32], &[I32], MB2D2),
+    f("mb2d_font_metrics", &[I32, I32], &[I32], MB2D2),
     // 5.4 mb3d: resources
     f("mb3d_mesh", &[I32, I32], &[I32], MB3D),
     f("mb3d_texture", &[I32], &[I32], MB3D),
@@ -127,6 +132,7 @@ pub const IMPORTS: &[Import] = &[
     f("mb3d_material_style", &[I32, I32], &[I32], MB3D2),
     f("mb3d_text", &[I32, I32, I32, I32], &[I32], MB3D2),
     f("mb3d_dof", &[I32], &[], MB3D2),
+    f("mb3d_speed", &[I32], &[], MB3D2),
     // 5.6 audio (output only, so it never affects determinism)
     f("mb_sound", &[I32], &[I32], A),
     f("mb_play", &[I32, F32, F32, F32, I32], &[I32], A),
@@ -169,6 +175,39 @@ pub const EXPORTS: &[Export] = &[
 
 pub fn lookup(name: &str) -> Option<&'static Import> {
     IMPORTS.iter().find(|i| i.name == name)
+}
+
+/// Real host functions an unknown import may have meant, closest first: names
+/// a few edits away, or sharing a word with it in the same family
+/// (`mb3d_speed` → mb3d functions with "speed"... or a near spelling).
+pub fn suggest(name: &str) -> Vec<&'static str> {
+    let words = |n: &str| n.split('_').filter(|w| !w.is_empty()).map(str::to_ascii_lowercase).collect::<Vec<_>>();
+    let family = |n: &str| n.split('_').next().unwrap_or("").to_string();
+    let (want, fam) = (words(name), family(name));
+    let mut scored: Vec<(usize, &'static str)> = IMPORTS
+        .iter()
+        .filter_map(|i| {
+            let d = edit_distance(&name.to_ascii_lowercase(), &i.name.to_ascii_lowercase());
+            let shared = words(i.name).iter().skip(1).filter(|w| want.iter().skip(1).any(|x| x == *w || (x.len() > 3 && w.starts_with(x.as_str())))).count();
+            let close = d <= 2;
+            (close || (shared > 0 && family(i.name) == fam)).then_some((d.saturating_sub(shared * 4), i.name))
+        })
+        .collect();
+    scored.sort();
+    scored.into_iter().map(|(_, n)| n).take(3).collect()
+}
+
+fn edit_distance(a: &str, b: &str) -> usize {
+    let b: Vec<char> = b.chars().collect();
+    let mut prev: Vec<usize> = (0..=b.len()).collect();
+    for (i, ca) in a.chars().enumerate() {
+        let mut cur = vec![i + 1; b.len() + 1];
+        for (j, cb) in b.iter().enumerate() {
+            cur[j + 1] = (prev[j] + usize::from(ca != *cb)).min(prev[j + 1] + 1).min(cur[j] + 1);
+        }
+        prev = cur;
+    }
+    prev[b.len()]
 }
 
 impl Requires {
@@ -214,5 +253,20 @@ mod tests {
             seen += 1;
         }
         assert!(seen > 60, "parsed only {seen} SDK imports");
+    }
+}
+
+#[cfg(test)]
+mod suggest_tests {
+    use super::*;
+
+    #[test]
+    fn near_misspellings_and_shared_words_are_suggested() {
+        assert_eq!(suggest("mb2d_rect_")[0], "mb2d_rect");
+        assert!(suggest("mb3d_node_destory").contains(&"mb3d_node_destroy"));
+        assert!(suggest("totally_made_up_thing").is_empty());
+        for n in suggest("mb3d_speed") {
+            assert!(lookup(n).is_some());
+        }
     }
 }

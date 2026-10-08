@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art ui",
+  "date": "2026-10-08T03:00:44Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a bold mustard-yellow starburst with twelve sharp points and a thick ink outline, a cream inner starburst on top of it, flat with a little halftone shading",
+  "full_prompt": "A 2D game UI element: a bold mustard-yellow starburst with twelve sharp points and a thick ink outline, a cream inner starburst on top of it, flat with a little halftone shading. Flat-on, centered, crisp edges, no text or letters. Flat front view, symmetrical. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1342436984,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/host.png",
+      "sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "26fffcad89b4b13ca635ceeefd7b1004a0d46dcf491fb437aaecc6775ce72572"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/burst-1342436984.jpg",
+  "raw_sha256": "dfb60f4c25c06b7ef76a4549837d670e2c9dc3d88a3349e07453f57353f4d61f",
+  "output_sha256": "a7881c77561b9c9c90050d92f1944ce393c057ad21f4081cb9d2f689283247e5",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "ui",
+    "layer": null,
+    "margin": 2,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "burst",
+    "no_style": false,
+    "out": "assets/burst.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1342436984,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "a bold mustard-yellow starburst with twelve sharp points and a thick ink outline, a cream inner starburst on top of it, flat with a little halftone shading",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#fc0ef7",
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

@@ -1,0 +1,72 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:58:23Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "the same jelly cube as the reference picture but in bubblegum pink: a perfect square exactly as wide as it is tall, gently rounded corners, a simple pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+  "full_prompt": "A single 2D game sprite of the same jelly cube as the reference picture but in bubblegum pink: a perfect square exactly as wide as it is tall, gently rounded corners, a simple pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers). Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. The last attached image shows the subject: redraw it in this art style, keeping what makes it recognizable. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 869508971,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    },
+    {
+      "path": "art/ref/jelly.png",
+      "sha256": "c55081d1b618d21e40d9faa98640ef2e026a49ddf70b7e35a0b93ca873816736"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/jelly_1-869508971.jpg",
+  "raw_sha256": "54daaa31a7054efa29b3f0a663c0dc197db6815e09f99ebd698355b6aae8f635",
+  "output_sha256": "35073a657301bf55d9cf700b200564c2fa2a80124ba6c3c20ec2413504127a8c",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 0,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "jelly_1",
+    "no_style": false,
+    "out": "assets/jelly_1.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [
+      "art/ref/jelly.png"
+    ],
+    "resolution": "1K",
+    "seed": 869508971,
+    "size": [
+      88,
+      88
+    ],
+    "subject": "the same jelly cube as the reference picture but in bubblegum pink: a perfect square exactly as wide as it is tall, gently rounded corners, a simple pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#011cff",
+    "size": [
+      88,
+      88
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

@@ -1,0 +1,175 @@
+{
+  "date": "2026-10-08T03:27:38Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "b49ab9c7149562975d5d99a694db95982008d4b4181f1556ca63fa4c3c9e406a",
+  "packed_from": [
+    {
+      "date": "2026-10-08T02:57:11Z",
+      "file": "art/sprites/baguette.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a long thin baguette lying flat, five times as wide as it is tall, a straight even loaf with blunt rounded ends, golden crust with four diagonal pale score cuts; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1172779615
+    },
+    {
+      "date": "2026-10-08T03:03:30Z",
+      "file": "art/sprites/blanket.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a red and cream gingham picnic blanket lying flat on the grass, seen from a low front angle as a wide flat strip about six times as wide as it is tall, the front edge slightly scalloped",
+      "provider": "gemini",
+      "seed": 1352714437
+    },
+    {
+      "date": "2026-10-08T03:00:13Z",
+      "file": "art/sprites/cheese.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a low, wide wedge of yellow cheese, twice as wide as it is tall, shaped as a symmetric trapezoid: a long flat bottom edge, a short flat top edge less than half as wide as the bottom, straight slanted sides; a few round holes kept well inside the shape; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 58329462
+    },
+    {
+      "date": "2026-10-08T03:03:26Z",
+      "file": "art/sprites/cloud_0.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a fluffy white paper cloud with three round puffs and a flat bottom, cut from two layers of white and very pale blue paper",
+      "provider": "gemini",
+      "seed": 530343471
+    },
+    {
+      "date": "2026-10-08T03:03:26Z",
+      "file": "art/sprites/cloud_1.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a long low white paper cloud with five small round puffs and a flat bottom, cut from two layers of white and very pale blue paper",
+      "provider": "gemini",
+      "seed": 1153023092
+    },
+    {
+      "date": "2026-10-08T03:03:55Z",
+      "file": "art/sprites/hills.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a wide sunny meadow landscape strip, four times as wide as it is tall: layered rolling green paper hills, two or three round paper trees and bushes on them, little white and yellow flowers; the hills fill the bottom of the strip edge to edge with a flat bottom edge, the top is the hills' wavy skyline (no sky)",
+      "provider": "gemini",
+      "seed": 1770559069
+    },
+    {
+      "date": "2026-10-08T02:58:23Z",
+      "file": "art/sprites/jelly_0.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the same jelly cube as the reference picture but in mint green: a perfect square exactly as wide as it is tall, gently rounded corners, a simple pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1131307240
+    },
+    {
+      "date": "2026-10-08T02:58:23Z",
+      "file": "art/sprites/jelly_1.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the same jelly cube as the reference picture but in bubblegum pink: a perfect square exactly as wide as it is tall, gently rounded corners, a simple pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 869508971
+    },
+    {
+      "date": "2026-10-08T02:57:09Z",
+      "file": "art/sprites/jelly_2.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a cube of wobbly fruit jelly, a perfect square exactly as wide as it is tall, straight sides and gently rounded corners, layered translucent-looking orange papers with a pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1409156569
+    },
+    {
+      "date": "2026-10-08T03:03:14Z",
+      "file": "art/sprites/leaf.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a single small green paper leaf with a pale vein, pointed oval",
+      "provider": "gemini",
+      "seed": 767008573
+    },
+    {
+      "date": "2026-10-08T02:58:29Z",
+      "file": "art/sprites/macaron_0.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the same macaron as the reference picture but with pastel pink shells: a rounded rectangle almost twice as wide as it is tall, cream filling stripe across the middle; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1112958747
+    },
+    {
+      "date": "2026-10-08T02:57:19Z",
+      "file": "art/sprites/macaron_1.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a macaron seen from the side: two pastel mint green shells with a cream filling stripe across the middle, a rounded rectangle almost twice as wide as it is tall with very round ends, flat top and bottom; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1602001007
+    },
+    {
+      "date": "2026-10-08T02:57:07Z",
+      "file": "art/sprites/macaron_2.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a macaron seen from the side: two pastel lavender shells with a cream filling stripe across the middle, a rounded rectangle almost twice as wide as it is tall with very round ends, flat top and bottom; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 726171795
+    },
+    {
+      "date": "2026-10-08T03:04:05Z",
+      "file": "art/sprites/meadow.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a wide strip of foreground meadow grass, six times as wide as it is tall: layered bright green paper grass with a wavy tufted top edge, a few small paper flowers (white daisies, yellow buttercups, red poppies), flat bottom edge, filling the strip edge to edge",
+      "provider": "gemini",
+      "seed": 1305392603
+    },
+    {
+      "date": "2026-10-08T03:03:18Z",
+      "file": "art/sprites/plate.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a white paper picnic plate seen exactly edge-on from the side: a long, very thin flat strip about eleven times as wide as it is tall, flat top, its ends slightly rounded, a thin pale blue stripe along its side",
+      "provider": "gemini",
+      "seed": 1284419078
+    },
+    {
+      "date": "2026-10-08T03:03:14Z",
+      "file": "art/sprites/pole.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "one tall straight wooden stick standing upright, very thin and about ten times as tall as it is wide, light brown kraft paper with a darker grain stripe, flat ends",
+      "provider": "gemini",
+      "seed": 950641122
+    },
+    {
+      "date": "2026-10-08T03:03:17Z",
+      "file": "art/sprites/sun.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a paper sun: a round golden yellow disc on a slightly larger orange disc, ringed by a dozen hand-cut triangular rays, no face",
+      "provider": "gemini",
+      "seed": 1596217176
+    },
+    {
+      "date": "2026-10-08T02:56:21Z",
+      "file": "art/sprites/toast.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a thick slice of golden toast shaped as a landscape rectangle one and a half times as wide as it is tall, flat top and bottom, straight sides, slightly rounded corners, an orange-brown crust border around soft pale bread with a few crumbs; nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 1997232907
+    },
+    {
+      "date": "2026-10-08T02:59:33Z",
+      "file": "art/sprites/tomato_0.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "the same tomato as the reference picture but bright red all over: a perfect circle, its small green star of leaves lying flat on the top inside the circle's outline; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 837065687
+    },
+    {
+      "date": "2026-10-08T02:57:14Z",
+      "file": "art/sprites/tomato_1.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round orange tomato forming a perfect circle, its small green star of leaves lying flat on the top inside the circle's outline; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 506250788
+    },
+    {
+      "date": "2026-10-08T02:57:15Z",
+      "file": "art/sprites/tomato_2.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round golden yellow tomato forming a perfect circle, its small green star of leaves lying flat on the top inside the circle's outline; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+      "provider": "gemini",
+      "seed": 483491221
+    }
+  ]
+}

@@ -171,7 +171,7 @@ fn yes() -> bool {
 /// versions only add imports, so a game built for an older one keeps working
 /// unchanged, and an import added in version N needs `name = N` or later
 /// (`abi::Requires::Stdlib`).
-pub const STDLIB: &[(&str, u32)] = &[("mb2d", 1), ("mb3d", 2), ("gpu", 1)];
+pub const STDLIB: &[(&str, u32)] = &[("mb2d", 2), ("mb3d", 2), ("gpu", 1)];
 
 impl Manifest {
     pub fn parse(text: &str) -> Result<Manifest, String> {

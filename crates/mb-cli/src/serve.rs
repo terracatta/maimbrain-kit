@@ -74,28 +74,9 @@ pub fn serve(
     eprintln!("Reload the page after saving to rebuild. Ctrl-C to stop.\n");
     // Preview saves (`mb.screenshot`, `mb.save`) land here.
     let saves = if is_dir { path.join("screenshots") } else { std::env::current_dir().map_err(|e| e.to_string())?.join("screenshots") };
-    for mut req in server.incoming_requests() {
+    for req in server.incoming_requests() {
         let url = req.url().split('?').next().unwrap_or("/").to_string();
-        if url == SAVE_URL && *req.method() == tiny_http::Method::Get {
-            // `mb.load(name)`: a file saved earlier (e.g. a replay log to play back).
-            let name = req.url().split_once("?name=").map(|(_, n)| n.to_string()).unwrap_or_default();
-            let ok = !name.is_empty() && !name.starts_with('.') && name.bytes().all(|b| b.is_ascii_alphanumeric() || b"-_.".contains(&b));
-            let r = match ok.then(|| std::fs::read(saves.join(&name))).and_then(Result::ok) {
-                Some(bytes) => tiny_http::Response::from_data(bytes).with_header(header("Cache-Control", "no-store")),
-                None => tiny_http::Response::from_data(b"not found".to_vec()).with_status_code(404),
-            };
-            let _ = req.respond(r);
-            continue;
-        }
-        if url == SAVE_URL && *req.method() == tiny_http::Method::Post {
-            let full = req.url().to_string();
-            let (status, body) = match save(&saves, &full, req.as_reader()) {
-                Ok(p) => (200, p.display().to_string()),
-                Err(e) => (400, e),
-            };
-            let _ = req.respond(tiny_http::Response::from_string(body).with_status_code(status));
-            continue;
-        }
+        let Some(req) = saves_route(&saves, req) else { continue };
         if url == "/" || url == "/runtime/index.html" {
             if is_dir && newest_change(path) > built_at {
                 eprintln!("change detected, rebuilding…");
@@ -123,6 +104,33 @@ pub fn serve(
         let _ = req.respond(r);
     }
     Ok(())
+}
+
+/// `mb.screenshot` / `mb.save` (POST) and `mb.load` (GET) at [`SAVE_URL`],
+/// in both `mb serve` and `mb serve --watch`; any other request is handed back.
+fn saves_route(saves: &Path, mut req: tiny_http::Request) -> Option<tiny_http::Request> {
+    let url = req.url().split('?').next().unwrap_or("/").to_string();
+    if url != SAVE_URL {
+        return Some(req);
+    }
+    if *req.method() == tiny_http::Method::Post {
+        let full = req.url().to_string();
+        let (status, body) = match save(saves, &full, req.as_reader()) {
+            Ok(p) => (200, p.display().to_string()),
+            Err(e) => (400, e),
+        };
+        let _ = req.respond(tiny_http::Response::from_string(body).with_status_code(status));
+        return None;
+    }
+    // `mb.load(name)`: a file saved earlier (e.g. a replay log to play back).
+    let name = req.url().split_once("?name=").map(|(_, n)| n.to_string()).unwrap_or_default();
+    let ok = !name.is_empty() && !name.starts_with('.') && name.bytes().all(|b| b.is_ascii_alphanumeric() || b"-_.".contains(&b));
+    let r = match ok.then(|| std::fs::read(saves.join(&name))).and_then(Result::ok) {
+        Some(bytes) => tiny_http::Response::from_data(bytes).with_header(header("Cache-Control", "no-store")),
+        None => tiny_http::Response::from_data(b"not found".to_vec()).with_status_code(404),
+    };
+    let _ = req.respond(r);
+    None
 }
 
 /// Where the preview posts files to save (SPEC §9: `mb.screenshot`, `mb.save`).
@@ -227,8 +235,12 @@ pub fn watch(path: &Path, port: u16, boot: fn(&Manifest) -> Value) -> Result<(),
         // Runs for as long as the server does.
         std::thread::spawn(move || builder(&hub, &path, is_dir, boot, scan));
     }
+    // Preview saves (`mb.screenshot`, `mb.save`) land in the game's screenshots/.
+    let saves = if is_dir { path.join("screenshots") } else { std::env::current_dir().map_err(|e| e.to_string())?.join("screenshots") };
     for req in server.incoming_requests() {
-        handle(&hub, req);
+        if let Some(req) = saves_route(&saves, req) {
+            handle(&hub, req);
+        }
     }
     Ok(())
 }

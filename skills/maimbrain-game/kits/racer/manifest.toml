@@ -1,0 +1,27 @@
+abi = 0
+id = "com.maimbrain.terracatta.swerve"
+name = "Swerve"
+version = "0.1.0"
+creator = "@terracatta"
+
+orientation = "portrait"
+logical_size = [360, 640]
+inputs = ["touch"]
+perf_tier = "full"
+
+stdlib = { mb3d = 2, mb2d = 1 }
+sensors = ["haptics"]
+capabilities = ["store", "score"]
+startup_assets = ["assets/start.ogg", "assets/lane.ogg", "assets/coin.ogg", "assets/engine.ogg", "assets/music_base.ogg", "assets/music_hi.ogg"]
+
+[[scores]]
+board = 0
+label = "Score"
+order = "higher"
+format = "integer"
+
+[[scores]]
+board = 1
+label = "Daily score"
+order = "higher"
+format = "integer"

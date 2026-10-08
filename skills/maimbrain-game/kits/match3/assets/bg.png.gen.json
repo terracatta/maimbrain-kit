@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art background",
+  "date": "2026-10-08T03:00:51Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "the view out of a cozy child's bedroom window at bedtime, seen from inside: a deep indigo and dusty blue night sky in soft watercolor washes, a large pale crescent moon near the top right corner, a few soft drifting clouds and tiny stars, sleepy rooftops and chimneys with a few warm glowing windows along the bottom, the painted wooden window frame and soft patterned curtains tied back along the left and right edges, a cream windowsill across the very bottom",
+  "full_prompt": "A full-screen 2D game background, tall portrait composition: the view out of a cozy child's bedroom window at bedtime, seen from inside: a deep indigo and dusty blue night sky in soft watercolor washes, a large pale crescent moon near the top right corner, a few soft drifting clouds and tiny stars, sleepy rooftops and chimneys with a few warm glowing windows along the bottom, the painted wooden window frame and soft patterned curtains tied back along the left and right edges, a cream windowsill across the very bottom. No characters, no text; keep the middle calm and lower in contrast so game objects read on top. A calm, darker, low-detail area in the middle of the picture where the game board sits. Art style: soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood. Children's picture book, soft round shapes, readable silhouette, gentle glow, hand-made. Use only these colors: #1f1d3d, #3d3566, #5a6aa8, #e2706f, #f0a65a, #f2d37a, #86c08f, #7fb0e0, #b394dc, #f6eedd. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, vector flat color, hard black outlines, busy detail, drop shadows on the background. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1554094279,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/poppet.png",
+      "sha256": "63572d45bd57ef74327e32ea75903bb423e79163fe5a5b658e069886c4a576be"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/bg-1554094279.jpg",
+  "raw_sha256": "677ee9bd378f356ce571b28883a02965f45c539be5bfb6fa11d575cb19404a4f",
+  "output_sha256": "e27a4203c255bcce2be1bea362cee142fb1b1b580284de2e31895025b8c69725",
+  "allowed_names": [],
+  "model_text": "Please check this cozy bedroom window night view background, created in the soft watercolor storybook illustration style you requested. Let me know if you would like any adjustments!",
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "9:16",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "background",
+    "layer": null,
+    "margin": 45,
+    "max_kb": 150,
+    "model": "gemini-nano-banana-2.1",
+    "name": "bg",
+    "no_style": false,
+    "out": "assets/bg.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "2K",
+    "seed": 1554094279,
+    "size": [
+      540,
+      960
+    ],
+    "subject": "the view out of a cozy child's bedroom window at bedtime, seen from inside: a deep indigo and dusty blue night sky in soft watercolor washes, a large pale crescent moon near the top right corner, a few soft drifting clouds and tiny stars, sleepy rooftops and chimneys with a few warm glowing windows along the bottom, the painted wooden window frame and soft patterned curtains tied back along the left and right edges, a cream windowsill across the very bottom",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      540,
+      960
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

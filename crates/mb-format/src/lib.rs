@@ -4,6 +4,7 @@
 
 pub mod abi;
 pub mod bundle;
+pub mod font;
 pub mod manifest;
 pub mod meter;
 pub mod wasm;

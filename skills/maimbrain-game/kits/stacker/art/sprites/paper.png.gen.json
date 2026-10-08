@@ -1,0 +1,58 @@
+{
+  "generator": "mb 0.4.1 art tile",
+  "date": "2026-10-08T03:05:19Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a close-up of a sheet of handmade cream paper, matte, with faint wispy fibers and tiny flecks scattered evenly across it, nothing else",
+  "full_prompt": "A seamless, tileable square texture for a 2D game: a close-up of a sheet of handmade cream paper, matte, with faint wispy fibers and tiny flecks scattered evenly across it, nothing else. Evenly lit, no vignette, no border; the pattern continues across all four edges. Avoid: text, letters, watermark, signature, logo, frame or border. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 777,
+  "seed_honored": true,
+  "references": [],
+  "style": null,
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/paper-777.jpg",
+  "raw_sha256": "8acd282b0ddf12aef782e0b1149b587481aa9360a162780411c16b5e3e4b727a",
+  "output_sha256": "db1763bea36e9ad8ea054bf1f2ff950e174d2b03e30b62e8620edc92ea922745",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "tile",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "paper",
+    "no_style": true,
+    "out": "assets/paper.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 777,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a close-up of a sheet of handmade cream paper, matte, with faint wispy fibers and tiny flecks scattered evenly across it, nothing else",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      128,
+      128
+    ],
+    "warnings": [],
+    "wraps": "xy"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

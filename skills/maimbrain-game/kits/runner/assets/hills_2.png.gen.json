@@ -1,0 +1,80 @@
+{
+  "generator": "mb 0.4.1 art layer",
+  "date": "2026-10-08T03:12:15Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a sunny meadow world: low rolling bright green hills dotted with round bushes and grass tufts, filling only the bottom quarter of the image, everything above them empty — a middle-distance layer (3 of 4 from the back), drawn in front of far mountains",
+  "full_prompt": "One parallax layer of a side-scrolling 2D game background: a sunny meadow world: low rolling bright green hills dotted with round bushes and grass tufts, filling only the bottom quarter of the image, everything above them empty — a middle-distance layer (3 of 4 from the back), drawn in front of far mountains. Only this layer's shapes, wide and horizontally continuous, the rest of the image empty. Side-scrolling platformer scenery on a sunny day. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 480×320 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. The last attached image shows the subject: redraw it in this art style, keeping what makes it recognizable. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1095507528,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    },
+    {
+      "path": "assets/hills_0.png",
+      "sha256": "0548a29550971066ccde9817132361b6ea36159de7c93a22aacfb14df6ef811a"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/hills_2-1095507528.jpg",
+  "raw_sha256": "dfc23a64e9d200acd7bb450499dcdcd32a61712bf1bb61a64fc071e738229b80",
+  "output_sha256": "a8393c72180612322e0b6099f9e3f778b9e31e5d563d85f57f7368bcea80466c",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": [
+      480,
+      320
+    ],
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "layer",
+    "layer": [
+      2,
+      4
+    ],
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "hills_2",
+    "no_style": false,
+    "out": "assets/hills_2.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [
+      "assets/hills_0.png"
+    ],
+    "resolution": "2K",
+    "seed": 1095507528,
+    "size": [
+      1440,
+      960
+    ],
+    "subject": "a sunny meadow world: low rolling bright green hills dotted with round bushes and grass tufts, filling only the bottom quarter of the image, everything above them empty — a middle-distance layer (3 of 4 from the back), drawn in front of far mountains",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#fc0ff7",
+    "pixel_scale": 3,
+    "size": [
+      1440,
+      960
+    ],
+    "warnings": [],
+    "wraps": "x"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

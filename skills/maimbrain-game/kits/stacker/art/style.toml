@@ -1,0 +1,66 @@
+# The style guide for this game's generated art. `mb art` applies it to every
+# image (sprites, sheets, backgrounds, layers, tiles, UI, the icon) so they
+# look like one set. Edit freely; regenerate with `mb regen <asset>` or the
+# whole kit with `tools/regen.sh` (it lists every asset and its prompt).
+
+name = "Picnic Pile"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute"
+
+# Short style words added to every prompt.
+keywords = ["readable silhouettes", "big simple shapes", "tactile paper texture", "sunny meadow picnic"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "3D render", "glossy plastic", "thick black outlines", "smooth digital gradients", "busy detail", "cast shadows on the ground"]
+
+# Hex colors, darkest first. Sent with every prompt; `palette_lock` snaps every pixel to them.
+# Plum ink (faces, shadows), meadow greens, sky blue, tomato red, crust orange,
+# cheese yellow, cream paper.
+palette = ["#3a2433", "#4f7a3a", "#8cc56a", "#6fc3e8", "#e8564f", "#f2a93b", "#ffd84d", "#fff4e0"]
+palette_lock = false
+
+# Pixel art: generate, then reduce to a grid of art pixels stored `pixel_scale`
+# texels wide (SPEC §5.3: 4 texels per art pixel, drawn 2 units wide).
+pixel_art = false
+pixel_scale = 4
+
+# Quantize every asset to at most this many colors (0: off). Smaller PNGs.
+colors = 0
+
+# Up to 3 images (paths relative to the game directory) whose style every
+# generation should match: the first snack and the bird once they look right.
+references = ["art/ref/toast.png"]
+
+# Background color asked for on assets that get a transparent background
+# ("auto" picks one far from the palette).
+key = "auto"
+
+# Defaults for this game (override per command with --provider/--model/--res).
+# provider = "gemini"
+# model = "gemini-nano-banana-2.1"
+# resolution = "1K"
+
+# Per-kind additions and default sizes (PNG pixels; the canvas is 2 px per logical unit).
+[sprite]
+prompt = "seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers)"
+size = [128, 128]
+
+[frames]
+prompt = "seen straight from the side, every frame the same character at the same size, no outer drop shadow"
+
+[background]
+prompt = ""
+
+[tile]
+prompt = "a flat sheet of paper filling the whole image, no objects"
+
+[icon]
+prompt = "a close-up of a tiny wobbly stack of smiling picnic snacks on a paper plate, a little white paper bird above it, sunny sky behind"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "jaunty acoustic picnic tune: plucked ukulele, a cheerful whistled melody, light hand percussion (shaker, woodblock, soft kick), sunny and playful"
+
+[sfx]
+prompt = "soft and papery, cartoon picnic foley, dry, no music, short tail"

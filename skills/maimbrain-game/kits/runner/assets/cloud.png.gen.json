@@ -1,0 +1,77 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T03:07:26Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "three different fluffy white cumulus clouds with flat bottoms and a light blue-grey shaded underside, wide and puffy",
+  "full_prompt": "An animation sprite sheet: 3 frames of three different fluffy white cumulus clouds with flat bottoms and a light blue-grey shaded underside, wide and puffy, in a grid of 2 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Side view, facing right. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 48×24 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1061074408,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/cloud-1061074408.jpg",
+  "raw_sha256": "7412b54c10ca13088f900c8485c708a899d5d04e409793603356ee6569e76fa1",
+  "output_sha256": "92019338afdd5becff0990c67c8f13d41f6ed0fa7b14bbe940f30991a285d725",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "16:9",
+    "colors": null,
+    "cols": 3,
+    "frames": 3,
+    "grid": [
+      48,
+      24
+    ],
+    "grid_explicit": true,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "cloud",
+    "no_style": false,
+    "out": "assets/cloud.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1061074408,
+    "size": [
+      144,
+      72
+    ],
+    "subject": "three different fluffy white cumulus clouds with flat bottoms and a light blue-grey shaded underside, wide and puffy",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      144,
+      72
+    ],
+    "cols": 3,
+    "frames": 3,
+    "keyed_background": "#fc10fb",
+    "pixel_scale": 3,
+    "rust": "frame i's source rect: [(i % 3) × 144, (i / 3) × 72, 144, 72] (e.g. 3 frames at 8–12 fps)",
+    "size": [
+      432,
+      72
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

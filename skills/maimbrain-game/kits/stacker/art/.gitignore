@@ -1,0 +1,6 @@
+# Provider outputs, variants and previews: large, and reproducible with `mb regen`.
+raw/
+variants/
+preview/
+# Single sprites before they're packed into assets/sprites.png (tools/regen.sh); their sidecars stay.
+sprites/*.png

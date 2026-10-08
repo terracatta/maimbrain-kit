@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:05:24Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "the round coral-red puffball poppet with tiny rounded ears, eyes half closed and drowsy with a small yawn, rosy cheeks, snuggled between a sleepy yellow triangle poppet and a powder-blue cloud poppet peeking in at the edges, a crescent moon and stars in a deep indigo sky behind",
+  "full_prompt": "A square app icon for a mobile game: the round coral-red puffball poppet with tiny rounded ears, eyes half closed and drowsy with a small yawn, rosy cheeks, snuggled between a sleepy yellow triangle poppet and a powder-blue cloud poppet peeking in at the edges, a crescent moon and stars in a deep indigo sky behind. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. Close-up, one poppet creature with a sleepy smiling face, round and plump, filling the frame, night sky behind. Art style: soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood. Children's picture book, soft round shapes, readable silhouette, gentle glow, hand-made. Use only these colors: #1f1d3d, #3d3566, #5a6aa8, #e2706f, #f0a65a, #f2d37a, #86c08f, #7fb0e0, #b394dc, #f6eedd. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, photorealism, 3D render, glossy plastic, vector flat color, hard black outlines, busy detail, drop shadows on the background. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1441284225,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/poppet.png",
+      "sha256": "63572d45bd57ef74327e32ea75903bb423e79163fe5a5b658e069886c4a576be"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-1441284225.jpg",
+  "raw_sha256": "661ada7d7d7f4ff70eab21b0b2c9b3a9399c24ae1f664ab3e9428039ff868224",
+  "output_sha256": "639d70827f389d1910a7369f0fff89426dc0fb6aaaa899c7213c4cb52db86fac",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": 60,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1441284225,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "the round coral-red puffball poppet with tiny rounded ears, eyes half closed and drowsy with a small yawn, rosy cheeks, snuggled between a sleepy yellow triangle poppet and a powder-blue cloud poppet peeking in at the edges, a crescent moon and stars in a deep indigo sky behind",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

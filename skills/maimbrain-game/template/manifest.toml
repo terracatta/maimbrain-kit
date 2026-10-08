@@ -9,7 +9,7 @@ logical_size = [360, 640]
 inputs = ["touch"]
 perf_tier = "lite"
 
-stdlib = { mb2d = 1 }
+stdlib = { mb2d = 2 }               # 2: game fonts (Font::asset, Theme::load_fonts)
 capabilities = ["store", "score"]
 
 [[scores]]

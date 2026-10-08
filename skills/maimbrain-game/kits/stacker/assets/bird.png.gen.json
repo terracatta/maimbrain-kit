@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-08T03:27:41Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "dd8890b842577160b0f5d55b5d2161f29e227a544b4a2087ec29dfd29eecd15e",
+  "packed_from": [
+    {
+      "date": "2026-10-08T03:01:27Z",
+      "file": "art/sprites/bird.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a flapping cycle of a small round cream-white paper bird facing right: plump round body, a darker cream belly patch, one dot eye, a rosy cheek, a small orange triangle beak, two short orange legs hanging straight down below its belly. Frame 1 wings raised high above its back, frame 2 wings level, frame 3 wings swept down (never lower than its feet), frame 4 wings level again. The body, head and legs stay in exactly the same place in every frame; only the wings move",
+      "provider": "gemini",
+      "seed": 769217090
+    }
+  ]
+}

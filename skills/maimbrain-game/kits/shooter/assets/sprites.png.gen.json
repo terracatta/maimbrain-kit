@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-08T03:30:00Z",
+  "generator": "mb 0.4.1 art atlas",
+  "output_sha256": "598fd4bb72f30c39c1800cd6c6adc2794eeb057ca75a428660bdbab7ed90e456",
+  "packed_from": [
+    {
+      "date": "2026-10-08T02:57:40Z",
+      "file": "art/sprites/boss.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a huge menacing queen creature for a boss fight, seen straight on: a wide dome-shaped jellyfish head, much wider than tall, with a tall spiky three-pointed crown on top set with glowing gems, hot magenta and electric violet neon outlines with a gold crown, a ruffled frilled rim along the bottom edge of the dome, and in the middle of the dome a large plain dark empty face plate (no eyes, no mouth, no face), no tentacles, no arms",
+      "provider": "gemini",
+      "seed": 136305743
+    },
+    {
+      "date": "2026-10-08T02:56:27Z",
+      "file": "art/sprites/bulb.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a big round lantern-like bulb creature, a fat sphere with a crown of six short rounded spikes around its upper half, golden yellow neon outline, no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+      "provider": "gemini",
+      "seed": 830713169
+    },
+    {
+      "date": "2026-10-08T02:56:27Z",
+      "file": "art/sprites/darter.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a sleek arrowhead-shaped dart creature pointing to the RIGHT, a sharp kite-shaped body with two small fins at the back, electric violet neon outline, no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+      "provider": "gemini",
+      "seed": 174920839
+    },
+    {
+      "date": "2026-10-08T02:57:36Z",
+      "file": "art/sprites/gem.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a small faceted diamond crystal, tall rhombus shape, golden yellow neon outline with white-hot facet lines, dark amber glass inside",
+      "provider": "gemini",
+      "seed": 633726805
+    },
+    {
+      "date": "2026-10-08T02:57:37Z",
+      "file": "art/sprites/hand.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a single glowing round claw orb, a sphere with three short curved claws gripping it from below, magenta neon outline, dark violet glass inside",
+      "provider": "gemini",
+      "seed": 1362972498
+    },
+    {
+      "date": "2026-10-08T02:57:33Z",
+      "file": "art/sprites/heart.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a plump heart shape, hot pink-red neon tube outline with a white-hot core line, dark red glass inside, a small white shine on the upper left",
+      "provider": "gemini",
+      "seed": 468988524
+    },
+    {
+      "date": "2026-10-08T02:56:29Z",
+      "file": "art/sprites/jelly.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a small glowing jellyfish creature: a round dome-shaped bell with four short wavy tentacles hanging below, hot magenta-pink neon outline, no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+      "provider": "gemini",
+      "seed": 785083419
+    },
+    {
+      "date": "2026-10-08T02:54:05Z",
+      "file": "art/sprites/pip.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a sleek little spaceship pod pointing straight up, seen from above: a rounded capsule body like a teardrop with a pointed nose at the top, two short swept-back wings, a big dark empty visor window across the upper body (an empty glass dome, nothing inside it), cyan neon outline with magenta accents on the wing tips, an engine nozzle at the bottom",
+      "provider": "gemini",
+      "seed": 1711301193
+    },
+    {
+      "date": "2026-10-08T02:57:33Z",
+      "file": "art/sprites/pw_magnet.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round power-up orb token: a glowing circle with a bold horseshoe magnet emblem in its center, hot magenta and white neon",
+      "provider": "gemini",
+      "seed": 1580876121
+    },
+    {
+      "date": "2026-10-08T02:57:37Z",
+      "file": "art/sprites/pw_shield.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round power-up orb token: a glowing circle with a bold shield emblem in its center, royal blue and white neon",
+      "provider": "gemini",
+      "seed": 1731532284
+    },
+    {
+      "date": "2026-10-08T02:57:39Z",
+      "file": "art/sprites/pw_spread.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a round power-up orb token: a glowing circle with three bold arrows fanning upward out of its center, cyan neon",
+      "provider": "gemini",
+      "seed": 630459850
+    },
+    {
+      "date": "2026-10-08T02:56:29Z",
+      "file": "art/sprites/spinner.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a six-pointed star creature like a throwing star, perfectly rotationally symmetric, coral red neon outline with a white-hot inner line, a plain dark empty disc in the center, no eyes, no face",
+      "provider": "gemini",
+      "seed": 1600587557
+    },
+    {
+      "date": "2026-10-08T02:56:26Z",
+      "file": "art/sprites/swooper.png",
+      "model": "gemini-nano-banana-2.1",
+      "prompt": "a small bat-like swooping creature with angular swept wings, orange neon outline, a round body in the middle, flapping its wings (wings up, level, down, level), no eyes and no face: the middle of the body is a plain dark empty oval where a face will be added later",
+      "provider": "gemini",
+      "seed": 1910910147
+    }
+  ]
+}

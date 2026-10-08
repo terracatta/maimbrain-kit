@@ -4,7 +4,9 @@
 //! thin host layer here (input, round state, saving, moving nodes, the HUD).
 //!
 //! The HUD, title card and game-over card are the SDK's UI kit
-//! (`maimbrain::ui`, docs/UI.md) drawn with mb2d over the 3D image.
+//! (`maimbrain::ui`, docs/UI.md) drawn with mb2d over the 3D image, in the
+//! look of IDENTITY below: replace the one `mb new` picked at random with the
+//! game's own (the skill's art-direction step) and match the scene to it.
 
 mod scene;
 mod sim;
@@ -17,6 +19,9 @@ use maimbrain::{Game, Rng, export_game, gfx2d, input, store};
 
 use sim::{H, Sim, W};
 
+/// The game's identity: a kit identity name or a few words composing one
+/// (`Theme::from_identity`, docs/UI.md); `mb font add --identity` bakes its fonts.
+const IDENTITY: &str = "__IDENTITY__";
 const BOARD: u32 = 0;
 /// Taps right after a round ends don't restart it (a frantic tap during the failure).
 const RETRY_GUARD: f32 = 0.35;
@@ -62,7 +67,7 @@ impl Game for Drone {
         let mut rng = Rng::from_host();
         let sim = Sim::new(rng.next_u32() as u64);
         let best = store::get_u64("best").unwrap_or(0) as u32;
-        let theme = Theme::night();
+        let theme = Theme::from_identity(IDENTITY).load_fonts();
         Drone {
             mode: Mode::Title,
             sim,

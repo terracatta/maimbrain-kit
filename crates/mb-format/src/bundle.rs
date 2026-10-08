@@ -19,7 +19,7 @@ pub const MAX_FILES: usize = 512;
 pub const MAX_UNCOMPRESSED: u64 = 64 * MIB;
 const MIB: u64 = 1024 * 1024;
 
-pub const ASSET_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "ktx2", "glb", "ogg", "opus", "ttf", "wgsl", "bin", "json", "txt"];
+pub const ASSET_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "ktx2", "glb", "ogg", "opus", "ttf", "mbf", "wgsl", "bin", "json", "txt"];
 /// Largest .glb asset (SPEC §1).
 pub const MAX_GLB: usize = 8 * MIB as usize;
 pub const SOURCE_EXTENSIONS: &[&str] = &["rs", "toml", "lock", "md", "txt", "wgsl"];
@@ -190,6 +190,7 @@ fn inspect(bytes: &[u8]) -> (Report, Option<BTreeMap<String, Vec<u8>>>) {
             r.errors.push(format!("{path}: {e}"));
         }
     }
+    check_fonts(&files, &mut r);
 
     if let Some(m) = r.manifest.clone() {
         m.check(&mut r.errors);
@@ -236,6 +237,30 @@ fn check_path(p: &str) -> Result<(), String> {
         Some(("src", _)) if SOURCE_EXTENSIONS.contains(&ext.as_str()) => Ok(()),
         Some(("src", _)) => Err(format!("source file type .{ext} is not allowed (allowed: {})", SOURCE_EXTENSIONS.join(", "))),
         Some((dir, _)) => Err(format!("unexpected top-level directory {dir}/ (allowed: src/, assets/)")),
+    }
+}
+
+/// Game fonts (SPEC §5.3): every `.mbf` parses within its limits, at most
+/// `font::MAX_FONTS` of them, and a warning when they add up to a lot.
+fn check_fonts(files: &BTreeMap<String, Vec<u8>>, r: &mut Report) {
+    let fonts: Vec<_> = files.iter().filter(|(p, _)| p.starts_with("assets/") && p.to_ascii_lowercase().ends_with(".mbf")).collect();
+    if fonts.len() > crate::font::MAX_FONTS {
+        r.errors.push(format!("{} fonts (.mbf); a game may have at most {}", fonts.len(), crate::font::MAX_FONTS));
+    }
+    let mut total = 0;
+    for (path, data) in &fonts {
+        total += data.len();
+        match crate::font::MbFont::parse(data) {
+            Ok(f) if f.meta_value("license").is_none() => r.warnings.push(format!("{path}: no license in its metadata (re-bake with `mb font add`)")),
+            Ok(_) => {}
+            Err(e) => r.errors.push(format!("{path}: {e}")),
+        }
+    }
+    if total > 1024 * 1024 {
+        r.warnings.push(format!("fonts add up to {} KiB; subset them (`mb font add --chars`) to keep downloads small", total / 1024));
+    }
+    if files.keys().any(|p| p.starts_with("assets/") && p.to_ascii_lowercase().ends_with(".ttf")) {
+        r.warnings.push("a .ttf asset can't be drawn: bake fonts to .mbf with `mb font add`".into());
     }
 }
 

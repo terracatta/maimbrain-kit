@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:57:01Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a small slim lemon-yellow jelly blob shaped like a teardrop, leaning forward as if sprinting, a determined angry face with narrowed eyes and gritted teeth, tiny quick legs. Frames left to right: running stride with the left leg forward, running stride with the right leg forward, bursting apart into a splat of yellow jelly drops",
+  "full_prompt": "An animation sprite sheet: 3 frames of a small slim lemon-yellow jelly blob shaped like a teardrop, leaning forward as if sprinting, a determined angry face with narrowed eyes and gritted teeth, tiny quick legs. Frames left to right: running stride with the left leg forward, running stride with the right leg forward, bursting apart into a splat of yellow jelly drops, in a grid of 2 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. The same clay model in every frame, same size, same camera angle, seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 369718460,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "afb6ee6adc17922bc0266740b583b2fdadf73d88034cbfe47bff7bf7eb53ad06"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/jelly_zipper-369718460.jpg",
+  "raw_sha256": "159cade809797e24adb6bd6e125104be53b450f9e5bc1f61603bc7ac41b8603c",
+  "output_sha256": "9b8aafe6304628f044aab788000b4546152ebadd4ba76585a04bcf78f3c4e644",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 3,
+    "frames": 3,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 5,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "jelly_zipper",
+    "no_style": false,
+    "out": "assets/jelly_zipper.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 369718460,
+    "size": [
+      80,
+      80
+    ],
+    "subject": "a small slim lemon-yellow jelly blob shaped like a teardrop, leaning forward as if sprinting, a determined angry face with narrowed eyes and gritted teeth, tiny quick legs. Frames left to right: running stride with the left leg forward, running stride with the right leg forward, bursting apart into a splat of yellow jelly drops",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      80,
+      80
+    ],
+    "cols": 3,
+    "frames": 3,
+    "keyed_background": "#08f506",
+    "rust": "frame i's source rect: [(i % 3) × 80, (i / 3) × 80, 80, 80] (e.g. 3 frames at 8–12 fps)",
+    "size": [
+      240,
+      80
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

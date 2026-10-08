@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:57:07Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a macaron seen from the side: two pastel lavender shells with a cream filling stripe across the middle, a rounded rectangle almost twice as wide as it is tall with very round ends, flat top and bottom; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+  "full_prompt": "A single 2D game sprite of a macaron seen from the side: two pastel lavender shells with a cream filling stripe across the middle, a rounded rectangle almost twice as wide as it is tall with very round ends, flat top and bottom; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers). Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 726171795,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/macaron_2-726171795.jpg",
+  "raw_sha256": "70f446ba881c1b2d3c763269bfb01ca4ebae6ab578504cd9d4e8533828247a50",
+  "output_sha256": "e8498e51cdc53cf7004a6cb55dcc2eb0641b665c5f43e46d388ab054a71cd103",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "16:9",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 0,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "macaron_2",
+    "no_style": false,
+    "out": "assets/macaron_2.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 726171795,
+    "size": [
+      128,
+      72
+    ],
+    "subject": "a macaron seen from the side: two pastel lavender shells with a cream filling stripe across the middle, a rounded rectangle almost twice as wide as it is tall with very round ends, flat top and bottom; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0422ff",
+    "size": [
+      128,
+      72
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

@@ -1,0 +1,21 @@
+abi = 0
+id = "com.maimbrain.terracatta.cake-keep"
+name = "Cake Keep"
+version = "0.1.0"
+creator = "@terracatta"
+
+orientation = "portrait"
+logical_size = [360, 640]
+inputs = ["touch"]
+perf_tier = "lite"
+
+stdlib = { mb2d = 1 }
+sensors = ["haptics"]
+capabilities = ["store", "score"]
+startup_assets = ["assets/map.png", "assets/pad.png", "assets/cake.png", "assets/bomb.png", "assets/tower_pop.png", "assets/tower_chill.png", "assets/tower_boom.png", "assets/jelly_gummy.png", "assets/jelly_zipper.png", "assets/jelly_helmet.png", "assets/jelly_splitter.png", "assets/jelly_mini.png", "assets/jelly_king.png", "assets/start.ogg", "assets/build.ogg", "assets/pop.ogg", "assets/splat.ogg", "assets/ui.ogg", "assets/wave.ogg", "assets/music_base.ogg"]
+
+[[scores]]
+board = 0
+label = "Jellies popped"
+order = "higher"
+format = "integer"

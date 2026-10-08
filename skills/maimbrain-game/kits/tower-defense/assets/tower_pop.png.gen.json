@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:59:13Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a gumball shooter tower: a round clear candy-glass dome packed with colorful clay gumballs (pink, yellow, blue, white) on a chunky bubblegum-pink clay pedestal, a short stubby round nozzle sticking out the front. The three frames left to right are its upgrade levels 1, 2 and 3, each clearly bigger and fancier: level 1 small and simple; level 2 taller with a gold band around the pedestal and two nozzles; level 3 grand, a bigger dome, three nozzles, gold trim and a gold star on top. Smallest on the left, biggest on the right",
+  "full_prompt": "An animation sprite sheet: 3 frames of a gumball shooter tower: a round clear candy-glass dome packed with colorful clay gumballs (pink, yellow, blue, white) on a chunky bubblegum-pink clay pedestal, a short stubby round nozzle sticking out the front. The three frames left to right are its upgrade levels 1, 2 and 3, each clearly bigger and fancier: level 1 small and simple; level 2 taller with a gold band around the pedestal and two nozzles; level 3 grand, a bigger dome, three nozzles, gold trim and a gold star on top. Smallest on the left, biggest on the right, in a grid of 2 columns and 2 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. The same clay model in every frame, same size, same camera angle, seen from a high three-quarter top-down angle, floating on the flat background with no ground and no shadow beneath it. Art style: claymation: chunky hand-sculpted plasticine models with soft rounded forms, visible thumbprints and tool marks, slightly glossy clay surfaces, soft warm studio lighting from the top left with gentle shadows, like a stop-motion miniature set photographed from above. Readable silhouettes, chunky proportions, bright saturated candy colors, soft subsurface glow on jelly, clean simple shapes. Use only these colors: #3a1f35, #4f9a5e, #9ed99a, #c98a52, #f3d9a4, #ff5d73, #ffd23f, #8fe3ff, #fff6ea. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure green color (#00ff00) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, flat vector art, outlines drawn in ink, busy detail, tiny fiddly parts, harsh specular highlights, dark gloomy lighting, any green on characters or towers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 628459589,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/jelly_gummy.png",
+      "sha256": "afb6ee6adc17922bc0266740b583b2fdadf73d88034cbfe47bff7bf7eb53ad06"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "2928744241f1d659f390dd31de949d9d35c7c46b7faeaa7f57a95d2ad2a674f6"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/tower_pop-628459589.jpg",
+  "raw_sha256": "bc5854ff309d248517ef482acf87bde1f50854e35394552d793ce277e9bf1720",
+  "output_sha256": "863e1f91f9f088047d6582923c50b0d494eede00f9d1a0cd88e89b12e1df362a",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 3,
+    "frames": 3,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "tower_pop",
+    "no_style": false,
+    "out": "assets/tower_pop.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 628459589,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a gumball shooter tower: a round clear candy-glass dome packed with colorful clay gumballs (pink, yellow, blue, white) on a chunky bubblegum-pink clay pedestal, a short stubby round nozzle sticking out the front. The three frames left to right are its upgrade levels 1, 2 and 3, each clearly bigger and fancier: level 1 small and simple; level 2 taller with a gold band around the pedestal and two nozzles; level 3 grand, a bigger dome, three nozzles, gold trim and a gold star on top. Smallest on the left, biggest on the right",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      128,
+      128
+    ],
+    "cols": 3,
+    "frames": 3,
+    "keyed_background": "#09f205",
+    "rust": "frame i's source rect: [(i % 3) × 128, (i / 3) × 128, 128, 128] (e.g. 3 frames at 8–12 fps)",
+    "size": [
+      384,
+      128
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

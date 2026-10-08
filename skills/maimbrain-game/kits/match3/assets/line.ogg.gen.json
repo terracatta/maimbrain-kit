@@ -1,0 +1,53 @@
+{
+  "generator": "mb 0.4.1 sfx",
+  "date": "2026-10-08T03:34:27Z",
+  "provider": "elevenlabs",
+  "model": "eleven_text_to_sound_v2",
+  "prompt": "a soft magical swoosh sweeping across, like a shooting star made of bubbles, airy sparkle",
+  "full_prompt": "a soft magical swoosh sweeping across, like a shooting star made of bubbles, airy sparkle. soft, cute, gentle and round, cozy bedtime storybook, clean, no music. A single clean sound effect for a mobile game, about 0.8 seconds, starting immediately with no silence before it; no music, no voice.",
+  "seed": 1883499416,
+  "seed_honored": false,
+  "references": [],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.002,
+  "cost_usd": null,
+  "raw": "art/raw/line-1883499416.pcm",
+  "raw_sha256": "dc636d71924c8c2cf90f626da39ef5a0ea8d9d78a23ec5c2caa08d1766ec89ca",
+  "output_sha256": "f78be64452dad2cb0d09470df66242496217a6a435bb251bdcc11e7ef239a8ac",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "bars": null,
+    "bpm": null,
+    "kind": "sfx",
+    "layers": false,
+    "looping": false,
+    "model": "eleven_text_to_sound_v2",
+    "name": "line",
+    "negative": null,
+    "no_style": false,
+    "once": false,
+    "out": "assets/line.ogg",
+    "provider": "elevenlabs",
+    "quality": 3.0,
+    "rate": 32000,
+    "seconds": 0.800000011920929,
+    "seed": 1883499416,
+    "split_hz": 700.0,
+    "subject": "a soft magical swoosh sweeping across, like a shooting star made of bubbles, airy sparkle"
+  },
+  "result": {
+    "loud_rms_db": -15.72395133972168,
+    "peak_db": -2.852116584777832,
+    "seconds": 0.8489062786102295,
+    "source_channels": 1,
+    "source_rate": 24000,
+    "source_seconds": 1.600000023841858,
+    "warnings": []
+  },
+  "note": "Generated with ElevenLabs; check your plan's license terms (the free plan has non-commercial terms)."
+}

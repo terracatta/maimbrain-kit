@@ -1,0 +1,73 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T02:59:54Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "ten quiz-category emblems, each a single bold object inside its own round cream badge with a thick ink rim, in order: 1 science, a bubbling chemistry flask; 2 space, a ringed planet with a little star; 3 world, a globe; 4 nature, a leafy sprig; 5 food, a slice of pie; 6 numbers, a stack of three mismatched building blocks; 7 words, an open book; 8 inventions, a gear with a spark; 9 body, a heart; 10 time, an alarm clock. Every badge the same size and shape; only the object inside differs",
+  "full_prompt": "An animation sprite sheet: 10 frames of ten quiz-category emblems, each a single bold object inside its own round cream badge with a thick ink rim, in order: 1 science, a bubbling chemistry flask; 2 space, a ringed planet with a little star; 3 world, a globe; 4 nature, a leafy sprig; 5 food, a slice of pie; 6 numbers, a stack of three mismatched building blocks; 7 words, an open book; 8 inventions, a gear with a spark; 9 body, a heart; 10 time, an alarm clock. Every badge the same size and shape; only the object inside differs, in a grid of 4 columns and 3 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. The same character drawn identically in every frame, same size and position, only the face and small details change. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid magenta color (#ff00ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 461955705,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/host.png",
+      "sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "26fffcad89b4b13ca635ceeefd7b1004a0d46dcf491fb437aaecc6775ce72572"
+  },
+  "est_cost_usd": 0.0504,
+  "cost_usd": null,
+  "raw": "art/raw/cats-461955705.jpg",
+  "raw_sha256": "27aa2543d9ceb820ccca27438c4bbdc0a81e5c0214d42a6365a248659707d165",
+  "output_sha256": "43467e65b565bc9557afd81d6830d237a3f3dd7c1ac466feb2b869190bc01076",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "bottom",
+    "aspect": "4:3",
+    "colors": null,
+    "cols": 5,
+    "frames": 10,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 7,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "cats",
+    "no_style": false,
+    "out": "assets/cats.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "2K",
+    "seed": 461955705,
+    "size": [
+      112,
+      112
+    ],
+    "subject": "ten quiz-category emblems, each a single bold object inside its own round cream badge with a thick ink rim, in order: 1 science, a bubbling chemistry flask; 2 space, a ringed planet with a little star; 3 world, a globe; 4 nature, a leafy sprig; 5 food, a slice of pie; 6 numbers, a stack of three mismatched building blocks; 7 words, an open book; 8 inventions, a gear with a spark; 9 body, a heart; 10 time, an alarm clock. Every badge the same size and shape; only the object inside differs",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      112,
+      112
+    ],
+    "cols": 5,
+    "frames": 10,
+    "keyed_background": "#fe0bfa",
+    "rust": "frame i's source rect: [(i % 5) × 112, (i / 5) × 112, 112, 112] (e.g. 10 frames at 8–12 fps)",
+    "size": [
+      560,
+      224
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

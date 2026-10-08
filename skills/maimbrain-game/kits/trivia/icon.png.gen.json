@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:01:37Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "Watt the cartoon lightbulb quiz host (the character in the reference) with star-shaped mustard eyes and a huge grin, his face and red polka-dot bow tie filling most of the frame, a big mustard starburst behind him on a tomato-red ground with halftone dots",
+  "full_prompt": "A square app icon for a mobile game: Watt the cartoon lightbulb quiz host (the character in the reference) with star-shaped mustard eyes and a huge grin, his face and red polka-dot bow tie filling most of the frame, a big mustard starburst behind him on a tomato-red ground with halftone dots. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. The lightbulb quiz host's face, beaming, on a mustard starburst over a tomato-red ground. Art style: 1950s television game-show print: mid-century cartoon illustration with bold confident ink outlines, flat retro poster colors slightly off-register, coarse halftone dot shading, warm off-white paper, atomic-age optimism. Readable silhouettes, flat poster color, halftone dot shading, thick ink line, big simple shapes. Use only these colors: #2a1e1a, #1f7a7a, #e2412f, #968a80, #f2a922, #ffe9a8, #f6ecd6. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, photorealism, 3D render, glossy gradients, neon, busy detail, thin scratchy lines, letters or numbers. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 723433595,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/host.png",
+      "sha256": "e5c37587fbd6a268450b7c97e0e709eb67540aa12529c92b4699b9135c0860e2"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "26fffcad89b4b13ca635ceeefd7b1004a0d46dcf491fb437aaecc6775ce72572"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-723433595.jpg",
+  "raw_sha256": "c6ddb232199cb6d284cac66ccd48c4a4afb2fb715eca015bf87f9a9ecac8b656",
+  "output_sha256": "c5b3b50fb5d1d0ef2f09358bebc16c6d5f49d7b177cf922d3aac5eae4b180bb2",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 723433595,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "Watt the cartoon lightbulb quiz host (the character in the reference) with star-shaped mustard eyes and a huge grin, his face and red polka-dot bow tie filling most of the frame, a big mustard starburst behind him on a tomato-red ground with halftone dots",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

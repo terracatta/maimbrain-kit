@@ -1,0 +1,65 @@
+{
+  "generator": "mb 0.4.1 art icon",
+  "date": "2026-10-08T03:10:59Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "the little neon pod spaceship from the reference, big and centered, flying straight up toward the top, its dark visor showing two big round friendly white eyes, a cyan thruster flame below it; behind it a striped neon synthwave sun on a glowing grid horizon, two small magenta jellyfish enemies and hot pink glowing bullets around it",
+  "full_prompt": "A square app icon for a mobile game: the little neon pod spaceship from the reference, big and centered, flying straight up toward the top, its dark visor showing two big round friendly white eyes, a cyan thruster flame below it; behind it a striped neon synthwave sun on a glowing grid horizon, two small magenta jellyfish enemies and hot pink glowing bullets around it. A bold close-up of the hero or hook that fills the frame, strong silhouette, rich color, no text, letters or numbers, no border. The hero pod close up and glowing, flying up toward the viewer, a few enemies and a neon sun behind. Art style: neon synthwave vector art: bold glowing magenta and cyan tube outlines around dark indigo glass bodies, clean geometric shapes, a bright white-hot core inside every neon line, retro 1980s arcade night. Readable silhouettes, symmetrical geometric shapes, thick glowing outlines, dark filled interiors, high contrast. Use only these colors: #0a0820, #1c1450, #4a2aa0, #ff2fb4, #22e6ff, #ff5a8a, #ffc23a, #f4f0ff. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, photorealism, 3D render, busy detail, soft outer haze or bloom bleeding past the outline, drop shadows, gradients outside the subject, faces or eyes unless asked. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 839873517,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/pip.jpg",
+      "sha256": "d4d41f48bceba7ef93ce87d01377f4134d1cced5dd83ef8a1e35815a2312af68"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "c92e22602b4864ba989ccbc9463bcc4423db0da5bfe477d932664388878f048f"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/icon-839873517.jpg",
+  "raw_sha256": "007f5dbe7c02fe8639a4ba2c692ef454e2a477973c7646a1ad0a73ed0fae1e6b",
+  "output_sha256": "78b80a572c731d19f050d410e89cb677912529e2ce7c3736f367567bcbb174c4",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": false,
+    "kind": "icon",
+    "layer": null,
+    "margin": 16,
+    "max_kb": 60,
+    "model": "gemini-nano-banana-2.1",
+    "name": "icon",
+    "no_style": false,
+    "out": "icon.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 839873517,
+    "size": [
+      256,
+      256
+    ],
+    "subject": "the little neon pod spaceship from the reference, big and centered, flying straight up toward the top, its dark visor showing two big round friendly white eyes, a cyan thruster flame below it; behind it a striped neon synthwave sun on a glowing grid horizon, two small magenta jellyfish enemies and hot pink glowing bullets around it",
+    "tolerance": 0.09
+  },
+  "result": {
+    "size": [
+      256,
+      256
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

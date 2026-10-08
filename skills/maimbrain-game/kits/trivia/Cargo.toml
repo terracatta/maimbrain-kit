@@ -1,0 +1,12 @@
+[package]
+name = "kit_trivia"
+edition.workspace = true
+version.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# `mb new --kit` rewrites this path for the new game (../../sdk/maimbrain in the monorepo, the kit's git URL elsewhere).
+maimbrain = { path = "../../../../../sdk/maimbrain" }

@@ -1,0 +1,70 @@
+{
+  "generator": "mb 0.4.1 art tile",
+  "date": "2026-10-08T03:07:50Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "rich brown soil seen from the side, with small rounded pebbles, a few buried stones and tiny roots, two shades of brown with dark specks",
+  "full_prompt": "A seamless, tileable square texture for a 2D game: rich brown soil seen from the side, with small rounded pebbles, a few buried stones and tiny roots, two shades of brown with dark specks. Evenly lit, no vignette, no border; the pattern continues across all four edges. Art style: chunky 16-bit console platformer pixel art: bold one-pixel dark outlines, two or three flat shading steps per color with a bright top-left highlight, round friendly shapes, bright saturated sunny-day colors. Readable silhouettes, chunky proportions, high contrast, cheerful, clean pixel clusters. Pixel art: big crisp square pixels as if drawn on a 32×32 grid, no anti-aliasing, no dithering noise, a limited palette. Use only these colors: #1a1230, #3d2416, #7a4122, #b8642a, #ec9a3c, #ffcf6b, #fff1c2, #ffffff, #a3202c, #ec3b35, #ff8fb0, #24418f, #3d7be0, #6fc3ff, #c4ecff, #1c5a3a, #2f9a3e, #6bd04a, #b6f075, #5a4a9c, #9a8fd0, #7e8aa0, #c8d0dc, #ffe23a, #d58a12. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, smooth gradients, blurry or soft edges, anti-aliasing, dithering noise, 3D rendering, thin lines, busy detail. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1255270596,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/hero_run.png",
+      "sha256": "45d81db1c87b2f159820416c8f99765057cc61653dcd757e305d47e37e8a80d6"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "158506e0602f49b0864a05a44e5b5ee0cc24d6561a0fd08e502ccb2d7ee35f5d"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/dirt-1255270596.jpg",
+  "raw_sha256": "6e33756e3f0dbf4f8ced796184bc4b54a85c37a52024c3f935f8f634d6da6b5c",
+  "output_sha256": "7fce0c34af5c04c481bd9308a00a72d339fc7588e7667c57c2a4ebedc740b871",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": [
+      32,
+      32
+    ],
+    "grid_explicit": true,
+    "keyed": false,
+    "kind": "tile",
+    "layer": null,
+    "margin": 1,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "dirt",
+    "no_style": false,
+    "out": "assets/dirt.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1255270596,
+    "size": [
+      96,
+      96
+    ],
+    "subject": "rich brown soil seen from the side, with small rounded pebbles, a few buried stones and tiny roots, two shades of brown with dark specks",
+    "tolerance": 0.09
+  },
+  "result": {
+    "pixel_scale": 3,
+    "size": [
+      96,
+      96
+    ],
+    "warnings": [],
+    "wraps": "xy"
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

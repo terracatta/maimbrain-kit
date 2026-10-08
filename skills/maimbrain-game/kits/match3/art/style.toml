@@ -1,0 +1,54 @@
+# The style guide for Poppets' generated art. `mb art` applies it to every
+# image (sprites, the background, the paper tile, the icon) so they look like
+# one set. To restyle the kit: edit this file, then run tools/regen.sh (or
+# `mb regen <asset>` for one asset) and look at art/preview/.
+
+name = "Poppets"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood"
+
+# Short style words added to every prompt.
+keywords = ["children's picture book", "soft round shapes", "readable silhouette", "gentle glow", "hand-made"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "3D render", "glossy plastic", "vector flat color", "hard black outlines", "busy detail", "drop shadows on the background"]
+
+# Hex colors, darkest first. Sent with every prompt.
+palette = ["#1f1d3d", "#3d3566", "#5a6aa8", "#e2706f", "#f0a65a", "#f2d37a", "#86c08f", "#7fb0e0", "#b394dc", "#f6eedd"]
+palette_lock = false
+
+pixel_art = false
+pixel_scale = 4
+
+# Quantize every asset to at most this many colors (0: off). Smaller PNGs.
+colors = 96
+
+# Up to 3 images whose style every generation should match. The first poppet
+# that came out right is the reference for the rest of the cast.
+references = ["art/ref/poppet.png"]
+
+# Background color asked for on transparent assets. "auto" picked pure blue
+# (#0000ff), which keyed cleanly even around the powder-blue cloud poppet.
+key = "auto"
+
+# Per-kind additions and default sizes (PNG pixels; the canvas is 2 px per logical unit).
+[sprite]
+prompt = "a single small creature body seen from the front, centered, filling most of the frame, no face, no eyes, no mouth, soft watercolor wash with a slightly darker pooled rim and a pale highlight on the upper left, thin warm pencil outline"
+size = [128, 128]
+
+[tile]
+prompt = "seamless texture, even lighting, no objects"
+
+[background]
+prompt = "a calm, darker, low-detail area in the middle of the picture where the game board sits"
+
+[icon]
+prompt = "close-up, one poppet creature with a sleepy smiling face, round and plump, filling the frame, night sky behind"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "dreamy lullaby, celesta and music box melody over soft warm strings, gentle and cozy, slow, instrumental"
+
+[sfx]
+prompt = "soft, cute, gentle and round, cozy bedtime storybook, clean, no music"

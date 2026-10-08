@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:59:52Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a plump heart-shaped creature, bright bubblegum pink with a magenta tint (#f08cc8), clearly pinker than coral or red, two little stubby feet",
+  "full_prompt": "A single 2D game sprite of a plump heart-shaped creature, bright bubblegum pink with a magenta tint (#f08cc8), clearly pinker than coral or red, two little stubby feet. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. A single small creature body seen from the front, centered, filling most of the frame, no face, no eyes, no mouth, soft watercolor wash with a slightly darker pooled rim and a pale highlight on the upper left, thin warm pencil outline. Art style: soft watercolor storybook illustration: hand-painted transparent washes that pool darker at the edges, visible cold-press paper grain, gentle colored-pencil outlines in warm dark plum, plump rounded shapes, cozy bedtime mood. Children's picture book, soft round shapes, readable silhouette, gentle glow, hand-made. Use only these colors: #1f1d3d, #3d3566, #5a6aa8, #e2706f, #f0a65a, #f2d37a, #86c08f, #7fb0e0, #b394dc, #f6eedd. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, vector flat color, hard black outlines, busy detail, drop shadows on the background. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 172482001,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "art/ref/poppet.png",
+      "sha256": "63572d45bd57ef74327e32ea75903bb423e79163fe5a5b658e069886c4a576be"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "7edaed1291efd1ea8ce3c338033807bea0004956ff8d9b31fe4353f2c9081cad"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/p_pink-172482001.jpg",
+  "raw_sha256": "f84f56f17d3359a41ecd239df732d7c766d5689fe4fee7ddad8a07673d67a0e9",
+  "output_sha256": "3164ced2f15866281a97ba28d25c0173f8fc35065d3b30bc13ba801b17245f2d",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 8,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "p_pink",
+    "no_style": false,
+    "out": "assets/p_pink.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 172482001,
+    "size": [
+      128,
+      128
+    ],
+    "subject": "a plump heart-shaped creature, bright bubblegum pink with a magenta tint (#f08cc8), clearly pinker than coral or red, two little stubby feet",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0118ff",
+    "size": [
+      128,
+      128
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

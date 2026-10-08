@@ -38,7 +38,7 @@ pub fn check(wasm: &[u8], manifest: &Manifest, errors: &mut Vec<String>) {
                         continue;
                     };
                     let Some(spec) = abi::lookup(import.name) else {
-                        err(format!("imports unknown host function mb.{}", import.name));
+                        err(unknown_import(import.name));
                         continue;
                     };
                     let actual = func_type(types.core_type_at_in_module(ty));
@@ -115,6 +115,33 @@ pub fn check(wasm: &[u8], manifest: &Manifest, errors: &mut Vec<String>) {
     }
 }
 
+/// Why an unknown import can't work and what to do instead: games reach the
+/// host only through the SDK, so this is a hand-written declaration (or a
+/// crate that isn't the Maimbrain SDK) for a function the host doesn't have.
+fn unknown_import(name: &str) -> String {
+    // Things agents often expect from the host that the SDK does game-side.
+    let lower = name.to_ascii_lowercase();
+    let concept = [
+        (&["speed", "velocity", "timescale", "time_scale"][..], "Speeds are game-side: scale the dt or the time you pass (e.g. `gfx3d::Animator` speed, the time given to `mb3d_anim`)."),
+        (&["physics", "rigid", "collide", "collision", "raycast", "gravity", "impulse"][..], "Physics is game-side: the SDK's `physics2d` / `physics3d` Cargo features (docs/PHYSICS.md)."),
+        (&["tween", "ease", "spring", "shake", "confetti", "button", "ui_"][..], "Motion and UI are game-side: `maimbrain::motion`, `maimbrain::juice` and `maimbrain::ui` (docs/UI.md)."),
+    ]
+    .iter()
+    .find(|(words, _)| words.iter().any(|w| lower.contains(w)))
+    .map(|(_, h)| format!(" {h}"))
+    .unwrap_or_default();
+    let hint = concept + &match abi::suggest(name).as_slice() {
+        [] => String::new(),
+        [one] => format!(" Did you mean mb.{one}?"),
+        many => format!(" Did you mean one of: {}?", many.iter().map(|n| format!("mb.{n}")).collect::<Vec<_>>().join(", ")),
+    };
+    format!(
+        "imports unknown host function mb.{name}: the Maimbrain host has no such function, so this game can't run anywhere. \
+         Something in the game declares it by hand (an `extern \"C\"` block, or a crate other than the Maimbrain SDK): \
+         remove that and call the SDK (`maimbrain::…`) instead; SPEC §5 lists every host function.{hint}"
+    )
+}
+
 fn ty(t: Ty) -> ValType {
     match t {
         Ty::I32 => ValType::I32,
@@ -137,4 +164,19 @@ fn show(params: &[Ty], results: &[Ty]) -> String {
 fn show_actual(f: &FuncType) -> String {
     let list = |v: &[ValType]| v.iter().map(|t| format!("{t:?}").to_lowercase()).collect::<Vec<_>>().join(", ");
     format!("({}) -> ({})", list(f.params()), list(f.results()))
+}
+
+#[cfg(test)]
+mod unknown_import_tests {
+    use super::unknown_import;
+
+    #[test]
+    fn explains_and_points_somewhere_useful() {
+        let speed = unknown_import("mb3d_speed");
+        assert!(speed.contains("no such function") && speed.contains("extern"), "{speed}");
+        assert!(speed.contains("Animator") && !speed.contains("mb3d_free"), "{speed}");
+        assert!(unknown_import("mb2d_textt").contains("mb.mb2d_text"));
+        assert!(unknown_import("mb_raycast").contains("physics2d"));
+        assert!(!unknown_import("zzz_unrelated").contains("Did you mean"));
+    }
 }

@@ -1,0 +1,75 @@
+{
+  "generator": "mb 0.4.1 art frames",
+  "date": "2026-10-08T03:02:20Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "eight cute cartoon face expressions made of cut paper pieces, faces only (no head or body behind them): each face is two eyes cut from white paper with dark plum pupils, a dark plum paper mouth and two small pink round cheeks, all the same size and spacing, laid out in a neat grid with lots of space between faces. 1 happy: round eyes, small smile. 2 blinking: eyes closed as short lines, small smile. 3 excited: big sparkly eyes, wide open grin. 4 scared: huge round eyes with tiny pupils, small round open mouth. 5 worried: eyebrows raised in the middle, wavy mouth. 6 very worried: same as 5 plus a light blue sweat drop beside one eye. 7 dozing: eyes closed as downward curves, tiny calm smile. 8 dizzy: eyes are X shapes, small round mouth",
+  "full_prompt": "An animation sprite sheet: 8 frames of eight cute cartoon face expressions made of cut paper pieces, faces only (no head or body behind them): each face is two eyes cut from white paper with dark plum pupils, a dark plum paper mouth and two small pink round cheeks, all the same size and spacing, laid out in a neat grid with lots of space between faces. 1 happy: round eyes, small smile. 2 blinking: eyes closed as short lines, small smile. 3 excited: big sparkly eyes, wide open grin. 4 scared: huge round eyes with tiny pupils, small round open mouth. 5 worried: eyebrows raised in the middle, wavy mouth. 6 very worried: same as 5 plus a light blue sweat drop beside one eye. 7 dozing: eyes closed as downward curves, tiny calm smile. 8 dizzy: eyes are X shapes, small round mouth, in a grid of 3 columns and 3 rows, in reading order, evenly spaced with clear gaps so no two frames touch, the same size, scale and facing in every frame, each frame the next step of the motion so they loop. Nothing else in the image. Seen straight from the side, every frame the same character at the same size, no outer drop shadow. Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 664909828,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/faces-664909828.jpg",
+  "raw_sha256": "6dd48afa6758857bf7cd7c2bc4b86698974add33cd8832aeb4e9288fba7746d9",
+  "output_sha256": "d6fe8ea0d9c7d05f8a5783d868cf2ec85758c4db54bc5b8ef863791f87501816",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "3:2",
+    "colors": null,
+    "cols": 8,
+    "frames": 8,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "frames",
+    "layer": null,
+    "margin": 4,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "faces",
+    "no_style": false,
+    "out": "assets/faces.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 664909828,
+    "size": [
+      96,
+      64
+    ],
+    "subject": "eight cute cartoon face expressions made of cut paper pieces, faces only (no head or body behind them): each face is two eyes cut from white paper with dark plum pupils, a dark plum paper mouth and two small pink round cheeks, all the same size and spacing, laid out in a neat grid with lots of space between faces. 1 happy: round eyes, small smile. 2 blinking: eyes closed as short lines, small smile. 3 excited: big sparkly eyes, wide open grin. 4 scared: huge round eyes with tiny pupils, small round open mouth. 5 worried: eyebrows raised in the middle, wavy mouth. 6 very worried: same as 5 plus a light blue sweat drop beside one eye. 7 dozing: eyes closed as downward curves, tiny calm smile. 8 dizzy: eyes are X shapes, small round mouth",
+    "tolerance": 0.09
+  },
+  "result": {
+    "cell": [
+      96,
+      64
+    ],
+    "cols": 8,
+    "frames": 8,
+    "keyed_background": "#0432ff",
+    "rust": "frame i's source rect: [(i % 8) × 96, (i / 8) × 64, 96, 64] (e.g. 8 frames at 8–12 fps)",
+    "size": [
+      768,
+      64
+    ],
+    "warnings": [
+      "found 13 separate shapes for 8 frames; split the sheet into an even 3×3 grid instead"
+    ]
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

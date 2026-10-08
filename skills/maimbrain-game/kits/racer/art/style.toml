@@ -1,0 +1,47 @@
+# Swerve's style guide. `mb art` applies it to every generated image (the
+# icon, any sky, billboard or decal textures) and `mb music` / `mb sfx` add
+# the [music] and [sfx] words to every prompt, so everything belongs together.
+#
+# Swerve's 3D world is drawn in code (src/scene.rs: meshes, toon materials,
+# outlines, fog, sky colors in src/look.rs). This file describes that look in
+# words, so a generated asset matches it, and so a reskin starts here: change
+# the style, palette and sound words, then run tools/regen.sh.
+
+name = "Swerve"
+
+# The look: what the 3D scene already is.
+style = "low-poly toon 3D at golden hour: chunky faceted shapes, flat two-to-three band cel shading, dark plum ink outlines, backlit by a low sun so rims glow, warm pink-orange haze swallowing the distance"
+
+keywords = ["readable silhouettes", "chunky proportions", "faceted low-poly", "warm rim light", "sunset haze", "high contrast hero"]
+
+# Text, watermarks and logos are always avoided.
+avoid = ["photorealism", "busy detail", "noisy textures", "cold blue daylight", "gradients with banding", "chrome reflections", "night city neon"]
+
+# Darkest first: outline plum, asphalt, mesa red, sand, sun orange, coin gold,
+# the hero's teal, warm white.
+palette = ["#1d0b1e", "#3b3245", "#a65a4c", "#d99a6c", "#ff9a4a", "#ffc23a", "#22d3c5", "#fff4e8"]
+palette_lock = false
+
+pixel_art = false
+pixel_scale = 4
+colors = 0
+
+references = []
+key = "auto"
+
+[sprite]
+prompt = "three-quarter view from behind and above, like a chase camera"
+size = [160, 160]
+
+[background]
+prompt = "a desert highway at sunset seen from low behind a car, mesas on the horizon, a huge low sun"
+
+[icon]
+prompt = "a chunky teal coupe with a white racing stripe and a big spoiler, seen from low behind, tearing down a three-lane desert highway toward a huge low sunset sun between mesas, glowing tail lights and blue exhaust flames"
+
+# The sound: a sunset outrun synth set. Music and effects share it.
+[music]
+prompt = "sunset synthwave driving music: warm analog polysynth pads, a pulsing eighth-note analog bass, gated reverb snare, punchy drum machine, glossy lead; nostalgic, confident, open-road energy"
+
+[sfx]
+prompt = "punchy, clean, close-miked, game-ready, no music, no voice"

@@ -1,0 +1,60 @@
+# The style guide for Nova Pip's generated art. `mb art` applies it to every
+# image (sprites, sheets, the background, the icon) so they look like one set.
+# To restyle the whole kit: edit this file, then run tools/regen.sh (or
+# `mb regen <asset>` one by one) and look at every preview in art/preview/.
+
+name = "Nova Pip"
+
+# The look in a sentence or two: medium, shapes, line, light, mood.
+style = "neon synthwave vector art: bold glowing magenta and cyan tube outlines around dark indigo glass bodies, clean geometric shapes, a bright white-hot core inside every neon line, retro 1980s arcade night"
+
+# Short style words added to every prompt.
+keywords = ["readable silhouettes", "symmetrical geometric shapes", "thick glowing outlines", "dark filled interiors", "high contrast"]
+
+# Things this game's art should never have (text, watermarks and logos are always avoided).
+avoid = ["photorealism", "3D render", "busy detail", "soft outer haze or bloom bleeding past the outline", "drop shadows", "gradients outside the subject", "faces or eyes unless asked"]
+
+# Hex colors, darkest first. Deep indigo night, violet, the two neons (magenta
+# for the enemies' heat, cyan for Pip), a hot pink, a sunset gold and white-hot.
+palette = ["#0a0820", "#1c1450", "#4a2aa0", "#ff2fb4", "#22e6ff", "#ff5a8a", "#ffc23a", "#f4f0ff"]
+palette_lock = false
+
+pixel_art = false
+pixel_scale = 4
+
+# Quantize every asset to at most this many colors (0: off). Neon gradients
+# band below ~96 colors; the atlas and background set their own budgets.
+colors = 0
+
+# The hero once it looked right: everything after it matches its line weight.
+references = ["art/ref/pip.jpg"]
+
+# Flat background color asked for on transparent assets. Green is far from
+# every neon in the palette, so keying never eats a magenta or cyan line.
+key = "#00ff00"
+
+# Defaults for this game (override per command with --provider/--model/--res).
+# provider = "gemini"
+# model = "gemini-nano-banana-2.1"
+# resolution = "1K"
+
+# Per-kind additions and default sizes (PNG pixels; the canvas is 2 px per logical unit).
+[sprite]
+prompt = "seen from directly above / straight on, centered, a single game sprite for a vertical arcade shooter"
+size = [128, 128]
+
+[frames]
+prompt = "seen straight on, centered, the same creature in every frame"
+
+[background]
+prompt = "a vertical phone game backdrop, calm and dark in the middle so bright bullets read on it"
+
+[icon]
+prompt = "the hero pod close up and glowing, flying up toward the viewer, a few enemies and a neon sun behind"
+
+# Words added to every `mb music` and `mb sfx` prompt, so the sound is one set too.
+[music]
+prompt = "1980s synthwave: analog synth arpeggios, punchy gated-reverb drums, warm detuned pads, driving and bright"
+
+[sfx]
+prompt = "retro arcade synth sound, clean and punchy, short tail"

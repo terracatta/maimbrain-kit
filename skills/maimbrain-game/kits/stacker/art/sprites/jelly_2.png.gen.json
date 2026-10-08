@@ -1,0 +1,66 @@
+{
+  "generator": "mb 0.4.1 art sprite",
+  "date": "2026-10-08T02:57:09Z",
+  "provider": "gemini",
+  "model": "gemini-nano-banana-2.1",
+  "prompt": "a cube of wobbly fruit jelly, a perfect square exactly as wide as it is tall, straight sides and gently rounded corners, layered translucent-looking orange papers with a pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+  "full_prompt": "A single 2D game sprite of a cube of wobbly fruit jelly, a perfect square exactly as wide as it is tall, straight sides and gently rounded corners, layered translucent-looking orange papers with a pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face. Centered, the whole subject visible with empty margin around it, a clear readable silhouette, no ground and no cast shadow. Seen straight from the front, flat orthographic side view, one object alone, no outer drop shadow around the silhouette (shadows only between its own paper layers). Art style: handmade paper cut-out collage: every shape cut from matte colored craft paper with slightly irregular hand-cut scissor edges, visible paper fibers and grain, a few overlapping paper layers with soft shadows between them, flat colors and no drawn outlines, bright sunny daylight, cheerful and cute. Readable silhouettes, big simple shapes, tactile paper texture, sunny meadow picnic. Use only these colors: #3a2433, #4f7a3a, #8cc56a, #6fc3e8, #e8564f, #f2a93b, #ffd84d, #fff4e0. Match the art style of the first attached image (palette, line work, shading, proportions); don't copy their subjects. Background: one flat, solid pure blue color (#0000ff) filling everything behind the subject: no gradient, no texture, no shadow, no glow. Don't use that color anywhere in the subject. Avoid: text, letters, watermark, signature, logo, frame or border, photorealism, 3D render, glossy plastic, thick black outlines, smooth digital gradients, busy detail, cast shadows on the ground. An original design: not any existing character, franchise, brand or logo.",
+  "seed": 1409156569,
+  "seed_honored": true,
+  "references": [
+    {
+      "path": "assets/toast.png",
+      "sha256": "c6f198d3746bcd33b1de9009c3ea6312ba0389143866c521e2b7fe17f17665fd"
+    }
+  ],
+  "style": {
+    "path": "art/style.toml",
+    "sha256": "714faf7a81843c2a533f976848568cca69812dea800afcbafd8a5ea492e4f20e"
+  },
+  "est_cost_usd": 0.0336,
+  "cost_usd": null,
+  "raw": "art/raw/jelly_2-1409156569.jpg",
+  "raw_sha256": "dff0b39e08b1ced7e0328d0f9c40f9254ec455188862c96dd0600692f0b1fca0",
+  "output_sha256": "c55081d1b618d21e40d9faa98640ef2e026a49ddf70b7e35a0b93ca873816736",
+  "allowed_names": [],
+  "model_text": null,
+  "recipe": {
+    "allow_names": [],
+    "anchor": "center",
+    "aspect": "1:1",
+    "colors": null,
+    "cols": 0,
+    "frames": 0,
+    "grid": null,
+    "grid_explicit": false,
+    "keyed": true,
+    "kind": "sprite",
+    "layer": null,
+    "margin": 0,
+    "max_kb": null,
+    "model": "gemini-nano-banana-2.1",
+    "name": "jelly_2",
+    "no_style": false,
+    "out": "assets/jelly_2.png",
+    "provider": "gemini",
+    "quality": "medium",
+    "refs": [],
+    "resolution": "1K",
+    "seed": 1409156569,
+    "size": [
+      88,
+      88
+    ],
+    "subject": "a cube of wobbly fruit jelly, a perfect square exactly as wide as it is tall, straight sides and gently rounded corners, layered translucent-looking orange papers with a pale highlight strip near the top left; its silhouette is exactly that shape and nothing peeks out behind it (no darker backing layer or shadow outside its edge); no face",
+    "tolerance": 0.09
+  },
+  "result": {
+    "keyed_background": "#0230ff",
+    "size": [
+      88,
+      88
+    ],
+    "warnings": []
+  },
+  "note": "Generated with a Google model; Google embeds an imperceptible SynthID watermark."
+}

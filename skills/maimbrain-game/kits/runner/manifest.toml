@@ -1,0 +1,27 @@
+abi = 0
+id = "com.maimbrain.terracatta.bun-run"
+name = "Bun Run"
+version = "0.1.0"
+creator = "@terracatta"
+
+orientation = "portrait"
+logical_size = [360, 640]
+inputs = ["touch"]
+perf_tier = "lite"
+
+stdlib = { mb2d = 1 }
+sensors = ["haptics"]
+capabilities = ["store", "score"]
+startup_assets = ["assets/sprites.png", "assets/hills_1.png", "assets/hills_2.png", "assets/hills_3.png", "assets/start.ogg", "assets/jump.ogg", "assets/land.ogg", "assets/coin.ogg", "assets/bonk.ogg", "assets/music_base.ogg", "assets/music_hi.ogg"]
+
+[[scores]]
+board = 0
+label = "Score"
+order = "higher"
+format = "integer"
+
+[[scores]]
+board = 1
+label = "Daily score"
+order = "higher"
+format = "integer"
