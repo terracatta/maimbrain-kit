@@ -62,6 +62,9 @@ imports! {
     pub fn mb2d_sprite(img: u32, sx: f32, sy: f32, sw: f32, sh: f32, dx: f32, dy: f32, dw: f32, dh: f32, tint: u32);
     pub fn mb2d_text(font: u32, size: f32, x: f32, y: f32, rgba: u32, ptr: *const u8, len: u32);
     pub fn mb2d_measure(font: u32, size: f32, ptr: *const u8, len: u32) -> f32;
+    pub fn mb2d_rrect(x: f32, y: f32, w: f32, h: f32, radius: f32, stroke: f32, feather: f32, top: u32, bottom: u32);
+    pub fn mb2d_text_style(weight: f32, outline: f32, outline_rgba: u32, soft: f32);
+    pub fn mb2d_antialias(on: u32);
 
     // 5.4 mb3d
     pub fn mb3d_mesh(ptr: *const u8, len: u32) -> i32 = 1;
@@ -90,6 +93,21 @@ imports! {
     pub fn mb3d_trail_detach(trail: u32);
     pub fn mb3d_shockwave(x: f32, y: f32, z: f32, radius: f32, strength: f32, seconds: f32);
     pub fn mb3d_render();
+    // 5.4 mb3d 2
+    pub fn mb3d_free(kind: u32, handle: u32) -> i32;
+    pub fn mb3d_instances(node: u32, ptr: *const u8, count: u32) -> i32;
+    pub fn mb3d_clip_count(model: u32) -> i32;
+    pub fn mb3d_clip_find(model: u32, name: *const u8, len: u32) -> i32;
+    pub fn mb3d_clip_duration(model: u32, clip: u32) -> f32 = 1.0;
+    pub fn mb3d_anim(node: u32, clip: u32, time: f32, weight: f32) -> i32;
+    pub fn mb3d_node_find(node: u32, name: *const u8, len: u32) -> i32 = 1;
+    pub fn mb3d_node_morph(node: u32, w0: f32, w1: f32, w2: f32, w3: f32);
+    pub fn mb3d_node_world(node: u32, out: *mut u8) -> i32;
+    pub fn mb3d_node_material(node: u32) -> i32 = 1;
+    pub fn mb3d_fog(ptr: *const u8);
+    pub fn mb3d_material_style(material: u32, ptr: *const u8) -> i32;
+    pub fn mb3d_text(node: u32, desc: *const u8, text: *const u8, len: u32) -> i32;
+    pub fn mb3d_dof(ptr: *const u8);
 
     // 5.6 audio
     pub fn mb_sound(asset: u32) -> i32;

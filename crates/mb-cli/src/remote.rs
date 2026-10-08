@@ -1,4 +1,5 @@
-//! Talking to the Maimbrain server: `mb login`, `mb publish`, `mb submit`, `mb whoami`.
+//! Talking to the Maimbrain server: `mb login`, `mb publish`, `mb submit`, `mb whoami`,
+//! and whether you may use Maimbrain's generation keys (generate/maimbrain.rs makes those calls).
 //!
 //! Credentials live in `~/.config/maimbrain/credentials.json` (mode 0600), or
 //! `%APPDATA%\maimbrain\credentials.json` on Windows.
@@ -21,6 +22,15 @@ pub struct Credentials {
 }
 
 fn config_path() -> Result<PathBuf, String> {
+    Ok(config_dir()?.join("credentials.json"))
+}
+
+/// `~/.config/maimbrain` (or `$XDG_CONFIG_HOME/maimbrain`, `%APPDATA%\maimbrain` on Windows).
+/// `MB_CONFIG_DIR` points somewhere else (tests use it).
+pub fn config_dir() -> Result<PathBuf, String> {
+    if let Some(d) = std::env::var_os("MB_CONFIG_DIR") {
+        return Ok(PathBuf::from(d));
+    }
     let base = if cfg!(windows) {
         std::env::var_os("APPDATA")
             .map(PathBuf::from)
@@ -31,7 +41,7 @@ fn config_path() -> Result<PathBuf, String> {
             .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".config")))
     }
     .ok_or("can't find a home directory for credentials")?;
-    Ok(base.join("maimbrain").join("credentials.json"))
+    Ok(base.join("maimbrain"))
 }
 
 pub fn load() -> Option<Credentials> {
@@ -62,9 +72,13 @@ pub fn server(flag: Option<&str>) -> String {
 }
 
 fn agent() -> ureq::Agent {
+    agent_with(Duration::from_secs(120))
+}
+
+fn agent_with(timeout: Duration) -> ureq::Agent {
     ureq::Agent::config_builder()
         .http_status_as_error(false)
-        .timeout_global(Some(Duration::from_secs(120)))
+        .timeout_global(Some(timeout))
         .user_agent(concat!("mb/", env!("CARGO_PKG_VERSION")))
         .build()
         .into()
@@ -137,8 +151,26 @@ fn open_browser(url: &str) -> std::io::Result<()> {
     cmd.arg(url).stdout(std::process::Stdio::null()).stderr(std::process::Stdio::null()).spawn().map(|_| ())
 }
 
-fn credentials() -> Result<Credentials, String> {
+pub fn credentials() -> Result<Credentials, String> {
     load().ok_or_else(|| "not signed in; run mb login".to_string())
+}
+
+/// Whether this account may use Maimbrain's generation keys (`GET /generate/status`).
+/// None when signed out: then nothing is sent.
+pub fn generation_status() -> Result<Option<Value>, String> {
+    let Some(c) = load() else { return Ok(None) };
+    let (status, body) = json_of(
+        agent_with(Duration::from_secs(20))
+            .get(format!("{}/api/v1/generate/status", c.server))
+            .header("Authorization", format!("Bearer {}", c.token))
+            .call(),
+    )?;
+    match status {
+        200 => Ok(Some(body)),
+        401 => Err(format!("your sign-in on {} has expired or was revoked; run mb login", c.server)),
+        404 => Err(format!("{} doesn't offer Maimbrain's generation keys", c.server)),
+        _ => Err(error_text(status, &body)),
+    }
 }
 
 pub fn whoami() -> Result<Value, String> {

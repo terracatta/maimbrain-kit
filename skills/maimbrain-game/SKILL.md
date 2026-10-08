@@ -11,7 +11,9 @@ Read these before writing code:
 1. **`docs/SPEC.md`**: the contract. Especially §2 (manifest), §3 (determinism), §5.2 (feed navigation: browse vs play, the card overlay areas), §5.7 (sensors only in play), §9 (build, preview, test).
 2. **[engagement.md](engagement.md)**: what makes a game work *in this feed*. Its rules are requirements, not suggestions.
 3. **[template/](template/)**: a tiny complete game (tap the bubble) to start from; **[template-3d/](template-3d/)** is the 3D one (catch the drone; see the 3D section). `mb new games/<name>` creates a game from the 2D template, `mb new --3d games/<name>` from the 3D one. Signed in (`mb login`), the id and creator come from your account; signed out it still works, with a placeholder id and creator (or pass `--id dev.you.name --creator @you`), which build and preview fine but must become your namespace before `mb publish`. You can also copy a template to `games/<name>/` by hand and replace `NAME` in `Cargo.toml` and `manifest.toml` (and `icon.png` with your own). Keep its shape: pure rules in `src/sim.rs` with tests, and a thin host layer in `src/lib.rs` that handles tap to start, round reporting, score-before-Over, the retry guard and saving the best score.
-4. **`sdk/maimbrain/src/`**: the SDK (it's small; read all of it).
+4. **`sdk/maimbrain/src/`**: the SDK. Read the core (lib, sys, input, gfx2d, audio, store, sensors) in full; for the UI and juice kit (`ui/`, `motion.rs`, `juice.rs`), **`docs/UI.md`** is the tour and the section [UI and juice](#ui-and-juice) below has the recipes.
+5. **[assets.md](assets.md)** before making art or sound: when to generate it (`mb art`, `mb music`, `mb sfx`) and when to draw it in code, the style guide, prompts, iterating, checking results, budgets.
+6. **`docs/PHYSICS.md`** if the game has things that stack, topple, bounce, roll, swing or break (see the Physics section).
 
 ## Workflow
 
@@ -45,17 +47,21 @@ Tune the game's numbers against the bot, not your intuition. If a brief's per-le
 
 Determinism (SPEC §3): all randomness from `Rng` seeded by `sys::rand_seed()`, time only from `dt`, no iteration over hash maps. Replays and friend challenges depend on it.
 
-### 3. Art and sound with the bundled scripts
-- `scripts/pixel.py`: an RGBA canvas (rects, ellipses, polygons, lines, outline, dither, blit, flip), a PNG writer and an atlas packer that writes a Rust table of source rects. Stdlib only.
-- `scripts/check_audio.py`: you can't listen, so run this on your assets after every audio change. It reports length, peak, loudness, harshness and loop clicks, and flags silent or clipping files.
-- `scripts/sfx.py`: 8-bit effects (square/triangle/saw/noise with sweeps, vibrato, arpeggios, stutters) and a step sequencer for chiptune loops, encoded to mono Ogg Vorbis with `oggenc`. `save_ogg` normalizes loudness and limits peaks, then decodes what it wrote and re-encodes it quieter if Vorbis overshot, so its files pass check_audio's clip check; very peaky sounds (an explosion with a long tail) come out quieter than the loudness target as a result. `python3 sfx.py --self-test` checks the encoder setup.
-- `scripts/make_glb.py`: an example `.glb` generator for 3D games (see the 3D section).
+### 3. Art and sound
+Two sources, usually mixed; [assets.md](assets.md) says which to use for what:
+- **Generated**: `mb art init games/<name>` writes the game's style guide (`art/style.toml`: style words, palette, references), then `mb art sprite|frames|background|layers|tile|ui|icon`, `mb music` (a seamless whole-bar loop, optional base/high layers) and `mb sfx`. mb post-processes to the platform's rules (transparent sprites, exact sizes, pixel grids, palettes, seamless tiles, PNG budgets; mono Ogg at the right loudness), writes a provenance sidecar per asset and a preview to look at (`art/preview/`), and shows the cost of each call. `mb regen <asset>` redoes one (same seed, `--new-seed`, `--prompt`, or `--reprocess` for free). Needs the user's key (`mb keys list`, `mb models`); `--provider mock` makes placeholders offline. Reference: `docs/GENERATE.md`.
+- **Code-drawn**, with the bundled scripts:
+  - `scripts/pixel.py`: an RGBA canvas (rects, ellipses, polygons, lines, outline, dither, blit, flip), a PNG writer and an atlas packer that writes a Rust table of source rects. Stdlib only.
+  - `scripts/check_audio.py`: you can't listen, so run this on your assets after every audio change. It reports length, peak, loudness, harshness and loop clicks, and flags silent or clipping files.
+  - `scripts/sfx.py`: 8-bit effects (square/triangle/saw/noise with sweeps, vibrato, arpeggios, stutters) and a step sequencer for chiptune loops, encoded to mono Ogg Vorbis with `oggenc`. `save_ogg` normalizes loudness and limits peaks, then decodes what it wrote and re-encodes it quieter if Vorbis overshot, so its files pass check_audio's clip check; very peaky sounds (an explosion with a long tail) come out quieter than the loudness target as a result. `python3 sfx.py --self-test` checks the encoder setup.
+  - `scripts/make_glb.py`: an example `.glb` generator for 3D games (see the 3D section).
 
 Put your own generator script in `games/<name>/tools/` and commit it (the art stays remixable). Draw anything that changes color with mood or state (skin, a liquid) in light greys and tint it at draw time: `rgba_tint` multiplies, so one sprite set gives smooth pink → red → purple transitions. Import the helpers with `sys.path.insert(0, "<this skill's directory>/scripts")` (in the Maimbrain repo: `.claude/skills/maimbrain-game/scripts`; from the plugin: the installed skill's directory). Better: copy the helper you need into `games/<name>/tools/` so the game's tools are self-contained. Make things big: the main character ≥ 1/3 of the screen width, anything the player must track ≥ ~40 units, and an art pixel ≥ 2–3 units. Small sprites that look fine in a desktop screenshot are unreadable on a phone. Store pixel art at `scale=4` (crisp under the platform's linear filtering) and draw each art pixel as a whole number of logical units. Make the icon (`icon.png`, 256×256) a close-up of your character or hook, not text.
 
 ### 4. Build, preview, look at it
 - `mb build <game dir>` compiles, packs and validates. Fix every error and warning. (In the Maimbrain repo, `mb` is `mise exec -- cargo run -q -p mb-cli --`.)
-- `mb serve <game dir>` runs it in a desktop browser at http://127.0.0.1:8765/runtime/index.html?overlays. It runs in the foreground, so start it in the background once; after each save, reload the page and it rebuilds. Use `--port` if 8765 is taken. Mouse = touch, mouse position = tilt, console = log, haptics and leaderboard calls. An installed `mb` has the web runtime built in; in the Maimbrain repo, run `just runtime` once first (it builds `runtime/dist`, which `cargo run -p mb-cli -- serve` then embeds automatically). If `mb serve` says it was built without the web runtime, that's what's missing.
+- `mb serve --watch <game dir>` runs it in a desktop browser at http://127.0.0.1:8765/runtime/index.html?overlays and rebuilds every time you save: new code is swapped into the open page within about half a second (a fast build without LTO or wasm-opt; `mb build` is still the real one), changed assets are hot-swapped, and compiler errors appear over the game. It runs in the foreground, so start it in the background once and open the page once; don't reload it by hand. Use `--port` if 8765 is taken. Mouse = touch, mouse position = tilt, console = log, haptics and leaderboard calls. An installed `mb` has the web runtime built in; in the Maimbrain repo, run `just runtime` once first (it builds `runtime/dist`, which `cargo run -p mb-cli -- serve` then embeds automatically). If `mb serve` says it was built without the web runtime, that's what's missing. (Plain `mb serve`, without `--watch`, rebuilds when you reload the page instead.)
+- **The iteration loop** with `--watch`: edit, then `curl -s http://127.0.0.1:8765/__mb/wait` (it returns once your change is built and running in the page, as JSON). `"state": "running"` means look at the page; `"failed"` carries the compiler's `errors` (file, line, message), `"error"` a page's runtime error (a trap, a panic message in `pages[].message`). The server's own output has the same as `[mb] build N ok|failed …` and `[mb] page N running|error|log …` lines. Then, in the page's console, `await mb.restore()` replays the session you had before the change into the new build up to the same frame (held if it was held) and resolves to `{ frames, firstMismatch, … }`: `firstMismatch: null` means the run went exactly as before; a number is the first frame that came out differently, expected when you changed what happens or how it's drawn. So set up a moment once (a held session, scripted taps, `mb.step`), and after each edit `wait` → `mb.restore()` → screenshot shows the same moment with your change. Add `&restore` to the URL to restore automatically after every reload. SPEC §9 has the details.
 - Preview aids (SPEC §9): `?overlays` shades the card overlays and the pause pill. `?speed=0.25` slows time. In the console, `mb.suspend()`, `await mb.step(n)` and `mb.resume()` freeze a moment for a screenshot (wait ~100 ms after stepping before the screenshot). A hidden tab or headless browser runs no animation frames, so there start a held session (`await mb.restart('{"hold": true}')`) and drive it with `mb.tap(x, y)` and `await mb.step(n)`. Add `DEBUG_*` constants (start level, force a shape, fake a sensor reading) to reach late states quickly, and reset them before you finish.
 - **Check determinism** before you call it done: play a round (or script one in a held session), then `await mb.verify()` in the console. It replays the run frame by frame and compares draw hashes: `{ match: true }` is the goal; otherwise `firstMismatch` is the first frame that differs, and the cause is something unrecorded (randomness not from the session seed, `dt`-independent timing, hash-map iteration order, game state changed in `render`). SPEC §9 shows the manual version with `mb.restart({ hold: true })`, `mb.step` and `mb.snapshot()`.
 - **Look at screenshots** of the title, the first seconds, mid-round, danger, failure and game-over. Check them against the [engagement checklist](engagement.md#checklist). Then fix what you see and look again.
@@ -101,8 +107,56 @@ Write down what you couldn't verify without a phone (feel of tilt, haptics, audi
   - Shakes blur the screen, so make the key state readable at a glance.
 - **Failure order**: when the player fails, play the freeze and fail animation while still `Playing`, and report `Over` (after submitting the score) when the game-over screen appears. Reporting `Over` at the moment of failure would send the player back to browse ~1.2 s later, mid-animation.
 - **After a round ends**: ignore taps for ~0.35 s after reporting `Over`, so a frantic tap during the failure doesn't instantly restart, then let any tap retry.
-- You'll want small helpers every game needs: text with a drop shadow, easing, a particle pool, screen shake. Keep them in their own module.
+- The helpers every game needs (outlined text, easing, springs, a particle pool, screen shake, buttons, a title and a game-over card) are in the SDK's kit: see [UI and juice](#ui-and-juice). Don't hand-roll them.
 - **Text**: the pixel font (id 2) is crisp at multiples of 8. Use ≥ 16 for anything the player must read, 8 only for fine print. Inter (0/1) for sizes that aren't multiples of 8. The pixel font is ASCII plus `× ÷ · ° • … ← ↑ → ↓ ♥ ★`; anything else (é, ü, €) draws as `?`, so use Inter for player names and other text that might need it (SPEC §5.3).
+
+## UI and juice
+
+Hand-rolled title screens, score labels and game-over text are where games look cheapest. Use the SDK's kit instead (`docs/UI.md` has the full tour; `games/gallery` shows every piece, `mb serve games/gallery`):
+- `maimbrain::ui`: a `Theme` (presets `candy`, `night`, `arcade`, `paper`, `jungle`, or your own colors), anti-aliased shapes (`ui::shape`), styled text (`ui::text(..)` with outline, soft shadow, glow, wrap, alignment, measuring), 33 vector `Icon`s, `Button`s (pressed state, 44 pt touch area, haptic hook), pills, progress bars, ring meters, ribbons, `Layout` (safe area, the card area clear of the feed overlays, the pause-pill zone), and ready-made `TitleCard`, `ResultsCard`, `Hud` and `Countdown`.
+- `maimbrain::motion`: `Ease` (the full easings.net set), `Tween`, `Spring` (critical / bouncy / wobbly), `Seq`, `stagger`, `Shake`, `Punch`, `Counter` (rolling numbers), `HitStop`, `Pulse`.
+- `maimbrain::juice`: `Particles` (confetti, cannons, sparkles, stars, puffs, sparks, rings, `celebrate`), `Popups` ("+100"), `Combo`, `Flash`, `VignettePulse`.
+
+The templates already use it: copy their shape. Rules: update every kit object in `update(dt)` and draw it in `render` (it never reads a clock, so it replays); seed `Particles` from your game's `Rng`; restyle by changing the `Theme`, not by forking widgets; keep cards' buttons inside `layout.card`.
+
+**Title screen in 10 lines**
+```rust
+// init
+let layout = Layout::new();
+let title = TitleCard::new("BUBBLE", Theme::candy()).tagline("don't let it pop").best(best as i64);
+// update
+self.title.update(dt);
+// render, over your live scene (the card sells; any tap starts the round)
+self.title.draw(&self.layout);
+```
+
+**Results card** (on game over, after `store::submit_score`, before `sys::round(Round::Over)`):
+```rust
+self.results = Some(ResultsCard::new(score, prev_best, self.theme, &self.layout, self.rng.next_u32() as u64)
+    .heading("SPLAT!").label("POINTS"));          // .floating() for no panel; .extra(button) for SCORES
+// update: feed it events first; a tap it doesn't claim retries (after your guard)
+if let Some(card) = &mut self.results {
+    let retry = card.handle(&e) == Some(ResultsAction::Retry);   // per event
+    if card.update(dt) == Some(ResultsEvent::NewBest) { /* fanfare, haptic */ }
+}
+// render
+if let Some(card) = &self.results { card.draw() }
+```
+It rolls the score up, then shows BEST (and "3 MORE TO BEAT IT" when close) or stamps a NEW BEST! ribbon with confetti.
+
+**Combo meter**
+```rust
+self.combo = Combo::new(1.5);                                     // init: 1.5 s window
+let n = self.combo.hit();                                         // each success
+self.popups.score(x, y, 10 * self.combo.multiplier() as i64, theme.gold);
+self.combo.break_combo();                                         // a miss
+if let Some(lost) = self.combo.update(dt) { /* timed out after `lost` hits */ }
+self.combo.draw(300.0, self.layout.hud.y + 90.0, &theme);         // render
+```
+
+**Juice on every hit**: `shake.add(0.3)` (apply in render inside `gfx2d::push`/`pop`), `punch.kick(0.25)` on the score, `hitstop.freeze(0.05)` (run the sim with `hitstop.step(dt)`), `fx.burst(..)` or `fx.sparkles(..)` at the point, `popups.score(..)`, and the sound pitched up with the combo. Celebrate milestones with `fx.celebrate(x, y, &theme)`. `Hud::set_score` rolls and punches the score for you and marks a beaten best.
+
+Pause-safe HUD: the platform draws the pause pill and pauses the game by not calling `update`, so a HUD built from the kit freezes with it. Don't draw a pause button; if the game needs a run-up after a pause, start a `Countdown` in `Game::resume` and skip the simulation while it's `active()`.
 
 ## Rhythm games
 
@@ -125,9 +179,9 @@ Start from **[template-3d/](template-3d/)** (`mb new --3d games/<name>`): a smal
 
 The API is SPEC §5.4; the SDK binding is `maimbrain::gfx3d`.
 
-- **Manifest**: `stdlib = { mb3d = 1, mb2d = 1 }` (mb2d for the HUD) and `perf_tier = "full"`.
+- **Manifest**: `stdlib = { mb3d = 2, mb2d = 1 }` (mb2d for the HUD) and `perf_tier = "full"`. mb3d 2 (the template's default) adds animated characters, instancing, freeing, fog, toon shading and outlines, 3D text and depth of field (below); a game declaring `mb3d = 1` gets v1 unchanged.
 - **Shape of a 3D game**: build meshes, materials, emitters, trails and nodes in `init` (or when assets arrive), keep their handles in your state, update node transforms in `update`, and in `render` call `gfx3d::camera(..)`, `gfx3d::render()`, then any mb2d HUD. The scene persists; don't recreate it every frame.
-- **Nothing but nodes can be freed.** Meshes, textures, materials, models, emitters and trails last the whole session and count against the limits (512 meshes, 1024 materials, 64 textures, 64 models, 256 emitters, 64 trails; SPEC §5.4). Build them once and pool: one emitter per particle look fired wherever it's needed, one material per look (`Material::set` to pulse it), a fixed pool of enemy nodes hidden with `set_visible(false)` and reused, trails moved between nodes with `detach()` + `attach(node)` (that starts a fresh ribbon; the old one fades out where it was). `Node::destroy` does free a node and its children.
+- **Build once, pool; free what you're done with.** Meshes, textures, materials, models, emitters and trails count against the limits (512 meshes, 1024 materials, 64 textures, 64 models, 256 emitters, 64 trails; SPEC §5.4). Build them once and pool: one emitter per particle look fired wherever it's needed, one material per look (`Material::set` to pulse it), a fixed pool of enemy nodes hidden with `set_visible(false)` and reused, trails moved between nodes with `detach()` + `attach(node)` (that starts a fresh ribbon; the old one fades out where it was). `Node::destroy` frees a node and its children; with mb3d 2, `free()` on a mesh, material, texture, emitter, trail or model releases it (a level's props when the next level loads; don't create and free things every few frames).
 - **Point lights**: 8 slots. A light keeps its slot from its first `point_light` call until its node is destroyed; intensity 0 darkens it but keeps the slot, and hiding the node doesn't switch it off. Keep one or two flash lights and move them.
 - **Units and colors**: meters, +y up, the camera looks down −z (`Camera::looking_at`, `look_at`, `OrbitCamera`, `FollowCamera`). Colors are linear: write `srgb(0xe63946)` / `srgba(0xe63946ff)` for picked colors. Values above 1 glow: an emissive of `[0.4, 1.6, 4.0]` × `emissive_strength` 3 blooms; use `Material::UNLIT` for pure light sources (engine glows, neon).
 
@@ -142,6 +196,13 @@ The API is SPEC §5.4; the SDK binding is `maimbrain::gfx3d`.
 | Sky | set once | `gfx3d::sky` re-bakes the lighting over the next ~6 frames. Never change it per frame. |
 | Textures | ≤ 1024² mostly | 64 textures and 96 MB in all; a 2048² texture takes 22 MB. |
 | glTF loading | one model per frame, in `update` | Parsing happens inside your callback (watchdogs, SPEC §3). |
+| Instances (mb3d 2) | thousands; count instances × triangles in the triangle budget | One instanced node is one draw. Re-send a list only when it changes (coins that spin: fine; a static forest: once). Split big fields into chunk nodes so culling works. |
+| Skinned characters | a handful | ≤ 64 joints per skin, 128 skinned draws per frame max. |
+| Outlines | characters, props, big shapes | An outlined draw draws twice. |
+| Depth of field | on when it matters | ~0.3–0.6 ms GPU (estimate); `blur: 0` turns it off. |
+| 3D text | a few dozen labels | Each text node is a draw; recoloring is cheap, changing the words relays it out. |
+
+Check these with `mb.stats()` in the preview: draws, triangles, instances, skinned draws, outlines, text, shadow casters, particles, and CPU ms per callback.
 
 Hide nodes you'll reuse (`set_visible(false)`) instead of destroying and recreating them every few frames. Changing a material (`Material::set`) is cheap: pulse emissives freely.
 
@@ -170,6 +231,49 @@ For textured or hand-shaped models, generate a glTF binary from a script in `too
 4. Optionally compress: `npx gltfpack -i raw.glb -o assets/model.glb -c` quantizes and meshopt-compresses the mesh (supported), keeping PNG/JPEG textures. Don't use `-tc` (KTX2 isn't supported yet).
 
 Load it with `Model::load(asset)` once `asset.state()` is `Ready`, then `model.spawn(parent)` returns a root node to move. Use `KHR_materials_emissive_strength` for glowing parts; unsupported required extensions (Draco, KTX2, WebP) fail to load.
+
+### Animated characters (mb3d 2)
+A rigged glTF plays its clips through `gfx3d::Animator`. Bones and sockets are nodes you find by name, so holding a sword (or hanging a lantern) is parenting. **You own animation time**: the animator moves only when you `update(dt)` it, and the host samples clips at exactly the times you pass, so replays pose identically. Make the model with **[scripts/make_rigged_glb.py](scripts/make_rigged_glb.py)** (stdlib Python: a skeleton, a skinned mesh with per-vertex weights, a morph target and four clips; `games/mistwood` uses it as is), or any glTF with skins (≤ 64 joints) and animations.
+
+```rust
+// When the asset is ready (in update):
+let model = Model::load(asset).unwrap();
+let fox = model.spawn(None).unwrap();                          // the root: move and turn this
+let (idle, run, jump) = (model.clip("Idle").unwrap(), model.clip("Run").unwrap(), model.clip("Jump").unwrap());
+lantern.set_parent(fox.find("Socket.Tail"));                     // attach to a bone or socket
+fox.find("Fox").and_then(|n| n.material()).map(|m| m.set_style(&MaterialStyle { toon_bands: 3, outline_width: 1.8, rim: 0.5, ..Default::default() }));
+let mut anim = Animator::new();
+anim.play(idle, Play::Loop, 0.0);
+// Every frame:
+if jumped { anim.restart(jump, Play::Once, 0.06) } else if anim.finished() || running { anim.play(run, Play::Loop, 0.15) }
+anim.set_speed(ground_speed / 8.0);                             // feet match the ground
+anim.update(dt);
+anim.apply(fox);
+let hand = fox.find("Hand.R").and_then(|n| n.world());          // where a bone is, for hit tests
+```
+`play_synced(clip, fade)` crossfades walk ↔ run at the same point of the stride. If you also simulate the motion (a jump arc you collide with), drive both from one curve, as Mistwood's `sim::jump_lift` mirrors the Jump clip. A model's root faces wherever the file's +z points: turn the root node, not the bones.
+
+### Lots of copies: instancing (mb3d 2)
+Bullets, coins, grass, trees, crowds: one node, one mesh, one material, many `Instance`s (position, rotation, scale, a tint that also scales emissive), one draw call.
+```rust
+let coins = Node::with_mesh(coin_mesh, gold).unwrap();
+let list: Vec<Instance> = coins_alive.iter().map(|c| Instance::at(c.pos).with_rot(Quat::from_rotation_y(t * 3.0)).with_color(0xffd27aff)).collect();
+coins.set_instances(&list);   // replaces the list; send it again only when it changes
+```
+The node is culled as one sphere around all its instances: for a forest, use a node per chunk of ground (Mistwood moves 7 chunk nodes forward as the run goes on and re-lays out a chunk's instances only when it leapfrogs). Instances of a transparent material aren't sorted among themselves.
+
+### Looks: fog, toon, outlines, 3D text, depth of field (mb3d 2)
+```rust
+gfx3d::fog(&Fog { mode: FogMode::Exponential, color: [0.05, 0.075, 0.12], density: 0.045, height_falloff: 0.22, sky: 0.9, ..Default::default() });
+material.set_style(&MaterialStyle { toon_bands: 3, outline_width: 1.5, outline_color: [0.01, 0.015, 0.03], rim: 0.3, ..Default::default() });
+sign_label.set_text(&TextDesc::new(Font::SansBold, 0.3).with_outline([0.0, 0.0, 0.0, 1.0], 0.07), "100 m");     // in the node's xy plane, facing +z
+pop.set_text(&TextDesc { flags: TextDesc::BILLBOARD | TextDesc::SCREEN, ..TextDesc::new(Font::SansBold, 26.0) }.with_color([2.4, 1.8, 0.6, fade]), "+10");
+gfx3d::depth_of_field(&DepthOfField { focus: camera_to_player, range: 1.3, blur: 5.0, near: 0.4 });
+```
+- **Fog** sells depth and hides where the world ends: match its color to the sky near the horizon and set `sky` so the horizon melts. `height_falloff` > 0 makes ground mist. Glows fade out in it; give the player `MaterialStyle::NO_FOG` if it must always read.
+- **Toon + outline** is the fastest way to a coherent stylized look for code-built meshes: 2–4 bands, outlines 1–2.5 px in a dark color from the palette (not pure black). Backlight the scene (sun toward the camera) and the rim and outlines carry the shapes.
+- **3D text**: world-space for signs and labels in the scene, billboards for floating scores (`SCREEN` keeps them a readable size at any distance). The host fonts only; colors above 1 glow.
+- **Depth of field**: focus on the player every frame (distance from the camera); keep `blur` ≤ 6 px on a phone. It's for mood and for separating the player from busy backgrounds, not for hiding things.
 
 ### Lighting recipes
 - **Space / night**: a near-black sky background with saturated nebula colors (`[0.05, 0.19, 0.42]`, `[0.55, 0.07, 0.32]`, density ~1) gives colorful reflections; a warm sun (intensity ~3, shadows on) as the key; two colored point lights on opposite sides as rims; bloom 0.6–0.8 at threshold 1; vignette 0.3.
@@ -202,7 +306,40 @@ gfx3d::shockwave(at, 4.5, 0.012, 0.9);
 `gfx3d::project(world)` gives the logical screen position (mb2d's coordinates), depth and whether it's on screen: put labels, reticles and off-screen arrows there. Everything mb2d draws in the frame lands on top of the 3D image. Call it after `gfx3d::camera` in `render` (it uses the latest camera). For game logic (lock-on, tap hit tests), use `camera.project(world, W, H)` on your own `Camera` value instead: the same formula (SPEC §5.4) in plain Rust, so it runs in `cargo test` (where `gfx3d::project` returns zeros) and agrees with the host to within float rounding.
 
 ### Previewing
-`mb serve` works the same. The first few frames show the sky without its nebula while the lighting bakes; screenshots after `await mb.step(n)` with n ≥ 10 are representative. Check that effects replay with `await mb.verify()` (see Build, preview, look at it): explosions, particles and trails are part of the draw hash, so `match: true` means they land exactly where they did live.
+`mb serve` works the same. The first few frames show the sky without its nebula while the lighting bakes; screenshots after `await mb.step(n)` with n ≥ 10 are representative. Check that effects replay with `await mb.verify()` (see Build, preview, look at it): explosions, particles and trails are part of the draw hash, so `match: true` means they land exactly where they did live. `await mb.screenshot("name")` saves the frame to `screenshots/name.png` in your game directory; `mb.stats()` shows what the frame drew against the budgets above.
+
+## Physics
+
+The SDK has deterministic rigid-body physics (Rapier inside your wasm): `maimbrain::physics2d` in logical pixels for mb2d games, `maimbrain::physics3d` in meters for mb3d games. Turn it on in `Cargo.toml`: `maimbrain = { …, features = ["physics2d"] }` (or `"physics3d"`). `docs/PHYSICS.md` is the full API; `games/topple` (2D crane stacker) and `games/knockdown` (3D can toss) are worked examples.
+
+**When to use it**: anything whose fun is how solid things react — stacking and toppling, knocking things over, ragdolls, marbles and pinball, cars and contraptions, launchers, chains and ropes, destruction. **When not to**: games whose motion you want to author exactly (a rhythm game, a platformer with tight jumps, a slingshot that must feel the same every time): hand-written kinematics are smaller, cheaper and easier to tune. Physics adds ~0.45–0.6 MB (2D) or ~0.6–0.8 MB (3D) to `game.wasm`; never enable both.
+
+**The shape of a physics game** (the template's split still holds):
+- `sim.rs` owns a `World`, built in `Sim::new` from your seeded `Rng`. `Sim::step(dt)` calls `world.step(dt)` once, then reads `world.events()` for scoring, sounds (push cues) and effects. Input becomes impulses, forces or `move_kinematic` targets in `update`, never in `render`.
+- `render` reads only: `world.with_transform(id, || draw centered at 0,0)` or `draw_pose(id)` in 2D, `world.sync(id, node)` in 3D. Prototype with `world.draw_debug()` (2D), then replace it with art that matches the shapes.
+- Keep your own `Vec` of game objects holding their `BodyId` and game state (kind, color, "landed"); use `Body::tag` only for a quick lookup. Never iterate a `HashMap` of ids.
+
+**Patterns that work**:
+- Sound and haptics from `Event::ContactBegin`: `speed` is the closing speed (px/s or m/s), mass-independent. Ignore contacts under ~60–90 px/s (2D) or ~0.8 m/s (3D), set volume from speed, play at most 2–3 thuds a frame, haptic `Tap` above a threshold and `Heavy` for big hits.
+- Goals, pickups, kill zones and "fell in the water": a `.sensor()` shape and `Event::SensorEnter`.
+- "Has it settled?": `world.awake_count() == 0`, or a body's speed under a threshold for ~0.3 s.
+- Things the player drags or steers: a kinematic body moved with `move_kinematic(id, pos, angle)` every frame; it pushes dynamic bodies properly.
+- Held objects: `Joint::rope` from a kinematic body plus `set_fixed_rotation(id, true)` keeps it level while swinging (Topple's crane); release with `unjoin` and `set_fixed_rotation(id, false)`.
+- Breakable structures: `Joint::fixed` between pieces, `unjoin` when `joint_torque`/`joint_force` passes a limit you tune with a bot.
+- Show where a throw or drop will go (a dotted arc, a landing marker): players can't judge momentum on a phone. Topple's `predicted_arc` simulates the free fall in a few lines.
+- Aiming in 3D: a ray through the tapped pixel from your `Camera` (Knockdown's `screen_ray`), `world.raycast` for the target, then solve the launch velocity so the arc passes through it.
+
+**Pitfalls** (all in docs/PHYSICS.md):
+- Units: 2D is pixels (100 px = 1 m, gravity 981 px/s², +y down, clockwise angles like `gfx2d::rotate`); keep bodies 10–1000 px. 3D is meters; keep things above ~5 cm and give small fast things `.bullet()`.
+- Build stacks awake and a hair apart; `.asleep()` stacks float when the bottom is knocked out.
+- `apply_force` lasts one frame: call it every frame you push. Kicks are `apply_impulse` or `add_velocity`.
+- Create joints after placing both bodies (anchors are world points now); joined bodies don't collide unless `.collide(true)`.
+- Draw `draw_pose`/`sync`, not `position`, or motion judders at 120 Hz.
+- Masses that touch should be within ~10:1; tall stacks want `set_solver_iterations(6..8)`.
+
+**Budgets**: ≤ ~150 awake 2D bodies or ≤ ~80 awake 3D bodies keeps physics near 1 ms on an iPhone 13 class phone (an M1 Pro steps 200 bodies in ~0.2 ms 2D, ~0.4 ms 3D). Sleeping bodies are nearly free. Remove what leaves the play area.
+
+**Determinism**: it's built in (fixed 60 Hz steps from the recorded `dt`, `enhanced-determinism`), so the usual check applies unchanged: play a round, `await mb.verify()`, expect `match: true`. If it fails, look for a world changed in `render`, bodies spawned from unordered iteration, or physics fed from anything but game state.
 
 ## Before you call it done
 
@@ -211,3 +348,4 @@ gfx3d::shockwave(at, 4.5, 0.012, 0.9);
 - [ ] Every item in the [engagement checklist](engagement.md#checklist).
 - [ ] Screenshots reviewed for the title card, game-over card, mid-round and both edges of danger.
 - [ ] DESIGN.md updated to match what you built, with the "not verified on device" list and tuning constants.
+- [ ] Generated assets: every preview looked at, `mb art check` clean (no mock placeholders, within budgets), and the user told what the art and sound cost.

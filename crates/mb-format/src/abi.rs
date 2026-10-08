@@ -18,7 +18,8 @@ use Ty::*;
 #[derive(Clone, Copy, Debug)]
 pub enum Requires {
     Always,
-    Stdlib(&'static str),
+    /// A host engine at this version or later (SPEC §2 `stdlib`).
+    Stdlib(&'static str, u32),
     Sensor(Sensor),
     Capability(Capability),
 }
@@ -36,8 +37,10 @@ const fn f(name: &'static str, params: &'static [Ty], results: &'static [Ty], re
 }
 
 const A: Requires = Requires::Always;
-const MB2D: Requires = Requires::Stdlib("mb2d");
-const MB3D: Requires = Requires::Stdlib("mb3d");
+const MB2D: Requires = Requires::Stdlib("mb2d", 1);
+const MB3D: Requires = Requires::Stdlib("mb3d", 1);
+/// Added in mb3d 2: skinned and animated glTF, instancing, freeing resources, fog, toon and outlines, 3D text, depth of field.
+const MB3D2: Requires = Requires::Stdlib("mb3d", 2);
 
 pub const IMPORTS: &[Import] = &[
     // 5.1 sys
@@ -73,6 +76,9 @@ pub const IMPORTS: &[Import] = &[
     f("mb2d_sprite", &[I32, F32, F32, F32, F32, F32, F32, F32, F32, I32], &[], MB2D),
     f("mb2d_text", &[I32, F32, F32, F32, I32, I32, I32], &[], MB2D),
     f("mb2d_measure", &[I32, F32, I32, I32], &[F32], MB2D),
+    f("mb2d_rrect", &[F32, F32, F32, F32, F32, F32, F32, I32, I32], &[], MB2D),
+    f("mb2d_text_style", &[F32, F32, I32, F32], &[], MB2D),
+    f("mb2d_antialias", &[I32], &[], MB2D),
     // 5.4 mb3d: resources
     f("mb3d_mesh", &[I32, I32], &[I32], MB3D),
     f("mb3d_texture", &[I32], &[I32], MB3D),
@@ -103,6 +109,24 @@ pub const IMPORTS: &[Import] = &[
     f("mb3d_trail_detach", &[I32], &[], MB3D),
     f("mb3d_shockwave", &[F32, F32, F32, F32, F32, F32], &[], MB3D),
     f("mb3d_render", &[], &[], MB3D),
+    // 5.4 mb3d 2: freeing resources
+    f("mb3d_free", &[I32, I32], &[I32], MB3D2),
+    // 5.4 mb3d 2: instancing
+    f("mb3d_instances", &[I32, I32, I32], &[I32], MB3D2),
+    // 5.4 mb3d 2: animated glTF (skins, clips, morph targets) and named nodes
+    f("mb3d_clip_count", &[I32], &[I32], MB3D2),
+    f("mb3d_clip_find", &[I32, I32, I32], &[I32], MB3D2),
+    f("mb3d_clip_duration", &[I32, I32], &[F32], MB3D2),
+    f("mb3d_anim", &[I32, I32, F32, F32], &[I32], MB3D2),
+    f("mb3d_node_find", &[I32, I32, I32], &[I32], MB3D2),
+    f("mb3d_node_morph", &[I32, F32, F32, F32, F32], &[], MB3D2),
+    f("mb3d_node_world", &[I32, I32], &[I32], MB3D2),
+    f("mb3d_node_material", &[I32], &[I32], MB3D2),
+    // 5.4 mb3d 2: looks
+    f("mb3d_fog", &[I32], &[], MB3D2),
+    f("mb3d_material_style", &[I32, I32], &[I32], MB3D2),
+    f("mb3d_text", &[I32, I32, I32, I32], &[I32], MB3D2),
+    f("mb3d_dof", &[I32], &[], MB3D2),
     // 5.6 audio (output only, so it never affects determinism)
     f("mb_sound", &[I32], &[I32], A),
     f("mb_play", &[I32, F32, F32, F32, I32], &[I32], A),
@@ -152,8 +176,8 @@ impl Requires {
     pub fn satisfied_by(self, m: &Manifest) -> Result<(), String> {
         match self {
             Requires::Always => Ok(()),
-            Requires::Stdlib(s) if m.has_stdlib(s) => Ok(()),
-            Requires::Stdlib(s) => Err(format!("stdlib {{ {s} = 1 }}")),
+            Requires::Stdlib(s, v) if m.stdlib_version(s) >= v => Ok(()),
+            Requires::Stdlib(s, v) => Err(format!("stdlib {{ {s} = {v} }}")),
             Requires::Sensor(s) if m.sensors.contains(&s) => Ok(()),
             Requires::Sensor(s) => Err(format!("sensors = [\"{}\"]", s.as_str())),
             Requires::Capability(c) if m.capabilities.contains(&c) => Ok(()),

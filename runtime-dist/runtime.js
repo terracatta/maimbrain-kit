@@ -69,6 +69,21 @@ function host_redraw() {
 function host_resize(width, height) {
   wasm.host_resize(width, height);
 }
+function host_set_stdlib(mb3d) {
+  wasm.host_set_stdlib(mb3d);
+}
+function host_stats() {
+  let deferred1_0;
+  let deferred1_1;
+  try {
+    const ret = wasm.host_stats();
+    deferred1_0 = ret[0];
+    deferred1_1 = ret[1];
+    return getStringFromWasm0(ret[0], ret[1]);
+  } finally {
+    wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+  }
+}
 function host_step(dt) {
   wasm.host_step(dt);
 }
@@ -1169,15 +1184,15 @@ function __wbg_get_imports() {
       return ret;
     },
     __wbindgen_generic_0000000000000004: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83);
       return ret;
     },
     __wbindgen_generic_0000000000000005: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84);
       return ret;
     },
     __wbindgen_generic_0000000000000006: function(arg0, arg1) {
-      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66);
+      const ret = makeMutClosure(arg0, arg1, wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85);
       return ret;
     },
     __wbindgen_generic_0000000000000007: function(arg0) {
@@ -1210,8 +1225,8 @@ function __wbg_get_imports() {
 function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2) {
   wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true_(arg0, arg1, arg2);
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64(arg0, arg1, arg2) {
-  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__64(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83(arg0, arg1, arg2) {
+  wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuDeviceLostInfo__GpuDeviceLostInfo______true__83(arg0, arg1, arg2);
 }
 function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2) {
   const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___JsValue__core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true_(arg0, arg1, arg2);
@@ -1225,14 +1240,14 @@ function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bin
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__65(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__84(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
 }
-function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66(arg0, arg1, arg2) {
-  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__66(arg0, arg1, arg2);
+function wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85(arg0, arg1, arg2) {
+  const ret = wasm.wasm_bindgen_16ce60f5be4e30c6___convert__closures_____invoke___wasm_bindgen_16ce60f5be4e30c6___sys__JsNullable_wgpu_8e86242f95ca2672___backend__webgpu__webgpu_sys__gen_GpuError__GpuError___core_608f92abc48d28da___result__Result_____wasm_bindgen_16ce60f5be4e30c6___JsError___true__85(arg0, arg1, arg2);
   if (ret[1]) {
     throw takeFromExternrefTable0(ret[0]);
   }
@@ -1549,8 +1564,10 @@ async function __wbg_init(module_or_path) {
 
 // src/bridge.ts
 var native = window.webkit?.messageHandlers?.mb;
+var taps = [];
 function post(m) {
   if (native) native.postMessage(m);
+  for (const t of taps) t(m);
   if (m.op !== "heartbeat") console.log("[mb]", m.op, JSON.stringify(m));
 }
 var hasNative = native !== void 0;
@@ -1771,7 +1788,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: [
         "i32"
@@ -1783,7 +1801,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: [
         "i32"
@@ -1795,7 +1814,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1803,7 +1823,8 @@ var abi_default = {
       name: "mb2d_push",
       params: [],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1811,7 +1832,8 @@ var abi_default = {
       name: "mb2d_pop",
       params: [],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1822,7 +1844,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1832,7 +1855,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1843,7 +1867,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1853,7 +1878,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1867,7 +1893,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1882,7 +1909,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1895,7 +1923,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1910,7 +1939,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1922,7 +1952,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1941,7 +1972,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1957,7 +1989,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: []
     },
@@ -1970,11 +2003,56 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb2d"
+        stdlib: "mb2d",
+        version: 1
       },
       results: [
         "f32"
       ]
+    },
+    {
+      name: "mb2d_rrect",
+      params: [
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "f32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb2d",
+        version: 1
+      },
+      results: []
+    },
+    {
+      name: "mb2d_text_style",
+      params: [
+        "f32",
+        "f32",
+        "i32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb2d",
+        version: 1
+      },
+      results: []
+    },
+    {
+      name: "mb2d_antialias",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb2d",
+        version: 1
+      },
+      results: []
     },
     {
       name: "mb3d_mesh",
@@ -1983,7 +2061,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -1995,7 +2074,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2007,7 +2087,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2020,7 +2101,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2032,7 +2114,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2045,7 +2128,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2055,7 +2139,8 @@ var abi_default = {
       name: "mb3d_node",
       params: [],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2068,7 +2153,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2079,7 +2165,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2091,7 +2178,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2102,7 +2190,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2112,7 +2201,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2122,7 +2212,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2135,7 +2226,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2147,7 +2239,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2162,7 +2255,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2174,7 +2268,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2184,7 +2279,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2194,7 +2290,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2213,7 +2310,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2233,7 +2331,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2243,7 +2342,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: [
         "i32"
@@ -2256,7 +2356,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2266,7 +2367,8 @@ var abi_default = {
         "i32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2281,7 +2383,8 @@ var abi_default = {
         "f32"
       ],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
       },
       results: []
     },
@@ -2289,7 +2392,204 @@ var abi_default = {
       name: "mb3d_render",
       params: [],
       requires: {
-        stdlib: "mb3d"
+        stdlib: "mb3d",
+        version: 1
+      },
+      results: []
+    },
+    {
+      name: "mb3d_free",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_instances",
+      params: [
+        "i32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_clip_count",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_clip_find",
+      params: [
+        "i32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_clip_duration",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "f32"
+      ]
+    },
+    {
+      name: "mb3d_anim",
+      params: [
+        "i32",
+        "i32",
+        "f32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_node_find",
+      params: [
+        "i32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_node_morph",
+      params: [
+        "i32",
+        "f32",
+        "f32",
+        "f32",
+        "f32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: []
+    },
+    {
+      name: "mb3d_node_world",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_node_material",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_fog",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: []
+    },
+    {
+      name: "mb3d_material_style",
+      params: [
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_text",
+      params: [
+        "i32",
+        "i32",
+        "i32",
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
+      },
+      results: [
+        "i32"
+      ]
+    },
+    {
+      name: "mb3d_dof",
+      params: [
+        "i32"
+      ],
+      requires: {
+        stdlib: "mb3d",
+        version: 2
       },
       results: []
     },
@@ -2508,6 +2808,9 @@ var HOST_DIRECT = [
   "mb2d_circle",
   "mb2d_line",
   "mb2d_sprite",
+  "mb2d_rrect",
+  "mb2d_text_style",
+  "mb2d_antialias",
   "mb3d_model_spawn",
   "mb3d_node",
   "mb3d_node_parent",
@@ -2520,7 +2823,14 @@ var HOST_DIRECT = [
   "mb3d_trail_attach",
   "mb3d_trail_detach",
   "mb3d_shockwave",
-  "mb3d_render"
+  "mb3d_render",
+  // mb3d 2
+  "mb3d_free",
+  "mb3d_clip_count",
+  "mb3d_clip_duration",
+  "mb3d_anim",
+  "mb3d_node_morph",
+  "mb3d_node_material"
 ];
 var MATERIAL_SIZE = 64;
 var SUN_SIZE = 36;
@@ -2528,12 +2838,20 @@ var SKY_SIZE = 64;
 var POST_SIZE = 32;
 var EMITTER_SIZE = 128;
 var TRAIL_SIZE = 64;
+var INSTANCE_SIZE = 44;
+var MAX_INSTANCES_PER_NODE = 16384;
+var FOG_SIZE = 48;
+var STYLE_SIZE = 32;
+var TEXT_DESC_SIZE = 64;
+var DOF_SIZE = 16;
+var NAME_MAX = 256;
+var TEXT_MAX_BYTES = 4096;
 var MESH_MAX_BYTES = 64 * 1024 * 1024;
 var STORE_QUOTA = 256 * 1024;
 var STORE_KEY_MAX = 64;
 function declared(req, m) {
   if (!req) return true;
-  if (req.stdlib) return req.stdlib in m.stdlib;
+  if (req.stdlib) return (m.stdlib[req.stdlib] ?? 0) >= (req.version ?? 1);
   if (req.sensor) return m.sensors.includes(req.sensor);
   if (req.capability) return m.capabilities.includes(req.capability);
   return false;
@@ -2686,6 +3004,47 @@ function buildImports(s, host, m) {
       toHost(slice(ptr, TRAIL_SIZE));
       return host.mbh_trail();
     }),
+    // 5.4 mb3d 2, memory-passing calls
+    mb3d_instances: ((node, ptr, count) => {
+      if (count < 0 || count > MAX_INSTANCES_PER_NODE) return -4 /* Quota */;
+      toHost(slice(ptr, count * INSTANCE_SIZE));
+      return host.mbh_instances(node, count);
+    }),
+    mb3d_clip_find: ((model, ptr, len) => {
+      if (len < 0 || len > NAME_MAX) return -2 /* InvalidArgument */;
+      toHost(slice(ptr, len));
+      return host.mbh_clip_find(model, len);
+    }),
+    mb3d_node_find: ((node, ptr, len) => {
+      if (len < 0 || len > NAME_MAX) return -2 /* InvalidArgument */;
+      toHost(slice(ptr, len));
+      return host.mbh_node_find(node, len);
+    }),
+    mb3d_node_world: ((node, out) => {
+      const r = host.mbh_node_world(node);
+      if (r >= 0) bytes().set(new Uint8Array(host.memory.buffer, host.host_scratch(64), 64), out);
+      return r;
+    }),
+    mb3d_fog: ((ptr) => {
+      toHost(slice(ptr, FOG_SIZE));
+      host.mbh_fog();
+    }),
+    mb3d_material_style: ((material, ptr) => {
+      toHost(slice(ptr, STYLE_SIZE));
+      return host.mbh_material_style(material);
+    }),
+    mb3d_text: ((node, desc, ptr, len) => {
+      if (len < 0 || len > TEXT_MAX_BYTES) return -2 /* InvalidArgument */;
+      const b = new Uint8Array(TEXT_DESC_SIZE + len);
+      b.set(slice(desc, TEXT_DESC_SIZE), 0);
+      b.set(slice(ptr, len), TEXT_DESC_SIZE);
+      toHost(b);
+      return host.mbh_text3d(node, len);
+    }),
+    mb3d_dof: ((ptr) => {
+      toHost(slice(ptr, DOF_SIZE));
+      host.mbh_dof();
+    }),
     // 5.6 audio
     mb_sound: ((asset) => {
       const st = s.assets.state(asset);
@@ -2809,6 +3168,8 @@ var Audio = class {
   userMuted = false;
   generation = 0;
   warned = false;
+  /** Fast-forwarding a restored session (watch mode): nothing starts playing. */
+  ff = false;
   silence = null;
   // --- the clock: game time → wall time → context time ----------------------
   /** The current frame: its rAF timestamp (ms; NaN = no frame since the clock
@@ -2889,6 +3250,15 @@ var Audio = class {
   applyGain() {
     if (this.master) this.master.gain.value = this.muted || this.userMuted ? 0 : MASTER_GAIN;
   }
+  /** Watch mode: a restored session runs many frames in a moment. Meanwhile
+   *  mb_play one-shots are dropped (they'd all be late) and nothing starts;
+   *  afterwards loops start and play_at voices are scheduled from game time,
+   *  so music picks up where the run had got to. */
+  fastForward(on) {
+    this.ff = on;
+    this.invalidateClock(true);
+    if (!on) this.flush();
+  }
   /** A new game session: the old session's voices stop and sound handles
    *  restart from 1. Decoded audio is kept and reused. */
   newSession() {
@@ -2965,6 +3335,10 @@ var Audio = class {
    *  mb_update: `now` is the frame's requestAnimationFrame timestamp,
    *  `game` its game time, `scale` game seconds per wall second. */
   frame(now, game, scale) {
+    if (this.ff) {
+      this.frameGame = game;
+      return;
+    }
     if (Number.isFinite(this.lastFrameNow)) {
       const p = now - this.lastFrameNow;
       if (p >= 4 && p <= 50) this.period += (p - this.period) * 0.05;
@@ -3111,7 +3485,7 @@ var Audio = class {
   play(sound, vol, pan, pitch, loop, at) {
     const id = this.nextVoice++;
     if (sound < 1 || sound > this.sounds.length) return id;
-    if (at === void 0 && !loop && (!this.sounds[sound - 1] || !this.ctx)) return id;
+    if (at === void 0 && !loop && (!this.sounds[sound - 1] || !this.ctx || this.ff)) return id;
     if (this.voices.size >= MAX_VOICES) {
       let victim;
       for (const [k, other] of this.voices) {
@@ -3135,7 +3509,7 @@ var Audio = class {
   tryStart(id, v) {
     const ctx = this.ctx;
     const buf = this.sounds[v.sound - 1];
-    if (v.nodes || !ctx || !this.master || !buf) return;
+    if (v.nodes || !ctx || !this.master || !buf || this.ff) return;
     if (v.at === null) {
       if (ctx.state !== "running" && !this.warned) {
         this.warned = true;
@@ -3738,9 +4112,436 @@ var Assets = class {
       this.publish(a);
     }
   }
+  /** Watch-mode restore: publishes the recorded handles that exist and are
+   *  still pending (the new code may load other assets), waiting for their
+   *  fetches; returns the ones published. */
+  async publishKnown(handles) {
+    const out = [];
+    for (const h of handles) {
+      const a = this.get(h);
+      if (!a || a.state !== 0) continue;
+      await a.fetching;
+      this.publish(a);
+      out.push(h);
+    }
+    return out;
+  }
   publish(a) {
     a.state = a.arrived?.state ?? -1;
     a.data = a.arrived?.data;
+  }
+};
+
+// src/dev.ts
+var SAVED_KEY = "mb.dev.saved";
+var PAGE_KEY = "mb.dev.page";
+var AUTO_KEY = "mb.dev.autoRestore";
+var MAX_SAVED_CHARS = 4e6;
+function storage(kind) {
+  try {
+    return kind === "session" ? window.sessionStorage : window.localStorage;
+  } catch {
+    return null;
+  }
+}
+var DevClient = class {
+  /** Stable for the tab across reloads, so `mb serve` counts it once. */
+  page;
+  hooks = null;
+  failedBoot = false;
+  /** The code build this page runs, and the latest build it has applied. */
+  codeBuild = 0;
+  build = 0;
+  /** What the server last said. */
+  latest = { server: "", build: 0, codeBuild: 0 };
+  /** Synced with the server at least once since this page loaded. */
+  synced = false;
+  /** The build last reported running. */
+  reported = -1;
+  chain = Promise.resolve();
+  saved = null;
+  lastRestore = null;
+  connected = false;
+  retry = 250;
+  ui = new Ui();
+  logBudget = { n: 0, t: 0 };
+  constructor() {
+    const ss = storage("session");
+    let id = ss?.getItem(PAGE_KEY) ?? "";
+    if (!/^[a-z0-9]{8,32}$/.test(id)) {
+      id = Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+      ss?.setItem(PAGE_KEY, id);
+    }
+    this.page = id;
+    taps.push((m) => this.tap(m));
+    this.connect();
+  }
+  get auto() {
+    const q2 = new URLSearchParams(location.search).get("restore");
+    if (q2 !== null) return q2 !== "off" && q2 !== "0";
+    return storage("local")?.getItem(AUTO_KEY) === "1";
+  }
+  // --- the connection ----------------------------------------------------------
+  connect() {
+    let ws;
+    try {
+      ws = new WebSocket(`ws://${location.host}/__mb/ws?page=${this.page}`);
+    } catch {
+      this.reconnectLater();
+      return;
+    }
+    ws.onopen = () => {
+      this.connected = true;
+      this.retry = 250;
+      this.ui.pill(null);
+    };
+    ws.onmessage = (e) => {
+      try {
+        this.message(JSON.parse(String(e.data)));
+      } catch (err) {
+        console.error("[mb dev]", err);
+      }
+    };
+    ws.onclose = () => {
+      if (this.connected) this.ui.pill("disconnected from mb serve; retrying\u2026", "warn");
+      this.connected = false;
+      this.reconnectLater();
+    };
+  }
+  reconnectLater() {
+    setTimeout(() => this.connect(), this.retry);
+    this.retry = Math.min(this.retry * 2, 2e3);
+  }
+  report(body) {
+    void fetch("/__mb/page", { method: "POST", body: JSON.stringify({ page: this.page, ...body }), keepalive: true }).catch(() => {
+    });
+  }
+  /** Errors and the game's warnings, forwarded to the terminal running `mb serve`. */
+  tap(m) {
+    if (m.op === "error" && m.message.startsWith("boot failed") && m.message.includes(": 503")) {
+      this.ui.runtimeError("there's no good build to run yet. This page reloads once there is.");
+    } else if (m.op === "error" || m.op === "watchdog" || m.op === "gpu-lost") {
+      const text = m.op === "watchdog" ? `watchdog: ${m.callback} took ${m.ms.toFixed(0)} ms` : m.message;
+      this.ui.runtimeError(text);
+      this.report({ type: "error", build: this.build, message: text });
+    } else if (m.op === "log" && m.level >= 2 && !m.msg.startsWith("runtime:")) {
+      const now = performance.now();
+      if (now - this.logBudget.t > 1e3) this.logBudget = { n: 0, t: now };
+      if (this.logBudget.n++ < 10) this.report({ type: "log", message: m.msg });
+    }
+  }
+  // --- what the server says ------------------------------------------------------
+  message(m) {
+    const n = (k) => typeof m[k] === "number" ? m[k] : 0;
+    switch (m.type) {
+      case "hello": {
+        this.latest = { server: String(m.server), build: n("build"), codeBuild: n("codeBuild") };
+        if (m.failure) this.failed(m.failure);
+        else this.ui.buildError(null);
+        if (m.state === "building") this.ui.pill("building\u2026");
+        if (this.hooks) this.enqueue(() => this.sync());
+        else if (this.failedBoot && m.state === "ok") this.reloadPage();
+        return;
+      }
+      case "building":
+        this.ui.pill(`build ${n("build")}: building\u2026`);
+        return;
+      case "failed":
+        this.failed(m);
+        return;
+      case "reload":
+        this.latest.build = n("build");
+        this.latest.codeBuild = n("codeBuild");
+        this.ui.buildError(null);
+        if (!this.hooks) {
+          if (this.failedBoot) this.reloadPage();
+          return;
+        }
+        if (m.kind === "page") this.enqueue(async () => this.reloadPage());
+        else this.enqueue(() => this.applyCode(n("build")));
+        return;
+      case "assets":
+        this.latest.build = n("build");
+        if (this.hooks) this.enqueue(() => this.applyAssets(n("build"), m.paths ?? []));
+        return;
+    }
+  }
+  failed(f) {
+    this.ui.pill(null);
+    this.ui.buildError(f, this.codeBuild);
+    console.error(`[mb dev] build ${f.build} failed: ${f.summary}`);
+  }
+  enqueue(f) {
+    this.chain = this.chain.then(f).catch((e) => {
+      console.error("[mb dev]", e);
+      this.ui.pill(`reload failed: ${e instanceof Error ? e.message : String(e)}`, "warn");
+    });
+  }
+  /** Called once the page has booted and its first session runs. */
+  attach(hooks) {
+    this.hooks = hooks;
+    this.codeBuild = hooks.boot?.build ?? 0;
+    this.build = this.codeBuild;
+    window.addEventListener("pagehide", () => this.capture());
+    const stored = this.load();
+    if (stored && stored.game === hooks.game) this.saved = stored;
+    this.enqueue(async () => {
+      if (this.saved && this.auto) await this.doRestore(this.saved, "reload");
+      else if (this.saved) this.ui.offer(this.saved, () => this.enqueue(() => this.doRestore(this.saved, "reload")), () => this.setAuto());
+      await this.sync();
+    });
+  }
+  /** The page couldn't boot: wait for a good build, then reload. */
+  bootFailed() {
+    this.failedBoot = true;
+  }
+  /** Catches up with the server (after booting, and after reconnecting):
+   *  takes its newest code if this page is behind, and reports what runs. */
+  async sync() {
+    const l = this.latest;
+    if (!l.server || !this.hooks) return;
+    const boot = this.hooks.boot;
+    if (boot && boot.server !== l.server) {
+      this.reloadPage();
+      return;
+    }
+    const first = !this.synced;
+    this.synced = true;
+    if (first && l.codeBuild === this.codeBuild) this.build = l.build;
+    if (l.codeBuild > this.codeBuild || l.build > this.build) {
+      await this.applyCode(l.codeBuild, l.build > l.codeBuild);
+    } else if (this.reported !== this.build) {
+      this.running();
+    }
+  }
+  running(restored) {
+    const frames = this.hooks?.frames() ?? 0;
+    this.reported = this.build;
+    this.report({ type: "running", build: this.build, frames, restored: restored ?? null });
+  }
+  // --- reloads ---------------------------------------------------------------------
+  capture() {
+    const s = this.hooks?.save() ?? null;
+    if (s) {
+      this.saved = s;
+      this.store(s);
+    }
+    return s;
+  }
+  store(s) {
+    const ss = storage("session");
+    if (!ss) return;
+    let json = JSON.stringify(s);
+    if (json.length > MAX_SAVED_CHARS) json = JSON.stringify({ ...s, hashes: [] });
+    try {
+      if (json.length > MAX_SAVED_CHARS) throw new Error("too long");
+      ss.setItem(SAVED_KEY, json);
+    } catch {
+      ss.removeItem(SAVED_KEY);
+      console.warn(`[mb dev] session too long to keep across a page reload (${s.frames} frames); mb.restore() works until then`);
+    }
+  }
+  load() {
+    try {
+      const v = JSON.parse(storage("session")?.getItem(SAVED_KEY) ?? "null");
+      return v && v.v === 1 && Array.isArray(v.log?.frames) ? v : null;
+    } catch {
+      return null;
+    }
+  }
+  reloadPage() {
+    this.capture();
+    location.reload();
+  }
+  /** New code: compile it, swap it in, start fresh (or restore). `allAssets`:
+   *  asset changes may have been missed while disconnected. */
+  async applyCode(build, allAssets = false) {
+    const hooks = this.hooks;
+    const t = performance.now();
+    const res = await fetch(`../game/game.wasm?build=${build}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`game.wasm: HTTP ${res.status}`);
+    const module = await WebAssembly.compile(await res.arrayBuffer());
+    const saved = this.capture() ?? this.saved;
+    hooks.swapCode(module);
+    if (allAssets) hooks.invalidate(null);
+    this.codeBuild = build;
+    this.build = Math.max(build, this.latest.build);
+    this.ui.runtimeError(null);
+    if (saved && this.auto) {
+      await this.doRestore(saved, "code");
+      return;
+    }
+    await hooks.fresh(saved?.held ?? false);
+    const ms = performance.now() - t;
+    this.ui.pill(`build ${build} running (${ms.toFixed(0)} ms)`, "ok", 2500);
+    console.info(`[mb dev] build ${build} running (swapped in ${ms.toFixed(0)} ms)`);
+    if (saved) this.ui.offer(saved, () => this.enqueue(() => this.doRestore(saved, "code")), () => this.setAuto());
+    this.running();
+  }
+  /** Changed assets: refetch them and replay the session to the same frame. */
+  async applyAssets(build, paths) {
+    const hooks = this.hooks;
+    const saved = this.capture();
+    hooks.invalidate(paths);
+    this.build = build;
+    this.ui.runtimeError(null);
+    if (saved) {
+      await this.doRestore(saved, "assets");
+    } else {
+      await hooks.fresh(this.saved?.held ?? false);
+      this.ui.pill(`build ${build}: assets updated`, "ok", 2500);
+      this.running();
+    }
+  }
+  async doRestore(saved, why) {
+    const hooks = this.hooks;
+    this.ui.offer(null);
+    const t = performance.now();
+    const r = await hooks.restore(saved, (done, total) => this.ui.pill(`restoring\u2026 ${Math.round(100 * done / total)}%`));
+    const ms = performance.now() - t;
+    this.lastRestore = { ...r, at: Date.now() };
+    const where = `frame ${r.frames}${r.frames < r.of ? ` of ${r.of} (the game stopped)` : ""}`;
+    const how = r.compared === 0 ? "no hashes were kept to compare" : r.firstMismatch === null ? "same as before" : `differs from the old run from frame ${r.firstMismatch} (changed drawing or logic), so this may not be exactly where you were`;
+    const lead = why === "assets" ? "assets updated, replayed to" : "restored to";
+    this.ui.pill(`${lead} ${where}: ${how}`, r.firstMismatch === null ? "ok" : "warn", r.firstMismatch === null ? 3e3 : 8e3);
+    console.info(`[mb dev] ${lead} ${where} in ${ms.toFixed(0)} ms: ${how}`);
+    this.running(r);
+    return r;
+  }
+  setAuto() {
+    storage("local")?.setItem(AUTO_KEY, "1");
+    this.ui.pill("always restoring after a reload (?restore=off to stop)", "ok", 3e3);
+  }
+  // --- console ---------------------------------------------------------------------
+  /** `mb.restore()`. */
+  restore() {
+    return new Promise((resolve, reject) => {
+      this.enqueue(async () => {
+        const s = this.saved ?? this.load();
+        if (!this.hooks) return reject(new Error("the game isn't running"));
+        if (!s) return reject(new Error("no earlier session to restore (it must have run at least one frame)"));
+        resolve(await this.doRestore(s, "console"));
+      });
+    });
+  }
+  /** `mb.dev()`. */
+  status() {
+    return {
+      page: this.page,
+      connected: this.connected,
+      build: this.build,
+      codeBuild: this.codeBuild,
+      serverBuild: this.latest.build,
+      autoRestore: this.auto,
+      saved: this.saved ? { frames: this.saved.frames, time: this.saved.time, held: this.saved.held } : null,
+      lastRestore: this.lastRestore
+    };
+  }
+};
+function startDev() {
+  return new DevClient();
+}
+var FONT = "12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+var Ui = class {
+  root;
+  pillEl;
+  pillTimer = 0;
+  errorEl;
+  runtimeEl;
+  offerEl;
+  offerTimer = 0;
+  dismissed = -1;
+  constructor() {
+    const el = (css) => {
+      const d = document.createElement("div");
+      d.style.cssText = css;
+      return d;
+    };
+    this.root = el("position:fixed;inset:0;pointer-events:none;z-index:30");
+    this.pillEl = el(`position:absolute;top:8px;right:8px;max-width:70vw;padding:4px 10px;border-radius:12px;font:${FONT};color:#fff;background:rgba(0,0,0,.75);display:none`);
+    this.offerEl = el(
+      `position:absolute;top:40px;left:50%;transform:translateX(-50%);max-width:92vw;padding:8px 12px;border-radius:10px;font:${FONT};color:#fff;background:rgba(20,40,90,.92);box-shadow:0 2px 12px rgba(0,0,0,.5);pointer-events:auto;display:none`
+    );
+    this.errorEl = el(
+      `position:absolute;left:0;right:0;bottom:0;max-height:65vh;overflow:auto;padding:10px 14px;font:${FONT};color:#ffd9d9;background:rgba(40,0,0,.93);border-top:3px solid #e33;white-space:pre-wrap;pointer-events:auto;display:none`
+    );
+    this.runtimeEl = el(
+      `position:absolute;left:0;right:0;top:0;max-height:40vh;overflow:auto;padding:8px 14px;font:${FONT};color:#fff3cf;background:rgba(50,30,0,.93);border-bottom:3px solid #fa0;white-space:pre-wrap;pointer-events:auto;display:none`
+    );
+    this.root.append(this.runtimeEl, this.pillEl, this.offerEl, this.errorEl);
+    const mount = () => document.body.append(this.root);
+    if (document.body) mount();
+    else window.addEventListener("DOMContentLoaded", mount);
+  }
+  pill(text, tone = "info", hideAfter = 0) {
+    clearTimeout(this.pillTimer);
+    if (text === null) {
+      this.pillEl.style.display = "none";
+      return;
+    }
+    this.pillEl.textContent = text;
+    this.pillEl.style.background = tone === "ok" ? "rgba(10,90,40,.85)" : tone === "warn" ? "rgba(130,70,0,.9)" : "rgba(0,0,0,.75)";
+    this.pillEl.style.display = "block";
+    if (hideAfter) this.pillTimer = window.setTimeout(() => this.pillEl.style.display = "none", hideAfter);
+  }
+  closeButton(onClick) {
+    const b = document.createElement("button");
+    b.textContent = "\xD7";
+    b.title = "Hide";
+    b.style.cssText = "float:right;margin-left:12px;border:0;background:none;color:inherit;font:16px system-ui;cursor:pointer";
+    b.onclick = onClick;
+    return b;
+  }
+  /** The compiler's errors, over the game (null clears them). */
+  buildError(f, running = 0) {
+    if (!f) {
+      this.errorEl.style.display = "none";
+      return;
+    }
+    if (this.dismissed === f.build) return;
+    this.errorEl.replaceChildren();
+    const head = document.createElement("div");
+    head.style.cssText = "font-weight:bold;color:#fff;margin-bottom:6px";
+    head.textContent = `Build ${f.build} failed${running ? `; still running build ${running}` : ""}. Fix it and save.`;
+    head.prepend(this.closeButton(() => (this.dismissed = f.build, this.errorEl.style.display = "none")));
+    const body = document.createElement("div");
+    body.textContent = f.text || f.summary;
+    this.errorEl.append(head, body);
+    this.errorEl.style.display = "block";
+  }
+  /** A trap, watchdog or failed boot (null clears it). */
+  runtimeError(text) {
+    if (text === null) {
+      this.runtimeEl.style.display = "none";
+      return;
+    }
+    this.runtimeEl.replaceChildren(this.closeButton(() => this.runtimeEl.style.display = "none"), `The game stopped: ${text}`);
+    this.runtimeEl.style.display = "block";
+  }
+  /** Offers to restore `s` (null withdraws the offer). */
+  offer(s, restore2, always) {
+    clearTimeout(this.offerTimer);
+    if (!s || !restore2) {
+      this.offerEl.style.display = "none";
+      return;
+    }
+    const button = (label, onClick) => {
+      const b = document.createElement("button");
+      b.textContent = label;
+      b.style.cssText = "margin-left:8px;padding:2px 8px;border-radius:6px;border:1px solid #9bf;background:#2a5bd7;color:#fff;font:inherit;cursor:pointer";
+      b.onclick = () => {
+        this.offerEl.style.display = "none";
+        onClick();
+      };
+      return b;
+    };
+    const text = document.createElement("span");
+    text.textContent = `Back to where you were? Replays your last session (${s.frames} frames, ${s.time.toFixed(1)} s${s.held ? ", held" : ""}) into this build.`;
+    this.offerEl.replaceChildren(text, button("Restore", restore2));
+    if (always) this.offerEl.append(button("Always", () => (always(), restore2())));
+    this.offerEl.append(this.closeButton(() => this.offerEl.style.display = "none"));
+    this.offerEl.style.display = "block";
+    this.offerTimer = window.setTimeout(() => this.offerEl.style.display = "none", 2e4);
   }
 };
 
@@ -3792,6 +4593,14 @@ var Runtime = class _Runtime {
   onReplayEnd = null;
   /** Preview only (SPEC §9): multiplies live dt, for watching fast moments slowly. */
   static timeScale = 1;
+  /** CPU ms of the last 120 calls of each callback and of presenting (`mb.stats()`). */
+  static timings = /* @__PURE__ */ new Map();
+  static cpu(name, ms) {
+    let t = _Runtime.timings.get(name);
+    if (!t) _Runtime.timings.set(name, t = []);
+    t.push(ms);
+    if (t.length > 120) t.shift();
+  }
   /** Runs mb_init; the draw hash at frame 0 covers what it did. */
   init() {
     this.timed("mb_init", () => this.guest.mb_init(), INIT_BUDGET_MS);
@@ -3977,7 +4786,11 @@ var Runtime = class _Runtime {
     host_begin_frame();
     this.timed("mb_render", () => this.guest.mb_render());
     if (this.stopped) return;
-    if (this.presenting) present(host_end_frame);
+    if (this.presenting) {
+      const t0 = performance.now();
+      present(host_end_frame);
+      _Runtime.cpu("present", performance.now() - t0);
+    }
     if (this.hashes.length < MAX_FRAME_HASHES) this.hashes.push(host_draw_hash());
   }
   timed(name, f, budget = CALLBACK_BUDGET_MS) {
@@ -3995,6 +4808,7 @@ var Runtime = class _Runtime {
       return;
     }
     const ms = performance.now() - t;
+    _Runtime.cpu(name, ms);
     if (ms > budget) {
       this.stop();
       post({ op: "watchdog", callback: name, ms });
@@ -4007,6 +4821,50 @@ var Runtime = class _Runtime {
   brief() {
     return { frames: this.frames, time: this.session.gameTime, hash: host_draw_hash(), replay: this.source.kind === "replay" };
   }
+  /** Paused, held or not started: no frames run on their own. */
+  get held() {
+    return this.suspended || !this.running;
+  }
+  /** Watch mode (`mb serve --watch`): runs another run's recorded frames in
+   *  this fresh, not yet started live session as fast as it can, recording
+   *  them as its own, so the session carries on live from where that run
+   *  was (with new code or assets). Compares the draw hash after mb_init and
+   *  after every frame with that run's (`expected`) to tell whether it went
+   *  the same way. Silent and unpresented until the last frame. */
+  async fastForward(frames, expected, progress) {
+    this.presenting = false;
+    this.session.audio.fastForward(true);
+    let firstMismatch = expected.length > 0 && this.hashes[0] !== expected[0] ? 0 : null;
+    let missingAssets = 0;
+    let slice = performance.now();
+    try {
+      for (let i = 0; i < frames.length && !this.stopped; i++) {
+        const f = frames[i];
+        let assets = [];
+        if (f.assets?.length) {
+          assets = await this.session.assets.publishKnown(f.assets);
+          missingAssets += f.assets.length - assets.length;
+        }
+        const sensors = {};
+        if (f.tilt) sensors.tilt = f.tilt;
+        if (f.motion) sensors.motion = f.motion;
+        if (f.loud !== void 0) sensors.loud = f.loud;
+        this.recorder.frame(f.dt, f.events ?? [], assets, sensors, f.calls ?? [], f.lost ?? 0);
+        this.step(f.dt, f.events ?? [], sensors, f.calls, f.lost);
+        if (firstMismatch === null && i + 1 < expected.length && this.hashes[i + 1] !== expected[i + 1]) firstMismatch = i + 1;
+        if (performance.now() - slice > 16) {
+          progress?.(i + 1, frames.length);
+          await yieldTask();
+          slice = performance.now();
+        }
+      }
+    } finally {
+      this.presenting = true;
+      this.session.audio.fastForward(false);
+    }
+    if (!this.stopped) present(host_end_frame);
+    return { frames: this.frames, of: frames.length, firstMismatch, compared: Math.min(expected.length, this.frames + 1), missingAssets };
+  }
   /** The draw hash after mb_init (0) and after each frame since, as far as kept. */
   frameHashes() {
     return this.hashes;
@@ -4016,6 +4874,13 @@ var Runtime = class _Runtime {
     return { ...this.brief(), log: structuredClone(log2) };
   }
 };
+function yieldTask() {
+  return new Promise((resolve) => {
+    const ch = new MessageChannel();
+    ch.port1.onmessage = () => resolve();
+    ch.port2.postMessage(null);
+  });
+}
 function hexBytes(hex) {
   const out = new Uint8Array(16);
   for (let i = 0; i < 16; i++) out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16) || 0;
@@ -4059,9 +4924,9 @@ function drawOverlays(layout, screen, mic) {
   draw();
   return draw;
 }
-async function createSession(page, source, seedOverride) {
+async function createSession(page, source, seedOverride, from) {
   const { boot, manifest: m } = page;
-  const log2 = source.kind === "replay" ? source.log : void 0;
+  const log2 = source.kind === "replay" ? source.log : from;
   const seed = BigInt(log2?.seed ?? seedOverride ?? boot.seed);
   const dailySeed = BigInt(log2?.dailySeed ?? boot.dailySeed);
   const store = log2?.store ?? { ...page.store };
@@ -4069,6 +4934,7 @@ async function createSession(page, source, seedOverride) {
   const locale = log2?.locale ?? boot.locale;
   const screen = log2 ? new Float32Array(log2.screen) : page.screen;
   host_new_session();
+  host_set_stdlib(boot.manifest.stdlib.mb3d ?? 0);
   page.audio.newSession();
   const session = new Session(page.audio, seed, dailySeed, hexBytes(playerId), locale, screen, GAME, store, page.assets);
   session.replaying = source.kind === "replay";
@@ -4093,6 +4959,7 @@ async function createSession(page, source, seedOverride) {
   rt.init();
   return rt;
 }
+var dev = !hasNative && document.querySelector('meta[name="mb-dev"]') ? startDev() : null;
 async function main() {
   const t0 = performance.now();
   window.addEventListener("error", (e) => post({ op: "error", message: String(e.message) }));
@@ -4148,6 +5015,18 @@ async function main() {
     else next.start();
     post({ op: "restarted", replay: source.kind === "replay" });
   };
+  const restore2 = async (saved, progress) => {
+    rt?.stop();
+    const next = await createSession(page, { kind: "live" }, void 0, saved.log);
+    rt = next;
+    const result = await next.fastForward(saved.log.frames, saved.hashes, progress);
+    if (rt === next) {
+      if (saved.held) next.startHeld();
+      else next.start();
+      post({ op: "restarted", replay: false });
+    }
+    return result;
+  };
   page.audio.setPlayback(boot.soundOn === true);
   page.audio.setUserMuted(boot.muted === true);
   window.mb = {
@@ -4177,10 +5056,31 @@ async function main() {
       const end = rt.brief();
       return { frames: live.frames, live: live.hash, replay: end.hash, match: end.frames === live.frames && end.hash === live.hash, firstMismatch };
     },
+    restore: () => dev ? dev.restore() : Promise.reject(new Error("mb.restore() needs mb serve --watch")),
+    dev: () => dev?.status() ?? null,
     speed: (k) => {
       Runtime.timeScale = Math.max(0.01, Math.min(4, k));
     },
-    debugGpu
+    debugGpu,
+    save: (name, data) => saveFile(name, data),
+    load: async (name) => {
+      const r = await fetch(`/__mb/save?name=${encodeURIComponent(name)}`);
+      if (!r.ok) throw new Error(`mb.load: ${name}: ${r.status} (only \`mb serve\` has saved files)`);
+      return r.text();
+    },
+    stats: () => {
+      const cpu = {};
+      for (const [k, v] of Runtime.timings) {
+        if (v.length) cpu[k] = { avg: v.reduce((a, b) => a + b, 0) / v.length, max: Math.max(...v) };
+      }
+      return { ...JSON.parse(host_stats()), cpu };
+    },
+    screenshot: async (name = `shot-${rt.brief().frames}`) => {
+      present(host_redraw);
+      const blob = await new Promise((ok) => canvas.toBlob(ok, "image/png"));
+      if (!blob) throw new Error("mb.screenshot: the canvas gave no image");
+      return saveFile(name.endsWith(".png") ? name : `${name}.png`, blob);
+    }
   };
   if (!hasNative) {
     const q2 = new URLSearchParams(location.search);
@@ -4203,5 +5103,34 @@ async function main() {
   void probe().then((p) => post({ op: "probe", probe: p }));
   if (paused) rt.startPaused();
   else rt.start();
+  dev?.attach({
+    game: m.id,
+    boot: boot.dev,
+    save: () => {
+      const snap = rt.snapshot();
+      if (snap.frames === 0 || snap.log.game !== m.id) return null;
+      return { v: 1, game: m.id, frames: snap.frames, time: snap.time, held: rt.held, log: snap.log, hashes: [...rt.frameHashes()] };
+    },
+    swapCode: (module2) => {
+      page.module = module2;
+    },
+    invalidate: (paths) => {
+      if (paths === null) page.assets.clear();
+      else for (const p of paths) page.assets.delete(p);
+    },
+    fresh: (held) => restart({ hold: held }),
+    restore: restore2,
+    frames: () => rt.brief().frames
+  });
 }
-main().catch((e) => post({ op: "error", message: `boot failed: ${e instanceof Error ? e.stack ?? e.message : String(e)}` }));
+async function saveFile(name, data) {
+  const body = data instanceof Uint8Array ? new Blob([data.slice()]) : data;
+  const r = await fetch(`/__mb/save?name=${encodeURIComponent(name)}`, { method: "POST", body });
+  const text = await r.text();
+  if (!r.ok) throw new Error(`mb.save: ${text || r.status} (only \`mb serve\` saves files)`);
+  return text;
+}
+main().catch((e) => {
+  post({ op: "error", message: `boot failed: ${e instanceof Error ? e.stack ?? e.message : String(e)}` });
+  dev?.bootFailed();
+});

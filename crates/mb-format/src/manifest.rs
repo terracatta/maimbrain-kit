@@ -166,8 +166,12 @@ fn yes() -> bool {
     true
 }
 
-/// Host engines a manifest may declare, with the versions this host provides.
-pub const STDLIB: &[(&str, u32)] = &[("mb2d", 1), ("mb3d", 1), ("gpu", 1)];
+/// Host engines a manifest may declare, with the newest version this host
+/// provides. A manifest declares the version it needs (1 up to that): newer
+/// versions only add imports, so a game built for an older one keeps working
+/// unchanged, and an import added in version N needs `name = N` or later
+/// (`abi::Requires::Stdlib`).
+pub const STDLIB: &[(&str, u32)] = &[("mb2d", 1), ("mb3d", 2), ("gpu", 1)];
 
 impl Manifest {
     pub fn parse(text: &str) -> Result<Manifest, String> {
@@ -211,7 +215,7 @@ impl Manifest {
         for (name, version) in &self.stdlib {
             match STDLIB.iter().find(|(n, _)| n == name) {
                 None => err(format!("unknown stdlib {name:?} (known: mb2d, mb3d, gpu)")),
-                Some((_, v)) if v != version => err(format!("stdlib {name} = {version} is not available (host has {v})")),
+                Some((_, v)) if *version == 0 || version > v => err(format!("stdlib {name} = {version} is not available (host has 1–{v})")),
                 _ => {}
             }
         }
@@ -240,6 +244,11 @@ impl Manifest {
 
     pub fn has_stdlib(&self, name: &str) -> bool {
         self.stdlib.contains_key(name)
+    }
+
+    /// The declared version of a stdlib (0 if it isn't declared).
+    pub fn stdlib_version(&self, name: &str) -> u32 {
+        self.stdlib.get(name).copied().unwrap_or(0)
     }
 }
 

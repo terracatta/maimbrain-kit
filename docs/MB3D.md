@@ -1,6 +1,8 @@
-# mb3d v1 — design (Phase 6)
+# mb3d — design (v1, Phase 6; v2 at the end)
 
 The host 3D engine: a retained scene graph that games drive through `mb3d_*` calls, rendered by `mb-host` (Rust → wasm32, wgpu on WebGPU) in the same frame as `mb2d`. The flagship that drives it is **Starfall**: a portrait, touch-only, on-rails space shooter through a nebula canyon (sweep to lock on to up to 8 enemies, release for homing lasers; bloom, particles, trails, a crystal boss).
+
+**mb3d 2** (declare `stdlib = { mb3d = 2 }`) adds animated glTF characters (skins, clips, morph targets, bones as nodes), instancing, freeing resources, fog, toon shading and outlines, 3D text and depth of field. See ["mb3d 2"](#mb3d-2) below; everything before it describes v1, which games declaring `mb3d = 1` still get unchanged.
 
 ## Decisions
 
@@ -71,7 +73,7 @@ mb3d_render()                              # draw the scene this frame (mb2d aft
 
 Going over a limit returns `-4`. GPU memory is capped at 256 MB for `full` games.
 
-Only nodes are ever freed (`mb3d_node_destroy`, with their lights and descendants). Meshes, textures, materials, models, emitters and trails live for the whole session: games build them once and pool them (see "Patterns" below).
+In v1 only nodes are ever freed (`mb3d_node_destroy`, with their lights and descendants). Meshes, textures, materials, models, emitters and trails live for the whole session: games build them once and pool them (see "Patterns" below). mb3d 2 adds `mb3d_free`.
 
 ## Renderer (mb-host)
 
@@ -160,3 +162,89 @@ The API above is what shipped; SPEC §5.4 is the normative version with every st
 - **Lights.** A point light holds one of the 8 slots from its first `mb3d_light_point` until its node (or an ancestor) is destroyed. Intensity 0 darkens it but keeps the slot; hiding its node doesn't turn it off. For explosion flashes, keep one or two light nodes, move them to the latest blast and decay their intensity.
 
 Still to do from the milestones: frame timing on an iPhone 16 Pro and the A15 estimate (needs the device), and checking MSAA on rgba16float and the frame budget there.
+
+## mb3d 2
+
+Closes the gaps between mb3d 1 and what three.js + drei give AI-built web games (animated glTF characters, instancing, disposing resources, fog, toon/outline looks, 3D text, depth of field), without changing anything for games that don't ask for it. The showcase is **Mistwood** (`games/mistwood`): a toon fox with a lantern on its tail runs a foggy, instanced forest; tap to jump the logs.
+
+### Decisions
+
+| Area | Decision |
+|---|---|
+| Versioning | `stdlib = { mb3d = 2 }`. A stdlib version only adds imports: the host serves 1–2, a v2 import needs `mb3d = 2`, and a game declaring `mb3d = 1` validates, links and renders exactly as before (checked: old bundles and their rebuilt-from-source versions replay to the same draw hashes and pixels) |
+| Animation | **The game owns time.** `mb3d_anim(node, clip, time, weight)` adds one weighted sample of a clip, at a time the game passes, to a spawned model's pose for this frame; the host blends and resolves when it next needs world transforms. Nothing advances on its own, so replays pose identically. The SDK's `Animator` (pure Rust) does play/loop/once, speed and crossfades on top |
+| Bones | Bones and sockets are ordinary nodes of the spawned model, found by glTF name (`mb3d_node_find`). Attaching a sword to a hand is parenting; `mb3d_node_world` reads where a bone is |
+| Skinning | GPU, 4 weights per vertex, ≤ 64 joints per skin (a 4 KB uniform palette per skinned draw), ≤ 128 skinned draws per frame. Morph targets: the first 4 of a glTF mesh, positions and normals, blended in the same vertex shader |
+| Instancing | A node with an instance list draws its mesh once per instance in one draw call (`pos, rot, scale, rgba8` = 44 bytes each), culled as one sphere. Lists are uploaded only when they change |
+| Freeing | Generational handles for meshes, materials, textures, emitters, trails and models (`mb3d_free(kind, handle)`): stale handles never reach a reused slot, and handles stay 1, 2, 3, … until something is freed, as v1 promised |
+| Looks | Fog (linear, exponential, exp², optional height falloff, sky fade), per-material styles (cel bands, rim light, inverted-hull outline with smoothed normals, no-fog flag), 3D text from the host fonts (SDF Inter with outline, or the pixel font; world-space or billboard, optionally a fixed screen size), half-resolution gather depth of field |
+| Compatibility | mb3d 1's fragment shaders (`fs`, `fs_sky`, `fs_particle`, `fs_trail`) are kept verbatim and used unless a material or the scene opts into a v2 look; v2 pipelines are built lazily the first time they're needed |
+
+### ABI (stdlib `mb3d = 2`)
+
+```
+mb3d_free(kind, handle) -> i32              # 1 mesh, 2 material, 3 texture, 4 emitter, 5 trail, 6 model; 0, -1 stale, -2 kind
+mb3d_instances(node, ptr, count) -> i32     # replace the node's instances (count × 44 bytes); count 0 clears
+mb3d_clip_count(model) -> i32
+mb3d_clip_find(model, name_ptr, len) -> i32 # clip index, -2 if none
+mb3d_clip_duration(model, clip) -> f32      # seconds, -1 for a bad model/clip
+mb3d_anim(node, clip, time, weight) -> i32  # add a weighted sample to the pose of the model spawned at `node`
+mb3d_node_find(node, name_ptr, len) -> i32  # the named node (bone, socket, part) in the model spawned at `node`
+mb3d_node_morph(node, w0, w1, w2, w3)       # morph target weights
+mb3d_node_world(node, out_ptr) -> i32       # world matrix (f32 × 16, column-major) after this frame's animation so far
+mb3d_node_material(node) -> i32             # the material a node draws with (to restyle a loaded model)
+mb3d_fog(ptr)                               # Fog
+mb3d_material_style(material, ptr) -> i32   # MaterialStyle (kept by mb3d_material_set)
+mb3d_text(node, desc_ptr, text_ptr, len) -> i32   # TextDesc + UTF-8; empty text removes it
+mb3d_dof(ptr)                               # DepthOfField
+```
+
+Struct layouts are in SPEC §5.4 ("mb3d 2"); the SDK structs (`Instance`, `Fog`, `MaterialStyle`, `TextDesc`, `DepthOfField`) are the reference bindings and have size tests.
+
+### Animation, as built
+
+- **glTF:** `skins` (joints must be nodes of the default scene; a skin over 64 joints is dropped and its meshes draw unskinned), `JOINTS_0` (u8/u16) and `WEIGHTS_0` (float or normalized; renormalized to sum to exactly 1 in unorm16), morph `targets` (first 4; POSITION and NORMAL deltas) and `weights`, `animations` (translation, rotation, scale and weights channels; `STEP`, `LINEAR` (rotations slerp) and `CUBICSPLINE`), node `name`s. Channels on nodes outside the default scene or with malformed samplers are skipped; a clip's duration is its last key time.
+- **Pose:** per node, samples accumulate per path (rotations hemisphere-aligned). Weights short of 1 are filled with the node's rest pose (its glTF TRS), weights over 1 are normalized; paths no sample touched keep the node's current value, so a game can still drive other nodes by hand. Samples are dropped at the start of each frame (the pose they made stays), so a frame without `mb3d_anim` calls holds the last pose.
+- **Skinning:** palettes are world-space (`world(joint) × inverseBind`); the skinned mesh node's own transform is ignored, as glTF says. A skinned draw is culled by a sphere around its joints, each grown by how far its vertices reach at bind time. Morph-only meshes use a one-matrix palette (the node's world).
+- **Cost:** 8 foxes × 2 clip samples = 6 µs per frame, natively (`cargo test -p mb-host --release perf_report -- --ignored --nocapture`); wasm is roughly 1.5–2× that.
+
+### Instancing, freeing, looks, as built
+
+- **Instances** multiply the material's base color, alpha *and* emissive by their color (glowing mushrooms in three tints from one material). Instanced draws always use the v2 fragment shader. Transparent instances aren't sorted among themselves. Split big fields into chunks so culling has something to cull (Mistwood: 7 chunks of 16 m, trees/grass/mushrooms per chunk, re-laid out only when a chunk leapfrogs ahead).
+- **Freeing** a mesh leaves nodes that use it drawing nothing; a material, drawing with the default; a texture, sampling white (materials that used it rebuild); an emitter, its live particles finish their lives and its slot comes back after; a trail, its ribbon vanishes; a model, its meshes, materials and textures go with it. Freed resources stop counting against the limits.
+- **Fog** applies to lit and unlit surfaces, outlines, 3D text, particles and trails (additive ones fade out, alpha ones fade to the fog color) and, by `sky`, the sky toward the horizon. Height fog integrates `density × e^(−falloff (y − height))` along the view ray (clamped so it can't overflow).
+- **Outlines** are inverted hulls drawn right after the opaque pass: back faces pushed out along per-mesh smoothed normals (computed once, the first time a mesh draws outlined) by a fixed width in logical pixels. Opaque materials only.
+- **Toon** quantizes the sun's and point lights' N·L into `toon_bands` with soft edges, a hard-edged highlight, flat sky ambient and half-strength reflections. **Rim** adds a sun-colored edge.
+- **Text** is laid out once per change on the CPU (in em units around the alignment anchor) and drawn from the host font atlas; changing only its color or size keeps the layout and GPU buffer, so fading a pop every frame is cheap. Text draws are sorted with transparent things.
+- **Depth of field** keeps the main pass's MSAA depth (it's normally discarded) and makes two half-resolution passes: CoC from the nearest of each 2×2 depth block, then a 24-tap golden-spiral gather where background blur can't bleed over sharper foreground but foreground blur spreads. The composite blends by the blurred CoC. Bloom reads the unblurred scene.
+
+### Limits and budgets
+
+| | Limit (−4 past it) | Budget for 60 fps on A15 |
+|---|---|---|
+| Instances | 16 384 per node, 65 536 in all | count instances × triangles toward the 150 k triangle budget; each instanced node is one draw (two with an outline, one more per shadow pass) |
+| Skins | 64 joints per skin; 128 skinned draws per frame (more are skipped) | a handful of characters; each skinned draw uploads a 4 KB palette |
+| Morph targets | first 4 per mesh | — |
+| 3D text | 256 nodes, 512 characters each, 16 384 glyphs in all | each text node is one draw |
+| Outlines | 0–8 logical px | each outlined draw draws again (vertex cost × 2); keep to characters, props and big shapes |
+| Depth of field | blur 0–16 logical px | ~0.3–0.6 ms GPU estimated (below); turn off when not needed |
+| Fog, toon, rim | — | a few ALU per pixel |
+
+### Performance (measured in the desktop preview, reasoned for A15)
+
+CPU, desktop Chrome on an M-series Mac, `mb.stats()` over 120 live frames of Mistwood (57 draws, 34.8 k triangles, 2 299 instances, 1 skinned draw, 21 outlines, 31 shadow casters, DOF on): `mb_update` 0.06 ms, `mb_render` 0.01 ms, presenting (the host's draw collection, uploads and WebGPU encoding) 0.32 ms average, 1.1 ms worst. WebKit on an A15 is perhaps 3–4× slower at this: ~1–1.5 ms, well inside the frame. Natively: re-sending 16 384 instances costs 97 µs (do it only for lists that move, like Mistwood's coins), a 14-character text relayout 0.7 µs, parsing the 866-vertex fox with four clips 0.7 ms (once, at load).
+
+GPU (no timestamp queries in WebGPU by default, so estimated): Mistwood's main pass is ~35 k triangles plus ~25 k for outlines and ~30 shadow draws at 720×1280 with 4× MSAA, which the A15's tile memory resolves cheaply. Depth of field adds the MSAA depth store (720×1280×4 samples×4 B ≈ 15 MB per frame, ~0.9 GB/s at 60 fps, a few percent of the A15's bandwidth) and two half-res passes (230 k pixels; ~29 texture reads each in the gather), roughly 0.3–0.6 ms. Skinning (866 vertices × 4 joints) and fog are negligible. All of this needs a real A15 to confirm (below).
+
+### Compatibility and determinism evidence
+
+- Old bundles of mb3d-demo, Starfall, Summoned and Mothglass, built before mb3d 2, replayed from logs recorded on the old host give the same draw hash at frames 120 and 420 on the new host, and their screenshots differ from the old host's by at most 1 level (the frame-counter dither; two runs on the same host differ by that much too). Rebuilt from source with the new SDK, they give the same hashes again.
+- Mistwood: `mb.verify()` matches over 3 258 frames with 70 taps (attract-mode autopilot, jumps, trips, restarts, crossfades, per-frame instance lists, recolored text).
+
+### Still to do
+
+- Frame time, DOF and outline cost on an iPhone 13 (A15) and the 16 Pro; check MSAA depth sampling (`texture_depth_multisampled_2d`) on iOS WebKit.
+- Skins built in code (only glTF skins today), more than 4 morph targets, additive animation layers and masks.
+- Per-instance culling and sorting; GPU-driven instance animation.
+- Bundled `.ttf` fonts for 3D text (and mb2d), when `mb2d_font` lands.
+- Text and particles don't cast shadows; outlines don't apply to transparent materials.

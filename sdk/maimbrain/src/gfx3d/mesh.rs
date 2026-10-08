@@ -356,13 +356,15 @@ impl MeshData {
     /// Appends `other`'s geometry.
     pub fn merge(&mut self, other: &MeshData) {
         let base = self.positions.len() as u32;
+        // Colored if either side is (an empty mesh merging a colored one too: Mothglass friction #1).
+        let colored = !self.colors.is_empty() || !other.colors.is_empty();
         if self.colors.is_empty() && !other.colors.is_empty() {
             self.colors = vec![0xffff_ffff; self.positions.len()];
         }
         self.positions.extend(&other.positions);
         self.normals.extend(&other.normals);
         self.uvs.extend(&other.uvs);
-        if !self.colors.is_empty() {
+        if colored {
             if other.colors.is_empty() {
                 self.colors.extend(std::iter::repeat_n(0xffff_ffff, other.positions.len()));
             } else {
@@ -531,5 +533,15 @@ mod tests {
         // Colors are stored as bytes r, g, b, a.
         let first_colored = 12 + 24 * 36 + 32;
         assert_eq!(&p[first_colored..first_colored + 4], &[0x11, 0x22, 0x33, 0x44]);
+    }
+
+    /// Mothglass friction #1: merging colored meshes into an empty one keeps their colors.
+    #[test]
+    fn merging_into_an_empty_mesh_keeps_colors() {
+        let mut m = MeshData::new();
+        m.merge(&MeshData::cube(1.0).with_vertex_colors(0x11223344));
+        m.merge(&MeshData::cube(1.0).with_vertex_colors(0x55667788));
+        assert_eq!(m.colors.len(), m.vertex_count());
+        assert_eq!((m.colors[0], m.colors[24]), (0x11223344, 0x55667788));
     }
 }

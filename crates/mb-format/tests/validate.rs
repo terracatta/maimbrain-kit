@@ -210,6 +210,25 @@ fn gates_mb3d_on_its_stdlib() {
     assert_error(&errors(&both, wrong), "mb.mb3d_node_transform has signature (i32) -> ()");
 }
 
+/// mb3d 2 only adds imports: a game declaring mb3d = 1 keeps validating, a
+/// game using a version-2 import must declare mb3d = 2, and versions the host
+/// doesn't have are rejected.
+#[test]
+fn mb3d_versions_add_imports_without_breaking_old_games() {
+    let v1 = MANIFEST.replace("stdlib = { mb2d = 1 }", "stdlib = { mb2d = 1, mb3d = 1 }");
+    let v2 = MANIFEST.replace("stdlib = { mb2d = 1 }", "stdlib = { mb2d = 1, mb3d = 2 }");
+    let old = || module(&format!(r#"(import "mb" "mb3d_node" (func (result i32))) (import "mb" "mb3d_render" (func)) {EXPORTS}"#));
+    let new = || module(&format!(r#"(import "mb" "mb3d_anim" (func (param i32 i32 f32 f32) (result i32))) (import "mb" "mb3d_free" (func (param i32 i32) (result i32))) {EXPORTS}"#));
+    assert!(errors(&v1, old()).is_empty(), "{:#?}", errors(&v1, old()));
+    assert!(errors(&v2, old()).is_empty(), "{:#?}", errors(&v2, old()));
+    assert!(errors(&v2, new()).is_empty(), "{:#?}", errors(&v2, new()));
+    assert_error(&errors(&v1, new()), "imports mb.mb3d_anim without declaring stdlib { mb3d = 2 }");
+    let v3 = MANIFEST.replace("stdlib = { mb2d = 1 }", "stdlib = { mb2d = 1, mb3d = 3 }");
+    assert_error(&errors(&v3, old()), "stdlib mb3d = 3 is not available (host has 1–2)");
+    let v0 = MANIFEST.replace("stdlib = { mb2d = 1 }", "stdlib = { mb2d = 1, mb3d = 0 }");
+    assert_error(&errors(&v0, old()), "stdlib mb3d = 0 is not available");
+}
+
 fn glb(json: &str, declared_extra: i64) -> Vec<u8> {
     let mut j = json.as_bytes().to_vec();
     while j.len() % 4 != 0 {

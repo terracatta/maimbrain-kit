@@ -336,6 +336,11 @@ impl Transform {
         self.scale = Vec3::splat(s);
         self
     }
+    /// A different scale per axis.
+    pub fn with_scale3(mut self, s: Vec3) -> Transform {
+        self.scale = s;
+        self
+    }
     pub fn matrix(&self) -> Mat4 {
         Mat4::from_trs(self.pos, self.rot, self.scale)
     }

@@ -18,12 +18,14 @@
 //! gfx3d::render();
 //! ```
 
+mod anim;
 mod math;
 mod mesh;
 
 use std::num::NonZeroU32;
 
 pub use math::{Mat4, Quat, Transform, Vec3, look_at, srgb, srgba, vec3};
+pub use anim::{Animator, Clip, Play};
 pub use mesh::MeshData;
 
 use crate::ffi;
@@ -502,6 +504,308 @@ pub fn render() {
     unsafe { ffi::mb3d_render() }
 }
 
+// --- mb3d 2: declare `stdlib = { mb3d = 2 }` to use anything below.
+
+fn free(kind: u32, h: NonZeroU32) -> bool {
+    unsafe { ffi::mb3d_free(kind, h.get()) == 0 }
+}
+
+impl Mesh {
+    /// Frees the mesh (mb3d 2): its vertices stop counting against the limits.
+    /// Nodes still pointing at it draw nothing; the handle goes stale.
+    pub fn free(self) -> bool {
+        free(1, self.0)
+    }
+}
+
+impl Material {
+    /// Frees the material (mb3d 2). Nodes still using it draw with the default (white) material.
+    pub fn free(self) -> bool {
+        free(2, self.0)
+    }
+    /// Sets the material's mb3d 2 look: toon shading, a rim light, an outline.
+    /// [`Material::set`] keeps it.
+    pub fn set_style(self, style: &MaterialStyle) -> bool {
+        unsafe { ffi::mb3d_material_style(self.0.get(), ptr(style)) == 0 }
+    }
+}
+
+impl Texture {
+    /// Frees the texture (mb3d 2). Materials sampling it sample white instead.
+    pub fn free(self) -> bool {
+        free(3, self.0)
+    }
+}
+
+impl Emitter {
+    /// Frees the emitter (mb3d 2). Its live particles finish their lives; it can't burst again.
+    pub fn free(self) -> bool {
+        free(4, self.0)
+    }
+}
+
+impl Trail {
+    /// Frees the trail (mb3d 2); its ribbon disappears at once.
+    pub fn free(self) -> bool {
+        free(5, self.0)
+    }
+}
+
+impl Model {
+    /// Frees the model with its meshes, materials and textures (mb3d 2).
+    /// Destroy its spawned instances first: they stop drawing and animating.
+    pub fn free(self) -> bool {
+        free(6, self.0)
+    }
+}
+
+/// One copy of a node's mesh (44 bytes, mb3d 2): relative to the node.
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+pub struct Instance {
+    pub pos: Vec3,
+    pub rot: Quat,
+    pub scale: Vec3,
+    /// sRGB `0xRRGGBBAA`; multiplies the material's base color, alpha and emissive.
+    /// Note the byte order on the wire is r, g, b, a: use [`Instance::with_color`].
+    pub color: u32,
+}
+
+impl Default for Instance {
+    fn default() -> Instance {
+        Instance { pos: Vec3::ZERO, rot: Quat::IDENTITY, scale: Vec3::ONE, color: u32::MAX }
+    }
+}
+
+impl Instance {
+    pub fn at(pos: Vec3) -> Instance {
+        Instance { pos, ..Default::default() }
+    }
+    pub fn with_rot(mut self, rot: Quat) -> Instance {
+        self.rot = rot;
+        self
+    }
+    pub fn with_scale(mut self, s: f32) -> Instance {
+        self.scale = Vec3::splat(s);
+        self
+    }
+    pub fn with_scale3(mut self, s: Vec3) -> Instance {
+        self.scale = s;
+        self
+    }
+    /// A tint, sRGB `0xRRGGBBAA` (white = none).
+    pub fn with_color(mut self, rgba: u32) -> Instance {
+        self.color = rgba.swap_bytes();
+        self
+    }
+}
+
+impl Node {
+    /// Draws the node's mesh once per instance (mb3d 2), in one draw call:
+    /// bullets, coins, grass, crowds. Replaces the previous list; at most
+    /// 16 384 per node and 65 536 in all. Each instance is relative to the
+    /// node (move the node to move them all). The node is culled as one
+    /// sphere around every instance, so split big fields into chunks (a node
+    /// per patch of grass). Instances of a transparent material aren't sorted
+    /// among themselves. False past the limits.
+    pub fn set_instances(self, list: &[Instance]) -> bool {
+        unsafe { ffi::mb3d_instances(self.0.get(), list.as_ptr().cast(), list.len() as u32) == 0 }
+    }
+    /// Back to drawing the mesh once, at the node.
+    pub fn clear_instances(self) {
+        unsafe { ffi::mb3d_instances(self.0.get(), std::ptr::null(), 0) };
+    }
+    /// The node named `name` (its glTF node name) in the model spawned at
+    /// this node (mb3d 2): bones and sockets included, so attaching a sword
+    /// to a hand is `sword.set_parent(fox.find("Hand.R"))`. None if this
+    /// isn't a spawned model's root or there's no such node.
+    pub fn find(self, name: &str) -> Option<Node> {
+        handle(unsafe { ffi::mb3d_node_find(self.0.get(), name.as_ptr(), name.len() as u32) }).map(Node)
+    }
+    /// The material this node draws with (mb3d 2), e.g. to give a loaded
+    /// glTF character a toon look: `fox.find("Body")?.material()?.set_style(..)`.
+    pub fn material(self) -> Option<Material> {
+        handle(unsafe { ffi::mb3d_node_material(self.0.get()) }).map(Material)
+    }
+    /// Morph target weights (mb3d 2) for a node drawing a glTF mesh with
+    /// morph targets (the first four). Animation clips with weights channels set them too.
+    pub fn set_morph(self, weights: [f32; 4]) {
+        unsafe { ffi::mb3d_node_morph(self.0.get(), weights[0], weights[1], weights[2], weights[3]) }
+    }
+    /// The node's world transform now, after this frame's animation so far
+    /// (mb3d 2): where a bone or socket is, for hit tests and effects. None
+    /// for a destroyed node. Off wasm (in `cargo test`) it's the identity.
+    pub fn world(self) -> Option<Mat4> {
+        let mut m = Mat4::IDENTITY;
+        let r = unsafe { ffi::mb3d_node_world(self.0.get(), m.0.as_mut_ptr().cast()) };
+        (r == 0).then_some(m)
+    }
+    /// Shows `text` at this node in 3D (mb3d 2): a label, a sign, a floating
+    /// score. Empty text removes it. False past the limits (256 nodes with
+    /// text, 512 characters each).
+    pub fn set_text(self, desc: &TextDesc, text: &str) -> bool {
+        unsafe { ffi::mb3d_text(self.0.get(), ptr(desc), text.as_ptr(), text.len() as u32) == 0 }
+    }
+    pub fn clear_text(self) {
+        self.set_text(&TextDesc::default(), "");
+    }
+}
+
+/// How fog thickens with distance.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[repr(u32)]
+pub enum FogMode {
+    Off = 0,
+    /// From none at `start` to full at `end` meters from the camera.
+    Linear = 1,
+    /// `1 − e^(−density × distance)`.
+    Exponential = 2,
+    /// `1 − e^(−(density × distance)²)`: clear nearby, then a wall.
+    ExponentialSquared = 3,
+}
+
+/// Fog (48 bytes, mb3d 2). Surfaces, particles, trails, outlines and 3D
+/// text fade toward `color` with distance (additive glows fade out); the sky
+/// fades to it toward the horizon by `sky`. With `height_falloff` > 0 the
+/// fog is densest at and below `height` and thins above it (ground mist).
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+pub struct Fog {
+    /// Linear RGB, usually close to the sky's horizon color.
+    pub color: [f32; 3],
+    pub mode: FogMode,
+    pub start: f32,
+    pub end: f32,
+    pub density: f32,
+    pub height: f32,
+    /// Per meter above `height`; 0 = the same density everywhere.
+    pub height_falloff: f32,
+    /// 0–1: how much the sky fades to the fog color at the horizon.
+    pub sky: f32,
+    pub _reserved: [u32; 2],
+}
+
+impl Default for Fog {
+    fn default() -> Fog {
+        Fog { color: [0.5, 0.55, 0.6], mode: FogMode::Off, start: 10.0, end: 60.0, density: 0.04, height: 0.0, height_falloff: 0.0, sky: 1.0, _reserved: [0; 2] }
+    }
+}
+
+pub fn fog(f: &Fog) {
+    unsafe { ffi::mb3d_fog(ptr(f)) }
+}
+
+/// A material's mb3d 2 look (32 bytes): cel shading, a rim light and an outline.
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+pub struct MaterialStyle {
+    /// Linear RGB.
+    pub outline_color: [f32; 3],
+    /// Logical pixels (0 = none, up to 8). Opaque materials only.
+    pub outline_width: f32,
+    /// 0 = smooth PBR shading; 2–8 = that many flat light bands.
+    pub toon_bands: u32,
+    /// 0–1: a bright edge on silhouettes, lit by the sun.
+    pub rim: f32,
+    /// [`MaterialStyle::NO_FOG`].
+    pub flags: u32,
+    pub _reserved: u32,
+}
+
+impl MaterialStyle {
+    /// Fog doesn't touch this material (signs, the player).
+    pub const NO_FOG: u32 = 1;
+}
+
+impl Default for MaterialStyle {
+    fn default() -> MaterialStyle {
+        MaterialStyle { outline_color: [0.0; 3], outline_width: 0.0, toon_bands: 0, rim: 0.0, flags: 0, _reserved: 0 }
+    }
+}
+
+/// How a node's 3D text looks (64 bytes, mb3d 2). The host fonts: Inter
+/// (signed distance fields, crisp at any size, with optional outline) and the
+/// pixel font.
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+pub struct TextDesc {
+    pub font: crate::gfx2d::Font,
+    /// Em height in meters (logical pixels with [`TextDesc::SCREEN`]).
+    pub size: f32,
+    /// Where the node sits in the text block: (0, 0) top-left, (0.5, 0.5) centered, (1, 1) bottom-right.
+    pub align: [f32; 2],
+    /// Linear RGBA; above 1 glows.
+    pub color: [f32; 4],
+    pub outline_color: [f32; 4],
+    /// In em, up to 0.1 (Inter only).
+    pub outline_width: f32,
+    /// [`TextDesc::BILLBOARD`], [`TextDesc::SCREEN`], [`TextDesc::ON_TOP`], [`TextDesc::NO_FOG`].
+    pub flags: u32,
+    pub _reserved: [u32; 2],
+}
+
+impl TextDesc {
+    /// Always faces the camera (otherwise it lies in the node's xy plane, facing +z).
+    pub const BILLBOARD: u32 = 1;
+    /// Billboards only: `size` is logical pixels, the same on screen at any distance.
+    pub const SCREEN: u32 = 2;
+    /// Drawn over everything.
+    pub const ON_TOP: u32 = 4;
+    pub const NO_FOG: u32 = 8;
+
+    /// Centered text of `size` meters in `font`, white.
+    pub fn new(font: crate::gfx2d::Font, size: f32) -> TextDesc {
+        TextDesc { font, size, ..Default::default() }
+    }
+    pub fn billboard(mut self) -> TextDesc {
+        self.flags |= TextDesc::BILLBOARD;
+        self
+    }
+    pub fn with_color(mut self, color: [f32; 4]) -> TextDesc {
+        self.color = color;
+        self
+    }
+    pub fn with_outline(mut self, color: [f32; 4], width: f32) -> TextDesc {
+        self.outline_color = color;
+        self.outline_width = width;
+        self
+    }
+}
+
+impl Default for TextDesc {
+    fn default() -> TextDesc {
+        TextDesc {
+            font: crate::gfx2d::Font::SansBold,
+            size: 0.5,
+            align: [0.5, 0.5],
+            color: [1.0; 4],
+            outline_color: [0.0; 4],
+            outline_width: 0.0,
+            flags: 0,
+            _reserved: [0; 2],
+        }
+    }
+}
+
+/// Depth of field (16 bytes, mb3d 2): things nearer or farther than the
+/// focus blur, up to `blur` logical pixels. `blur: 0` turns it off.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[repr(C)]
+pub struct DepthOfField {
+    /// Meters from the camera that are sharpest.
+    pub focus: f32,
+    /// Meters either side of the focus that stay sharp.
+    pub range: f32,
+    /// Largest blur radius in logical pixels (0–16).
+    pub blur: f32,
+    /// 0–1: how much things in front of the focus blur (1 = as much as behind).
+    pub near: f32,
+}
+
+pub fn depth_of_field(d: &DepthOfField) {
+    unsafe { ffi::mb3d_dof(ptr(d)) }
+}
+
 /// A camera orbiting a target: yaw around +y, pitch up from the horizon.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct OrbitCamera {
@@ -554,6 +858,46 @@ mod tests {
         assert_eq!(size_of::<EmitterDesc>(), 128);
         assert_eq!(size_of::<TrailDesc>(), 64);
         assert_eq!(size_of::<Option<Texture>>(), 4);
+        // mb3d 2
+        assert_eq!(size_of::<Instance>(), 44);
+        assert_eq!(size_of::<Fog>(), 48);
+        assert_eq!(size_of::<MaterialStyle>(), 32);
+        assert_eq!(size_of::<TextDesc>(), 64);
+        assert_eq!(size_of::<DepthOfField>(), 16);
+    }
+
+    #[test]
+    fn instance_colors_go_on_the_wire_as_rgba_bytes() {
+        let i = Instance::at(vec3(1.0, 2.0, 3.0)).with_color(0x11223344);
+        assert_eq!(i.color.to_le_bytes(), [0x11, 0x22, 0x33, 0x44]);
+        assert_eq!(Instance::default().color, u32::MAX);
+    }
+
+    /// The skill's mb3d 2 examples compile and run off-wasm (stubs return handle 1, duration 1).
+    #[test]
+    fn mb3d2_examples() {
+        let model = Model(NonZeroU32::new(1).unwrap());
+        let fox = model.spawn(None).unwrap();
+        let run = model.clip("Run").unwrap();
+        let mut anim = Animator::new();
+        anim.play(run, Play::Loop, 0.2);
+        anim.update(1.0 / 60.0);
+        anim.apply(fox);
+        let tail = fox.find("Socket.Tail").unwrap();
+        let lantern = Node::new().unwrap();
+        lantern.set_parent(Some(tail));
+        assert!(tail.world().is_some());
+        let coin = MeshData::cylinder(0.3, 0.05, 16).upload().unwrap();
+        let gold = Material::new(&MaterialDesc { base_color: srgba(0xffc83dff), metallic: 1.0, roughness: 0.3, ..Default::default() }).unwrap();
+        let coins = Node::with_mesh(coin, gold).unwrap();
+        let list: Vec<Instance> = (0..100).map(|i| Instance::at(vec3(i as f32, 1.0, 0.0)).with_rot(Quat::from_rotation_x(1.57))).collect();
+        assert!(coins.set_instances(&list));
+        gold.set_style(&MaterialStyle { outline_width: 2.0, toon_bands: 3, rim: 0.4, ..Default::default() });
+        fog(&Fog { mode: FogMode::Exponential, color: srgb(0x8fa7b8), density: 0.035, height_falloff: 0.3, ..Default::default() });
+        depth_of_field(&DepthOfField { focus: 6.0, range: 2.0, blur: 6.0, near: 0.5 });
+        let label = Node::new().unwrap();
+        label.set_text(&TextDesc::new(crate::gfx2d::Font::SansBold, 0.4).billboard().with_outline([0.0, 0.0, 0.0, 1.0], 0.06), "+10");
+        coin.free();
     }
 
     /// The explosion example in the maimbrain-game skill's 3D section compiles and runs off-wasm.

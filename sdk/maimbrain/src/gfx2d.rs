@@ -105,3 +105,37 @@ pub fn measure(font: Font, size: f32, s: &str) -> f32 {
 pub fn text_centered(font: Font, size: f32, cx: f32, y: f32, rgba: u32, s: &str) {
     text(font, size, cx - measure(font, size, s) / 2.0, y, rgba, s);
 }
+
+/// A rounded rectangle with signed-distance (anti-aliased) edges, shaded
+/// from `top` to `bottom`. `radius` rounds the corners (clamped to half the
+/// short side: `radius = h / 2` makes a pill, a square with `radius = w / 2`
+/// a circle); `stroke` > 0 draws only a border that wide, inside the edge;
+/// `feather` > 0 blurs the edge over that many units (soft shadows, glows).
+#[allow(clippy::too_many_arguments)]
+pub fn rrect(x: f32, y: f32, w: f32, h: f32, radius: f32, stroke: f32, feather: f32, top: u32, bottom: u32) {
+    unsafe { ffi::mb2d_rrect(x, y, w, h, radius, stroke, feather, top, bottom) }
+}
+
+/// How SDF text (the Inter fonts; not the pixel font) draws from now until
+/// the next call or the end of the frame. All sizes are in ems (multiples of
+/// the text size), and together they reach at most ~0.12 em past the glyph:
+/// `weight` thickens (> 0) or thins (< 0) the letters, `outline` adds a
+/// border that wide in `outline_rgba`, `soft` blurs the outer edge (a glow,
+/// or a soft shadow when drawn offset in a dark color).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct TextStyle {
+    pub weight: f32,
+    pub outline: f32,
+    pub outline_rgba: u32,
+    pub soft: f32,
+}
+
+pub fn text_style(s: TextStyle) {
+    unsafe { ffi::mb2d_text_style(s.weight, s.outline, s.outline_rgba, s.soft) }
+}
+
+/// Anti-aliases `poly` (a pixel-wide soft fringe) and `line` (smooth edges)
+/// from now until the next call or the end of the frame. Off by default.
+pub fn antialias(on: bool) {
+    unsafe { ffi::mb2d_antialias(on as u32) }
+}

@@ -1,0 +1,12 @@
+abi = 0
+id = "dev.maimbrain.gallery"
+name = "UI Gallery"
+version = "0.1.0"
+creator = "@maimbrain"
+
+orientation = "portrait"
+logical_size = [360, 640]
+inputs = ["touch", "keyboard"]
+perf_tier = "lite"
+
+stdlib = { mb2d = 1 }

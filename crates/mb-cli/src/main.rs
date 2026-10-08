@@ -7,7 +7,12 @@
 //!     mb submit frogger               # send the draft to review (after testing it on your phone)
 //!     mb validate feed/dev.maimbrain.stack-0.1.0.mbx
 //!     mb serve frogger                # preview in a browser; reload to rebuild
+//!     mb serve --watch frogger        # …or rebuild on save and update the preview by itself
 //!     mb doctor                       # check the toolchain
+//!     mb art sprite frogger hero "a frog in a tiny knight's helmet"   # generated art (mb art --help)
+//!     mb music frogger music "bouncy marimba and claps" --bars 8      # a seamless loop
+//!     mb sfx frogger croak "a short wet croak"                        # a sound effect
+//!     mb regen frogger/assets/hero.png --seed 42                      # again, from its .gen.json
 
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
@@ -18,9 +23,13 @@ use mb_format::bundle::{ASSET_EXTENSIONS, SOURCE_EXTENSIONS};
 use mb_format::manifest::PerfTier;
 use mb_format::{Manifest, Report};
 
+mod devbuild;
+mod generate;
+mod live;
 mod remote;
 mod scaffold;
 mod serve;
+mod watch;
 
 #[derive(Parser)]
 #[command(name = "mb", version, about = "Make, build, validate and publish Maimbrain games")]
@@ -73,15 +82,22 @@ enum Cmd {
     },
     /// Check that the toolchain for building games is installed.
     Doctor,
-    /// Preview a game in a desktop browser (rebuilds on reload when files change).
+    /// Preview a game in a desktop browser (rebuilds on reload when files change; with
+    /// --watch, rebuilds on save and updates the open preview by itself).
     Serve {
         /// Game directory or .mbx bundle.
         path: PathBuf,
         #[arg(long, default_value_t = 8765)]
         port: u16,
-        /// Where `mb build` writes the bundle.
+        /// Where `mb build` writes the bundle (not used with --watch, which keeps builds in memory).
         #[arg(long, default_value = "feed")]
         out: PathBuf,
+        /// Rebuild as soon as a file is saved (a fast build: no LTO or wasm-opt) and push it to
+        /// the open preview: new code is swapped in, changed assets are refetched, compiler errors
+        /// are shown over the game. Prints `[mb] build N ok|failed` and `[mb] page N running`
+        /// lines; GET /__mb/wait blocks until what's on disk is built and running.
+        #[arg(long)]
+        watch: bool,
     },
     /// Compile a game crate to wasm, optimize it, pack it into a .mbx and validate it.
     Build {
@@ -128,6 +144,30 @@ enum Cmd {
         #[arg(long, default_value = "2026-10-06")]
         date: String,
     },
+    /// Generate images for a game (sprites, frames, backgrounds, parallax layers, tiles, UI, the icon)
+    /// in the style of its art/style.toml, post-processed to the platform's rules.
+    Art {
+        #[command(subcommand)]
+        cmd: generate::art::ArtCmd,
+    },
+    /// Generate a looping music track (or a one-shot) as a mono Ogg at the platform's loudness.
+    Music(generate::sound::MusicArgs),
+    /// Generate a sound effect (ElevenLabs; without a key, use the skill's procedural sfx.py).
+    Sfx(generate::sound::SfxArgs),
+    /// Regenerate a generated asset from its sidecar: same recipe, optionally a new seed or prompt,
+    /// or --reprocess to redo only the post-processing (free).
+    Regen(generate::RegenArgs),
+    /// Manage API keys for art and sound providers (stored outside any repository).
+    Keys {
+        #[command(subcommand)]
+        cmd: generate::keys::KeysCmd,
+    },
+    /// List the art and sound models mb can use, with prices and which keys are set.
+    Models,
+    /// Check prompt text (stdin) against the originality list of mb art/music/sfx; prints JSON.
+    /// The server runs this on prompts sent to Maimbrain's generation keys.
+    #[command(hide = true)]
+    IpCheck,
     /// Check a .mbx against the spec.
     Validate {
         bundle: PathBuf,
@@ -160,7 +200,8 @@ fn main() -> ExitCode {
         }
         Cmd::Submit { game } => submit_target(&game).and_then(|t| remote::submit(&t)),
         Cmd::Doctor => doctor(),
-        Cmd::Serve { path, port, out } => serve::serve(
+        Cmd::Serve { path, port, watch: true, .. } => serve::watch(&path, port, |m| boot_json(m, 1, "2026-10-06")),
+        Cmd::Serve { path, port, out, watch: false } => serve::serve(
             &path,
             port,
             |dir| build(dir).and_then(|wasm| pack(dir, &wasm, &out)),
@@ -175,6 +216,13 @@ fn main() -> ExitCode {
             .and_then(|w| mb_format::meter::instrument(&w))
             .and_then(|w| std::fs::write(&output, w).map_err(|e| e.to_string())),
         Cmd::Feed { bundles, out } => feed(&bundles, &out),
+        Cmd::Art { cmd } => generate::art::run(cmd),
+        Cmd::Music(a) => generate::sound::music(a),
+        Cmd::Sfx(a) => generate::sound::sfx(a),
+        Cmd::Regen(a) => generate::regen(a),
+        Cmd::Keys { cmd } => generate::keys::run(cmd),
+        Cmd::Models => generate::models(),
+        Cmd::IpCheck => generate::ip::check_stdin(),
         Cmd::Abi => {
             println!("{}", abi_json());
             Ok(())
@@ -334,6 +382,14 @@ fn doctor() -> Result<(), String> {
         Ok(w) => check(&format!("signed in as @{}", w["username"].as_str().unwrap_or("?")), true, false, ""),
         Err(_) => check("signed in", false, false, "mb login"),
     }
+    // Optional: keys for `mb art`, `mb music` and `mb sfx`.
+    for (name, what) in [("gemini", "art and music"), ("elevenlabs", "sound effects")] {
+        let found = generate::keys::lookup(name).is_some();
+        check(&format!("{name} key ({what}: mb art, mb music, mb sfx)"), found, false, &format!("{} (optional)", generate::keys::help_for(name)));
+    }
+    // Or Maimbrain's keys, for accounts the Maimbrain team has given access.
+    let (allowed, line) = generate::maimbrain::describe(&generate::maimbrain::Live);
+    check(&line, allowed, false, "optional: without a key of your own, generation uses these");
     if ok { Ok(()) } else { Err("install the missing required tools above".into()) }
 }
 
@@ -403,16 +459,7 @@ fn stage(bundle: &Path, out: &Path, runtime: &Path, seed: u64, date: &str) -> Re
         let data = if path == "game.wasm" { b.runtime_wasm() } else { b.file(path).unwrap() };
         std::fs::write(&dest, data).map_err(|e| e.to_string())?;
     }
-    let boot = serde_json::json!({
-        "manifest": b.manifest,
-        "seed": seed.to_string(),
-        "dailySeed": mb_format::daily_seed(&b.manifest.id, date).to_string(),
-        "store": {},
-        "playerId": "00112233445566778899aabbccddeeff",
-        "locale": "en-US",
-        "insets": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
-        "stripHeight": 24,
-    });
+    let boot = boot_json(&b.manifest, seed, date);
     std::fs::write(game.join("boot.json"), serde_json::to_string_pretty(&boot).unwrap()).map_err(|e| e.to_string())?;
     let rt = out.join("runtime");
     std::fs::create_dir_all(&rt).map_err(|e| e.to_string())?;
@@ -422,6 +469,20 @@ fn stage(bundle: &Path, out: &Path, runtime: &Path, seed: u64, date: &str) -> Re
     }
     eprintln!("staged {} at {} — serve it and open /runtime/index.html", b.manifest.id, out.display());
     Ok(())
+}
+
+/// game/boot.json for a browser or headless run (runtime/src/boot.ts).
+fn boot_json(manifest: &Manifest, seed: u64, date: &str) -> serde_json::Value {
+    serde_json::json!({
+        "manifest": manifest,
+        "seed": seed.to_string(),
+        "dailySeed": mb_format::daily_seed(&manifest.id, date).to_string(),
+        "store": {},
+        "playerId": "00112233445566778899aabbccddeeff",
+        "locale": "en-US",
+        "insets": { "top": 0, "right": 0, "bottom": 0, "left": 0 },
+        "stripHeight": 24,
+    })
 }
 
 fn feed(bundles: &[PathBuf], out: &Path) -> Result<(), String> {
@@ -471,7 +532,7 @@ fn abi_json() -> String {
         .map(|i| {
             let requires = match i.requires {
                 Requires::Always => serde_json::Value::Null,
-                Requires::Stdlib(s) => serde_json::json!({ "stdlib": s }),
+                Requires::Stdlib(s, v) => serde_json::json!({ "stdlib": s, "version": v }),
                 Requires::Sensor(s) => serde_json::json!({ "sensor": s.as_str() }),
                 Requires::Capability(c) => serde_json::json!({ "capability": c.as_str() }),
             };

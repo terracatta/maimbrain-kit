@@ -23,18 +23,31 @@
 //! Everything nondeterministic (time, input, the random seed) comes from the
 //! host and is recorded, so runs replay exactly (SPEC §3). Use [`Rng`] seeded
 //! from [`sys::rand_seed`] rather than any other entropy source.
+//!
+//! Optional Cargo features: `physics2d` and `physics3d` add deterministic
+//! rigid-body physics (Rapier) as [`physics2d`] / [`physics3d`]; see
+//! docs/PHYSICS.md.
 
 pub mod audio;
 pub mod gfx2d;
 pub mod gfx3d;
 pub mod input;
+pub mod juice;
+pub mod motion;
+#[cfg(feature = "physics2d")]
+pub mod physics2d;
+#[cfg(feature = "physics3d")]
+pub mod physics3d;
 pub mod sensors;
 pub mod store;
 pub mod sys;
+pub mod ui;
 
 #[doc(hidden)]
 pub mod ffi;
 
+#[cfg(any(feature = "physics2d", feature = "physics3d"))]
+mod physics_clock;
 mod rng;
 
 pub use rng::Rng;
